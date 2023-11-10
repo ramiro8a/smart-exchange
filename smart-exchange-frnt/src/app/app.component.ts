@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'smart-exchange-frnt';
+  title = 'LC exchange';
+  logo_principal='assets/img/lc_excahnge_temp.jpg'
 }

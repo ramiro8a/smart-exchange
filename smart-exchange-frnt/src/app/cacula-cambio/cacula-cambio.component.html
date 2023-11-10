@@ -1,0 +1,44 @@
+<mat-card class="calcula-cambio">
+    <mat-card-content>
+        <mat-stepper [linear]="false" #stepper>
+            <mat-step [stepControl]="compraFormGroup" state="phone">
+                <br>
+              <form [formGroup]="compraFormGroup">
+                <ng-template matStepLabel>Compra: 3.782</ng-template>
+                <mat-form-field  appearance="outline">
+                  <mat-label>Cuanto envías?</mat-label>
+                  <input matInput formControlName="dolares" type="number">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Recibes</mat-label>
+                    <input matInput formControlName="soles" type="number">
+                  </mat-form-field>
+                <div>
+                  
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="ventaFormGroup" state="chat">
+              <form [formGroup]="ventaFormGroup">
+                <ng-template matStepLabel>Venta: 3.819</ng-template>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cuanto envías?</mat-label>
+                    <input matInput formControlName="soles" type="number">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Recibes</mat-label>
+                    <input matInput formControlName="dolares" type="number">
+                </mat-form-field>
+                <div>
+                </div>
+              </form>
+            </mat-step>
+            <ng-template matStepperIcon="phone">
+                <mat-icon>watch_later</mat-icon>
+              </ng-template>
+              <ng-template matStepperIcon="chat">
+                <mat-icon>visibility</mat-icon>
+              </ng-template>
+          </mat-stepper>
+    </mat-card-content>
+</mat-card>
