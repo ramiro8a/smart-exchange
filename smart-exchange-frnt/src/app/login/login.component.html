@@ -1,0 +1,31 @@
+<mat-card class="card-log-reg">
+    <!--         <mat-card-title class="circleLogo">
+                    <img src='assets/images/logoOrange.png' alt="">
+                </mat-card-title> -->
+    <mat-card-content class="">
+        <h4 class="mat-primary">INICIE UNA SESIÓN</h4>                
+        <form [formGroup]="loginForm" (ngSubmit)="executeAction('LOGIN')" autocomplete="off">
+            <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
+                <mat-label>Número de documento Ej: 1010101010LP</mat-label>
+                <input matInput type="text" formControlName="username">
+            </mat-form-field>
+            <mat-form-field appearance="outline"  matTooltip="Escriba su contraseña">
+                <mat-label>Contraseña</mat-label>
+                <input matInput [type]="hide?'password':'text'" formControlName="password">
+                <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+            <button mat-fab extended color="primary">
+                <mat-icon>login</mat-icon>
+                Iniciar sesión
+            </button>&nbsp;
+            <button type="reset" mat-fab extended color="accent">
+                <mat-icon>block</mat-icon>
+                Cancelar
+            </button>
+        </form>
+        <button routerLink="/registro" mat-button matTooltip="Regístrese para acceder al sistema" color="primary"><mat-icon>article</mat-icon>Regístrame</button>
+        <button (click)="panelManager('RESET')" mat-button matTooltip="Haga clic para recuperar su contraseña"  [color]="'primary'">
+        <mat-icon>pan_tool</mat-icon> Olvidé mi contraseña
+        </button>
+    </mat-card-content>
+</mat-card>

@@ -1,44 +1,54 @@
 <mat-card class="calcula-cambio">
     <mat-card-content>
-        <mat-stepper [linear]="false" #stepper>
-            <mat-step [stepControl]="compraFormGroup" state="phone">
+        <mat-tab-group dynamicHeight>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">attach_money</mat-icon>
+                    Compra: 3.782
+                </ng-template>
+              <div class="example-small-box mat-elevation-z4">
                 <br>
-              <form [formGroup]="compraFormGroup">
-                <ng-template matStepLabel>Compra: 3.782</ng-template>
-                <mat-form-field  appearance="outline">
-                  <mat-label>Cuanto envías?</mat-label>
-                  <input matInput formControlName="dolares" type="number">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Recibes</mat-label>
-                    <input matInput formControlName="soles" type="number">
-                  </mat-form-field>
-                <div>
-                  
-                </div>
-              </form>
-            </mat-step>
-            <mat-step [stepControl]="ventaFormGroup" state="chat">
-              <form [formGroup]="ventaFormGroup">
-                <ng-template matStepLabel>Venta: 3.819</ng-template>
-                <mat-form-field appearance="outline">
-                    <mat-label>Cuanto envías?</mat-label>
-                    <input matInput formControlName="soles" type="number">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Recibes</mat-label>
-                    <input matInput formControlName="dolares" type="number">
-                </mat-form-field>
-                <div>
-                </div>
-              </form>
-            </mat-step>
-            <ng-template matStepperIcon="phone">
-                <mat-icon>watch_later</mat-icon>
-              </ng-template>
-              <ng-template matStepperIcon="chat">
-                <mat-icon>visibility</mat-icon>
-              </ng-template>
-          </mat-stepper>
+                <form [formGroup]="compraFormGroup">
+                    <mat-form-field  appearance="outline">
+                        <mat-label>Cuanto envías?</mat-label>
+                        <input matInput formControlName="dolares" type="number">
+                        <div class="sufix-cambio" matTextSuffix>DÓLARES&nbsp;</div>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Recibes</mat-label>
+                        <input matInput formControlName="soles" type="number">
+                        <div class="sufix-cambio" matTextSuffix>SOLES&nbsp;</div>
+                    </mat-form-field>
+                    <div>
+                      
+                    </div>
+                  </form>
+              </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">money</mat-icon>
+                    Venta: 3.819
+                </ng-template>
+              <div class="example-large-box mat-elevation-z4">
+                <br>
+                <form [formGroup]="ventaFormGroup">
+                    <ng-template matStepLabel>Venta: 3.819</ng-template>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cuanto envías?</mat-label>
+                        <input matInput formControlName="soles" type="number">
+                        <div class="sufix-cambio" matTextSuffix>SOLES&nbsp;</div>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Recibes</mat-label>
+                        <input matInput formControlName="dolares" type="number">
+                        <div class="sufix-cambio" matTextSuffix>DÓLARES&nbsp;</div>
+                    </mat-form-field>
+                    <div>
+                    </div>
+                  </form>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
     </mat-card-content>
 </mat-card>
