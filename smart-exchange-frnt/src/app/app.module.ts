@@ -11,8 +11,49 @@ import { HttpClientModule } from '@angular/common/http';
 import { CaculaCambioComponent } from './cacula-cambio/cacula-cambio.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrateComponent } from './registrate/registrate.component';
-import { LogoComponent } from './logo/logo.component';
 import { RECAPTCHA_LANGUAGE, RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng-recaptcha";
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+		horizontal: {
+			position: 'left',
+			distance: 12
+		},
+		vertical: {
+			position: 'bottom',
+			distance: 12,
+			gap: 10
+		}
+	},
+  theme: 'material',
+  behaviour: {
+    autoHide: 5000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 4
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 300,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 300,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 300,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
 
 @NgModule({
   declarations: [
@@ -20,7 +61,6 @@ import { RECAPTCHA_LANGUAGE, RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng
     CaculaCambioComponent,
     LoginComponent,
     RegistrateComponent,
-    LogoComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +71,7 @@ import { RECAPTCHA_LANGUAGE, RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng
     FormsModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
+    NotifierModule.withConfig(customNotifierOptions),
   ],
   providers: [{ 
     provide: RECAPTCHA_V3_SITE_KEY,

@@ -1,9 +1,9 @@
-<mat-card class="card-log-reg">
-    <!--         <mat-card-title class="circleLogo">
-                    <img src='assets/images/logoOrange.png' alt="">
-                </mat-card-title> -->
+<mat-card class="card-reg">
+    <mat-card-title class="logo-log-reg">
+        <img src='assets/img/logo.png' alt="">
+    </mat-card-title>
     <mat-card-content class="">
-        <h4>REGÍSTRATE PARA OBTENER LOS MEJORES CAMBIOS</h4>                
+        <h4 class="mat-primary">REGÍSTRATE PARA OBTENER LOS MEJORES CAMBIOS</h4> 
         <form [formGroup]="loginForm" (ngSubmit)="executeAction('LOGIN')" autocomplete="off">
             <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
                 <mat-label>Nombres</mat-label>
