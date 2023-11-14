@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.0.0-01-crea-t-usuario" author="ramiro.ochoa">
+        <comment>
+			Create table T_USUARIO
+		</comment>
+        <createTable tableName="T_USUARIO">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FECHA_CREACION" type="TIMESTAMP"/>
+            <column name="FECHA_ACTUALIZACION" type="TIMESTAMP"/>
+            <column name="USUARIO_CREACION" type="BIGINT"/>
+            <column name="USUARIO_ACTUALIZACION" type="BIGINT"/>
+            <column name="VERSION" type="INTEGER"/>
+            <column name="EST_REG" type="INTEGER" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
+            
+            <column name="USUARIO" type="VARCHAR(150)" remarks="nombre de ususario, para clientes siempre debe ser su correo electrónico"/>
+            <column name="PASSWORD" type="VARCHAR(255)" remarks="Correo electronico"/>
+            <column name="CORREO" type="VARCHAR(150)" remarks="Correo electronico"/>
+            <column name="CORREO_VALIDADO" type="NUMBER(1)" defaultValue="0" remarks="Si su correo electrónico ha sido verificado"/>
+            <column name="CELULAR" type="VARCHAR(12)" remarks="Celular"/>
+            <column name="BLOQUEADO" type="NUMBER(1)" defaultValue="0" remarks="Si la cuenta esta bloqueado o no"/>
+            <column name="INICIO" type="TIMESTAMP" remarks="Usuario habilitado desde fecha hora"/>
+            <column name="FIN" type="TIMESTAMP" remarks="Usuario habilitado hasta fecha hora"/>
+            <column name="INTENTOS_FALLIDOS" type="NUMBER(1)" defaultValue="0" remarks="Intentos fallidos de inicio de sesion"/>
+            <column name="BLOQUEADO_DESDE" type="TIMESTAMP" remarks="Está bloqueado desde"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_USUARIO"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="v0.0.0-02-crea-t-rol" author="ramiro.ochoa">
+        <comment>
+			Create table T_ROL
+		</comment>
+        <createTable tableName="T_ROL">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FECHA_CREACION" type="TIMESTAMP"/>
+            <column name="FECHA_ACTUALIZACION" type="TIMESTAMP"/>
+            <column name="USUARIO_CREACION" type="BIGINT"/>
+            <column name="USUARIO_ACTUALIZACION" type="BIGINT"/>
+            <column name="VERSION" type="INTEGER"/>
+            <column name="EST_REG" type="INTEGER" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
+            
+            <column name="NOMBRE" type="VARCHAR(100)" remarks="Codigo random unico insertado al configurar la empresa"/>
+            <column name="DESCRIPCION" type="VARCHAR(255)" remarks="nombre de la sucursal"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_ROL"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="v0.0.0-02-crea-t-usuario-rol" author="ramiro.ochoa">
+        <comment>
+			Create table T_USUARIO_ROL
+		</comment>
+        <createTable tableName="T_USUARIO_ROL">
+            <column name="USUARIO_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_usuario_rol"/>
+            </column>
+            <column name="ROL_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_usuario_rol_usuario"
+                                baseTableName="T_USUARIO_ROL"
+                                baseColumnNames="USUARIO_ID"
+                                referencedTableName="T_USUARIO"
+                                referencedColumnNames="ID"/>
+        <addForeignKeyConstraint constraintName="fk_usuario_rol_rol"
+                                baseTableName="T_USUARIO_ROL"
+                                baseColumnNames="ROL_ID"
+                                referencedTableName="T_ROL"
+                                referencedColumnNames="ID"/>
+    </changeSet>
+</databaseChangeLog>
