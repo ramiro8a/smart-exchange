@@ -40,7 +40,7 @@ public class AutenticacionService {
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(values[0], values[1]));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             SessionInfo user = (SessionInfo) authentication.getPrincipal();
-            if(!user.correoValido()){
+            if(user.esCLiente() && !user.correoValido()){
                 throw new ProviderException(
                         ErrorMsj.CORREO_NO_VALIDO.getMsj(),
                         ErrorMsj.CORREO_NO_VALIDO.getCod(),

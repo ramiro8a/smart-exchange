@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 public class SessionInfo implements UserDetails {
     private Usuario ususario;
 
+    public boolean esCLiente(){
+        return this.getAuthorities().stream()
+                .anyMatch(rol -> "CLIENTE".equals(rol.getAuthority()));
+    }
     public boolean correoValido() {
         return this.getUsusario().isCorreoValidado();
     }
