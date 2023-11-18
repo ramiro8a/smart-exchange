@@ -13,6 +13,10 @@ import { LoginComponent } from './login/login.component';
 import { RegistrateComponent } from './registrate/registrate.component';
 import { RECAPTCHA_LANGUAGE, RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng-recaptcha";
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { UsusariosCrudComponent } from './ususarios-crud/ususarios-crud.component';
+import { ClienteComponent } from './cliente/cliente.component';
+import { ReportesComponent } from './reportes/reportes.component';
+import { OperacionesComponent } from './operaciones/operaciones.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -21,7 +25,7 @@ const customNotifierOptions: NotifierOptions = {
 			distance: 12
 		},
 		vertical: {
-			position: 'bottom',
+			position: 'top',
 			distance: 12,
 			gap: 10
 		}
@@ -61,6 +65,10 @@ const customNotifierOptions: NotifierOptions = {
     CaculaCambioComponent,
     LoginComponent,
     RegistrateComponent,
+    UsusariosCrudComponent,
+    ClienteComponent,
+    ReportesComponent,
+    OperacionesComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'
+import { Router } from '@angular/router';
+import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
+import { UsuariosService } from '../rest/usuarios.service';
+import { ReCaptchaV3Service } from "ng-recaptcha";
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { ConfirmPasswordValidator } from '../utils/confirmed.validator';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-registrate',
@@ -7,18 +14,62 @@ import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,Rea
   styleUrls: ['./registrate.component.sass']
 })
 export class RegistrateComponent {
-  hide: boolean= true
-  loginForm: FormGroup;
+  hide1: boolean = true
+  hide2: boolean = true
+  estaCargando: boolean = false
+  registraForm: FormGroup;
+
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private restUsuarios: UsuariosService,
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private notif: NotifierService,
+    private router: Router
     ){
-      this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required]
+      this.registraForm = this.formBuilder.group({
+        nombres: ['', Validators.required],
+        apPaterno: ['', Validators.required],
+        apMaterno: ['', Validators.required],
+        correo: ['ramiro.ochoa.apaza@gmail.com', [Validators.required, Validators.email]],
+        password: ['AmanteDeLacomida', [Validators.required, Validators.minLength(8),
+        Validators.maxLength(30)]],
+        rePassword: ['AmanteDeLaComida', [Validators.required, Validators.minLength(8),
+          Validators.maxLength(30)]],
       });
+      this.registraForm.addValidators(ConfirmPasswordValidator('password', 'rePassword'))
   }
 
-  executeAction(daat:string){
-
+  registra():void {
+    if(this.registraForm.valid){
+      this.estaCargando = true;
+      this.recaptchaV3Service.execute('registro')
+      .pipe(
+        catchError(error => {
+          this.estaCargando = false;
+          return of(error);
+        })
+      )
+      .subscribe(
+        token => {
+          if (token) {
+            let values = this.registraForm.value
+            values.token = token
+            this.restUsuarios.registraCliente(values).subscribe({
+              next: (response:any) => {
+                this.estaCargando = false;
+                this.notif.notify('success', 'Hemos enviado un link a su correo verifique por favor');
+                this.router.navigate(['/login']);
+              },
+              error: (error:any) => {
+                this.estaCargando = false;
+                this.notif.notify('error', error);
+              }
+            });
+          }
+        }
+      );
+    }else{
+      this.notif.notify('warning','Complete el formulario por favor');
+    }
   }
 }

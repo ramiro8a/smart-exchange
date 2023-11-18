@@ -1,7 +1,5 @@
 package com.qhatuna.exchange.app.rest.request;
 
-import com.qhatuna.exchange.domain.model.Rol;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

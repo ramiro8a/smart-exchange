@@ -11,6 +11,7 @@ public class ProviderException  extends RuntimeException {
     private HttpStatus status;
 
     public ProviderException(String mensaje, String codigo){
+        super(mensaje);
         this.codigo = codigo;
         this.mensaje = mensaje;
         this.mensajeTec = recuperaMensajeTec();
@@ -18,20 +19,23 @@ public class ProviderException  extends RuntimeException {
     }
 
     public ProviderException(String mensaje, String codigo, HttpStatus status){
+        super(mensaje);
         this.codigo = codigo;
         this.mensaje = mensaje;
         this.mensajeTec = recuperaMensajeTec();
         this.status = status;
     }
 
-    public ProviderException(String mensaje, String mensajeTec, String codigo){
+    public ProviderException(String mensajeTec, String mensaje, String codigo){
+        super(mensajeTec);
         this.codigo = codigo;
         this.mensaje = mensaje;
         this.mensajeTec = mensajeTec;
         this.status = HttpStatus.NOT_ACCEPTABLE;
     }
 
-    public ProviderException(String mensaje, String mensajeTec, String codigo, HttpStatus status){
+    public ProviderException(String mensajeTec, String mensaje, String codigo, HttpStatus status){
+        super(mensajeTec);
         this.codigo = codigo;
         this.mensaje = mensaje;
         this.mensajeTec = mensajeTec;

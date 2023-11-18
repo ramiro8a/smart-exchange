@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.1.0-01-inserta-t-usuario" author="ramiro.ochoa">
+        <comment>
+			Inserta tabla T_USUARIO
+		</comment>
+        <insert tableName="T_USUARIO">
+            <column name="EST_REG" value="0"/>
+            <column name="USUARIO" value="admin"/>
+            <column name="PASSWORD" value="$2a$10$T5z7OnTorZgJdA1MuLVVxeOqgtvem8H49qRRc.r171M09OJK7JVHu"/>
+            <column name="CORREO" value="admin@admin.com"/>
+            <column name="CORREO_VALIDADO" valueBoolean="false"/>
+            <column name="BLOQUEADO" valueBoolean="false"/>
+            <column name="INTENTOS_FALLIDOS" value="0"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_USUARIO">
+                <where>USUARIO='admin' AND CORREO='admin@admin.com'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-rol" author="ramiro.ochoa">
+        <comment>
+			Inserta rol CLIENTE
+		</comment>
+        <insert tableName="T_ROL">
+            <column name="NOMBRE" value="CLIENTE"/>
+            <column name="DESCRIPCION" value="Rol para uso exclusivo del cliente"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_ROL">
+                <where>NOMBRE='CLIENTE'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-rol" author="ramiro.ochoa">
+        <comment>
+			Inserta rol OPERADOR
+		</comment>
+        <insert tableName="T_ROL">
+            <column name="NOMBRE" value="OPERADOR"/>
+            <column name="DESCRIPCION" value="Rol para administrar los cambios solicitados por clientes"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_ROL">
+                <where>NOMBRE='OPERADOR'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+    <changeSet id="v0.1.0-04-inserta-t-rol" author="ramiro.ochoa">
+        <comment>
+			Inserta rol GERENTE
+		</comment>
+        <insert tableName="T_ROL">
+            <column name="NOMBRE" value="GERENTE"/>
+            <column name="DESCRIPCION" value="Rol para seguimiento de reportes a nivel gerencial"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_ROL">
+                <where>NOMBRE='GERENTE'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+    <changeSet id="v0.1.0-05-inserta-t-rol" author="ramiro.ochoa">
+        <comment>
+			Inserta rol ADMIN
+		</comment>
+        <insert tableName="T_ROL">
+            <column name="NOMBRE" value="ADMIN"/>
+            <column name="DESCRIPCION" value="Rol para administracion de usuarios"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_ROL">
+                <where>NOMBRE='ADMIN'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+    
+
+    <changeSet id="v0.1.0-06-inserta-t-usuario-rol" author="ramiro.ochoa">
+        <comment>
+			inserta T_USUARIO_ROL inicial
+		</comment>
+        <insert tableName="T_USUARIO_ROL">
+            <column name="USUARIO_ID" value="1"/>
+            <column name="ROL_ID" value="4"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

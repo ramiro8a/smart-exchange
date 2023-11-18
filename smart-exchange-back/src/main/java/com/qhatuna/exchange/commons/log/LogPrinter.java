@@ -21,6 +21,23 @@ public class LogPrinter<T> {
         log.info(Util.objectToString(apiRequestLog, true));
     }
 
+    public void write(Exception ex) {
+        ApiRequestLog apiLog = ApiRequestLog.builder()
+                .requestIdInternal(getRequestIdInternal())
+                .outDate(LocalDateTime.now())
+                .errorType(ex.getClass().getName())
+                .errorMessage(Util.getExceptionMsg(ex))
+                .build();
+        StackTraceElement[] stackTraceElements = ex.getStackTrace();
+        if (stackTraceElements.length > 0) {
+            StackTraceElement elemento = stackTraceElements[0];
+            apiLog.setErrorClass(elemento.getClassName());
+            apiLog.setMethod(elemento.getMethodName());
+            apiLog.setLine(String.valueOf(elemento.getLineNumber()));
+        }
+        log.error(Util.objectToString(apiLog, true));
+    }
+
     private String getRequestIdInternal() {
         return (String) requestHttp.getAttribute(ConstValues.REQUEST_ID_INTERNAL);
     }

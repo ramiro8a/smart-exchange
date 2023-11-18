@@ -49,4 +49,8 @@ public class ApiRequestLog {
     private Integer status;
 
     private String requestIdInternal;
+    private String errorType;
+    private String errorMessage;
+    private String errorClass;
+    private String line;
 }

@@ -26,12 +26,12 @@ public abstract class BaseModel {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
     @Column(name = "usuario_creacion")
-    private String usuarioCreacion;
+    private Long usuarioCreacion;
     @Column(name = "fecha_actualizacion")
     //@UpdateTimestamp
     private LocalDateTime fechaActualizacion;
     @Column(name = "usuario_actualizacion")
-    private String usuarioActualizacion;
+    private Long usuarioActualizacion;
     @Version
     private Integer version;
     @Column(name = "est_reg")
@@ -48,10 +48,16 @@ public abstract class BaseModel {
     }
 
     public String getCreacion(){
-        return concatenaUsuarioFecha(this.fechaCreacion, this.usuarioCreacion);
+        return concatenaUsuarioFecha(
+                this.fechaCreacion,
+                this.usuarioCreacion==null?"":this.usuarioCreacion.toString()
+        );
     }
     public String getActualiacion(){
-        return concatenaUsuarioFecha(this.fechaActualizacion, this.usuarioActualizacion);
+        return concatenaUsuarioFecha(
+                this.fechaActualizacion,
+                this.usuarioActualizacion==null?"":this.usuarioActualizacion.toString()
+        );
     }
 
     private String concatenaUsuarioFecha(LocalDateTime fecha, String usuario){

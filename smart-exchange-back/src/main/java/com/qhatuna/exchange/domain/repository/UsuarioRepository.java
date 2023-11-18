@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -16,5 +17,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existePorUsuario(String usuario);
 
     @Query("select case when count(u) > 0 then true else false end from Usuario u where upper(u.correo) = upper(?1) and u.estado != 1")
-    boolean existePorCorreo(String usuario);
+    boolean existePorCorreo(String correo);
+
+    @Query("select u from Usuario u where upper(u.usuario) = upper(?1) and u.estado != 1")
+    Optional<Usuario> buscaPorUsuario(String usuario);
 }

@@ -14,3 +14,22 @@ spring:
     hibernate:
       ddl-auto: none
       show-sql: true
+---
+jwt:
+  secret: secretsecretsecretsecretsecretsecretsecretsecret
+  expiration: 30
+  confirm:
+    expiration: 60
+---
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: artilugio.productions.tech@gmail.com
+    password: 'hhbg hxon pyuh gghp'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

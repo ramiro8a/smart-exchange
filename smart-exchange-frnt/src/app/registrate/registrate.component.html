@@ -4,42 +4,70 @@
     </mat-card-title>
     <mat-card-content class="">
         <h4 class="mat-primary">REGÍSTRATE PARA OBTENER LOS MEJORES CAMBIOS</h4> 
-        <form [formGroup]="loginForm" (ngSubmit)="executeAction('LOGIN')" autocomplete="off">
-            <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
+        <form [formGroup]="registraForm" (ngSubmit)="registra()" autocomplete="off">
+            <mat-form-field appearance="outline">
                 <mat-label>Nombres</mat-label>
-                <input matInput type="text" formControlName="username">
+                <input matInput type="text" formControlName="nombres">
             </mat-form-field>
-            <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
+            <mat-form-field appearance="outline">
                 <mat-label>Apellido paterno</mat-label>
-                <input matInput type="text" formControlName="username">
+                <input matInput type="text" formControlName="apPaterno">
             </mat-form-field>
-            <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
+            <mat-form-field appearance="outline">
                 <mat-label>Apellido materno</mat-label>
-                <input matInput type="text" formControlName="username">
+                <input matInput type="text" formControlName="apMaterno">
             </mat-form-field>
-            <mat-form-field appearance="outline"  matTooltip="Escriba su Cédula de identidad">
+            <mat-form-field appearance="outline">
                 <mat-label>Correo</mat-label>
-                <input matInput type="text" formControlName="username">
+                <input matInput type="text" formControlName="correo">
+                <mat-error *ngIf="registraForm.get('correo')?.hasError('required')">
+                    El correo es <strong>obligatorio</strong>
+                </mat-error>
+                <mat-error *ngIf="registraForm.get('correo')?.hasError('email')">
+                    Debe ser un correo <strong>válido</strong>
+                </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline"  matTooltip="Escriba su contraseña">
+            <mat-form-field appearance="outline">
                 <mat-label>Contraseña</mat-label>
-                <input matInput [type]="hide?'password':'text'" formControlName="password">
-                <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput [type]="hide1?'password':'text'" formControlName="password">
+                <mat-icon class="pointer" matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="registraForm.get('password')?.hasError('required')">
+                    El password es <strong>obligatorio</strong>
+                </mat-error>
+                <mat-error *ngIf="registraForm.get('password')?.hasError('minlength')">
+                    Mínimo <strong>8 caracteres</strong>
+                </mat-error>
+                <mat-error *ngIf="registraForm.get('password')?.hasError('maxlength')">
+                    Máximo <strong>30 caracteres</strong>
+                </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline"  matTooltip="Escriba su contraseña">
+            <mat-form-field appearance="outline">
                 <mat-label>Confirmar contraseña</mat-label>
-                <input matInput [type]="hide?'password':'text'" formControlName="password">
-                <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput [type]="hide2?'password':'text'" formControlName="rePassword">
+                <mat-icon class="pointer" matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="registraForm.get('rePassword')?.hasError('required')">
+                    El password es <strong>obligatorio</strong>
+                </mat-error>
+                <mat-error *ngIf="registraForm.get('rePassword')?.hasError('minlength')">
+                    Mínimo <strong>8 caracteres</strong>
+                </mat-error>
+                <mat-error *ngIf="registraForm.get('rePassword')?.hasError('maxlength')">
+                    Máximo <strong>30 caracteres</strong>
+                </mat-error>
+                 <mat-error *ngIf="registraForm.get('rePassword')?.hasError('confirmPasswordValidator')">
+                    Los passwords <strong>deben ser iguales</strong>
+                </mat-error>
             </mat-form-field>
-            <button mat-fab extended color="primary">
+            <button mat-fab extended color="primary" [disabled]="estaCargando">
                 <mat-icon>article</mat-icon>
                 Registrar
             </button>&nbsp;
-            <button type="button" routerLink="/login" mat-fab extended color="accent">
+            <button type="button" routerLink="/login" mat-fab extended color="accent" [disabled]="estaCargando">
                 <mat-icon>block</mat-icon>
                 Cancelar
             </button>
-        </form>
+        </form><br>
     </mat-card-content>
+    <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
 </mat-card>
   

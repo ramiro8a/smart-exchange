@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 86400)
 @RestController
 @RequestMapping(path = "/api/usuario")
-@Tag(name = "Constantes", description = "Este controlador expone las constantes definidas del sistema")
+@Tag(name = "Usuarios", description = "Este controlador expone los servicio de usuario")
 @Validated
 public class UsuarioController {
     @Autowired
