@@ -7,10 +7,15 @@ html, body
     width: 100% */
 body
     margin: 0
-    background-image: url('./assets/img/fondo.jpg')
+    background: rgb(2,0,36)
+    background: -moz-linear-gradient(11deg, rgba(2,0,36,1) 0%, rgba(29,178,144,1) 0%, rgba(0,212,255,0.17130602240896353) 50%)
+    background: -webkit-linear-gradient(11deg, rgba(2,0,36,1) 0%, rgba(29,178,144,1) 0%, rgba(0,212,255,0.17130602240896353) 50%)
+    background: linear-gradient(11deg, rgba(2,0,36,1) 0%, rgba(29,178,144,1) 0%, rgba(0,212,255,0.17130602240896353) 50%)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1)
+/*     background-image: url('./assets/img/fondo.jpg')
     background-size: cover
     background-position: center
-    background-repeat: no-repeat
+    background-repeat: no-repeat */
     
 .mat-primary
     text-align: center
@@ -20,14 +25,37 @@ body
     text-align: center
 .trabajo
     background: rgba(255, 255, 255, 0.7) !important
-.card-log, .card-reg
+.promocion-contenido
+    background: rgb(32,181,152)
+    background: -moz-linear-gradient(63deg, rgba(32,181,152,1) 0%, rgba(6,162,201,1) 43%, rgba(1,157,214,1) 100%)
+    background: -webkit-linear-gradient(63deg, rgba(32,181,152,1) 0%, rgba(6,162,201,1) 43%, rgba(1,157,214,1) 100%)
+    background: linear-gradient(63deg, rgba(32,181,152,1) 0%, rgba(6,162,201,1) 43%, rgba(1,157,214,1) 100%)
+.card-reg
+    background: #fff
+    box-shadow: -8px 4px 17px -8px rgba(0,0,0,0.75)
+    -webkit-box-shadow: -8px 4px 17px -8px rgba(0,0,0,0.75)
+    -moz-box-shadow: -8px 4px 17px -8px rgba(0,0,0,0.75)
+    padding: 20px
+    box-sizing: border-box
+.card-reg, .promocion-contenido
+    width: 50%
+    height: 100%
+    margin: auto
+    float: left
+.card-log
     width: 40%
     margin: auto
+.matcard, .card-log
     background: rgba(255, 255, 255, 0.7) !important
+.matcard
+    width: 90%
+    margin: auto
 .card-log form mat-form-field
     width: 100%
 .card-reg form mat-form-field
     width: 49%
+    padding: 2px
+mat-form-field
     padding: 2px
 .card-log form, .card-reg form
     text-align: center
@@ -40,6 +68,10 @@ body
 .trabajo
     width: 80%
     margin: auto
+.close-component
+  position: absolute
+  right: 1em
+  cursor: pointer
 
 // .grecaptcha-badge
 //     width: 70px !important
@@ -48,3 +80,6 @@ body
 //     left: 4px !important
 // .grecaptcha-badge:hover
 //     width: 256px !important
+.mat-mdc-fab.mat-primary, .mat-mdc-mini-fab.mat-primary
+    --mdc-fab-icon-color: #ffffff
+    --mat-mdc-fab-color: #ffffff

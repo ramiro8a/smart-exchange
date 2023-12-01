@@ -28,5 +28,7 @@
         <mat-icon>pan_tool</mat-icon> Olvidé mi contraseña
         </button>
     </mat-card-content>
-    <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
 </mat-card>

@@ -1,8 +1,12 @@
-<mat-card class="card-reg">
-    <mat-card-title class="logo-log-reg">
+<div class="promocion-contenido">
+        <mat-icon fontIcon="devices"></mat-icon>
+        <mat-icon fontIcon="currency_exchange"></mat-icon>
+</div>
+<div class="card-reg">
+    <div class="logo-log-reg">
         <img src='assets/img/logo.png' alt="">
-    </mat-card-title>
-    <mat-card-content class="">
+    </div>
+    <div class="">
         <h4 class="mat-primary">REGÍSTRATE PARA OBTENER LOS MEJORES CAMBIOS</h4> 
         <form [formGroup]="registraForm" (ngSubmit)="registra()" autocomplete="off">
             <mat-form-field appearance="outline">
@@ -66,8 +70,8 @@
                 <mat-icon>block</mat-icon>
                 Cancelar
             </button>
-        </form><br>
-    </mat-card-content>
+        </form>
+    </div>
     <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
-</mat-card>
+</div>
   

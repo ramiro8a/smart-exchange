@@ -1,1 +1,75 @@
-ADMINISTRADOR DE USUARIOS
+<mat-card class="matcard">
+    <mat-card-header>
+        <mat-card-subtitle>Administrador de</mat-card-subtitle>
+        <mat-card-title>Usuarios</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <button (click)="abreFormulario()" mat-fab matTooltip="Agrega un nuevo usuario" color="primary">
+            <mat-icon>person_add</mat-icon>
+        </button>
+        <mat-divider></mat-divider>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="creacion">
+              <th mat-header-cell *matHeaderCellDef> Creación </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.creacion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="actualizacion">
+              <th mat-header-cell *matHeaderCellDef> Actualización </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.actualizacion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="usuario">
+              <th mat-header-cell *matHeaderCellDef> Usuario </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.usuario}} </td>
+            </ng-container>
+            <ng-container matColumnDef="correo">
+              <th mat-header-cell *matHeaderCellDef> Correo </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.correo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="bloqueado">
+              <th mat-header-cell *matHeaderCellDef> Bloqueado </th>
+              <td mat-cell *matCellDef="let usuario">
+                <mat-slide-toggle [(ngModel)]="usuario.bloqueado">{{usuario.bloqueado?'SI':'NO'}}</mat-slide-toggle>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="inicio">
+              <th mat-header-cell *matHeaderCellDef> Desde </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.inicio | date: 'dd/MM/yyyy HH:MM'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fin">
+              <th mat-header-cell *matHeaderCellDef> Hasta </th>
+              <td mat-cell *matCellDef="let usuario"> {{usuario.fin | date: 'dd/MM/yyyy HH:MM'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="roles">
+              <th mat-header-cell *matHeaderCellDef> Roles </th>
+              <td mat-cell *matCellDef="let usuario">
+                <mat-chip-set
+                  cdkDropList 
+                  cdkDropListOrientation="horizontal">
+                  <mat-chip
+                    cdkDrag
+                    *ngFor="let rol of usuario.roles">
+                    {{rol.nombre}}
+                  </mat-chip>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let usuario">
+                <button (click)="editar(usuario)" mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button (click)="cambioPassword(usuario)" mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
+  

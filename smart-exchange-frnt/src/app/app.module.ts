@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core'
+import {MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 
 import { MaterialModule } from './material.modules';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -17,6 +19,7 @@ import { UsusariosCrudComponent } from './ususarios-crud/ususarios-crud.componen
 import { ClienteComponent } from './cliente/cliente.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { OperacionesComponent } from './operaciones/operaciones.component';
+import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -69,6 +72,7 @@ const customNotifierOptions: NotifierOptions = {
     ClienteComponent,
     ReportesComponent,
     OperacionesComponent,
+    UsuariosFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +89,13 @@ const customNotifierOptions: NotifierOptions = {
     provide: RECAPTCHA_V3_SITE_KEY,
      useValue: "6Le4mg0pAAAAAM6m6mKlFc4Tcrlw_1rI4kSl0SM8"
     },
+    {provide: MAT_DATE_LOCALE, useValue: 'es-bo'},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     {
       provide: RECAPTCHA_LANGUAGE,
       useValue: "es",
