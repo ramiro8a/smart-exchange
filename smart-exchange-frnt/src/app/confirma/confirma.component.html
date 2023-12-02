@@ -1,0 +1,22 @@
+<mat-card class="confirma-component">
+    <mat-card-header>
+        <mat-card-subtitle>
+            <div class="logo-log-reg">
+                <img src='assets/img/logo.png' alt="">
+            </div>
+          </mat-card-subtitle>
+      <mat-card-title *ngIf="estaCargando">Confirmando, espere por favor...</mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngIf="!estaCargando">
+      <p>
+        Estimado cliente su correo ha sido verificado, lo invitamos a iniciar sesión y beneficiarse de los mejores beneficios.
+      </p>
+    </mat-card-content>
+    <mat-card-actions *ngIf="!estaCargando">
+        <button mat-raised-button color="primary" routerLink="/login">Iniciar sesión</button>
+        <button (click)="cierra()" mat-raised-button color="accent">No por ahora</button>
+    </mat-card-actions>
+    <mat-card-footer>
+        <mat-progress-bar  *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>

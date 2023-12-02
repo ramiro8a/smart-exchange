@@ -6,15 +6,20 @@ import { UsusariosCrudComponent } from './ususarios-crud/ususarios-crud.componen
 import { ReportesComponent } from './reportes/reportes.component'; 
 import { OperacionesComponent } from './operaciones/operaciones.component';
 import { ClienteComponent } from './cliente/cliente.component'; 
+import { PrincipalComponent } from './principal/principal.component';
+import { ConfirmaComponent } from './confirma/confirma.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent },
   {path: 'login', component: LoginComponent },
   {path: 'registro', component: RegistrateComponent },
   {path: 'admin', component: UsusariosCrudComponent },
   {path: 'reportes', component: ReportesComponent },
   {path: 'operaciones', component: OperacionesComponent },
-  {path: 'cliente', component: ClienteComponent },
+  {path: 'confirma/:token', component: ConfirmaComponent },
+  {path: '', component: PrincipalComponent, children: [
+    {path: 'cliente', component: ClienteComponent },
+  ]
+  },
 ];
 
 @NgModule({

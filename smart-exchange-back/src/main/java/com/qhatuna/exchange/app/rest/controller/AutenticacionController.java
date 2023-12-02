@@ -39,9 +39,10 @@ public class AutenticacionController {
         return new ResponseEntity<>(usuarioService.registraCliente(request), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/confirma/{token}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/confirmer/{token}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> confirmaCliente(@PathVariable String token) {
+        System.out.println("token = " + token);
         usuarioService.confirmaUsuario(token);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

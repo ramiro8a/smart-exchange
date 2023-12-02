@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record RegistroRequest(
-        @NotBlank
+/*        @NotBlank
         String nombres,
         @NotBlank
         String apPaterno,
-        String apMaterno,
+        String apMaterno,*/
         @NotBlank
         @Email
         String correo,

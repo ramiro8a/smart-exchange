@@ -14,16 +14,12 @@ import com.qhatuna.exchange.domain.repository.RolRepository;
 import com.qhatuna.exchange.domain.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -44,7 +40,7 @@ public class UsuarioService {
         correoService.sendSimpleMessage(
                 request.correo(),
                 ConstValues.ASUNTO_VERIFICA,
-                String.format(ConstValues.CUERPO_VERIFICA, request.nombres(),recuperaLinkConfirm(tokenConfirma), "AQUI")
+                String.format(ConstValues.CUERPO_VERIFICA,recuperaLinkConfirm(tokenConfirma), "AQUI")
         );
         if(rol.isEmpty()) throw new ProviderException(ErrorMsj.NO_HAY_ROL.getMsj(), ErrorMsj.NO_HAY_ROL.getCod());
         Usuario usuario = Usuario.builder()
@@ -79,12 +75,30 @@ public class UsuarioService {
             );
         }
     }
-    public UsuarioResponse crea(UsuarioRequest request){
-        return null;
+    public UsuarioResponse crea(UsuarioRequest request) {
+        Usuario usuario = Usuario.builder()
+                .estado(request.estado())
+                .usuario(request.usuario())
+                .correo(request.correo())
+                .bloqueado(request.bloqueado())
+                .inicio(request.inicio())
+                .fin(request.fin())
+                .password(passwordEncoder.encode(request.password().trim()))
+                .build();
+        List<Rol> roles = rolRepository.findAllById(request.roles());
+        usuario.setRoles(Set.copyOf(roles));
+        return Usuario.aResponse(usuarioRepository.save(usuario));
     }
 
+
     public List<UsuarioResponse> recuperaTodo(){
-        return Collections.emptyList();
+        List<Usuario> usuarios = usuarioRepository.recuperaTodo();
+        List<UsuarioResponse> response = new ArrayList<>();
+        usuarios.forEach(item->{
+            if(!item.esCliente())
+                response.add(Usuario.aResponse(item));
+        });
+        return response;
     }
 
     public void elimina(Long id){
@@ -101,7 +115,7 @@ public class UsuarioService {
 
     private String recuperaLinkConfirm (String token){
         return ServletUriComponentsBuilder.fromRequestUri(servletRequest).replacePath(null).build().toUriString()
-                +"/auth/confirma/"+token;
+                +"/confirma/"+token;
     }
 
 }

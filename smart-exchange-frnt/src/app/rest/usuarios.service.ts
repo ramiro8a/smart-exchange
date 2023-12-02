@@ -42,6 +42,13 @@ export class UsuariosService {
     )
   }
 
+  confirmaCorreo(token: string): Observable<any> {
+    console.warn(`${environment.baseUrl}${this.authPath}/confirmer/${token}`)
+    return this.http.get<any>(`${environment.baseUrl}${this.authPath}/confirmer/${token}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   errorHandler(error:any) {
     console.warn(error)
     let errorMensaje = '';

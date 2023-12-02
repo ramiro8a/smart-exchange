@@ -20,6 +20,9 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { OperacionesComponent } from './operaciones/operaciones.component';
 import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
+import { PrincipalComponent } from './principal/principal.component';
+import { ConfirmacionComponent } from './ui-utils/confirmacion/confirmacion.component';
+import { ConfirmaComponent } from './confirma/confirma.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -73,6 +76,9 @@ const customNotifierOptions: NotifierOptions = {
     ReportesComponent,
     OperacionesComponent,
     UsuariosFormComponent,
+    PrincipalComponent,
+    ConfirmacionComponent,
+    ConfirmaComponent,
   ],
   imports: [
     BrowserModule,

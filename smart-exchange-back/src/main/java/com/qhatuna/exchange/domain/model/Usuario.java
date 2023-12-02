@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuperBuilder
 @Getter
@@ -38,6 +39,15 @@ public class Usuario extends BaseModel{
     public void prePersistEntity(){
         if(this.inicio==null)
             this.fin = null;
+    }
+
+    public boolean esCliente(){
+        AtomicBoolean resul = new AtomicBoolean(false);
+        this.getRoles().forEach(item->{
+            if(item.getNombre().equalsIgnoreCase("CLIENTE"))
+                resul.set(true);
+        });
+        return resul.get();
     }
 
     public static UsuarioResponse aResponse(Usuario usuario){

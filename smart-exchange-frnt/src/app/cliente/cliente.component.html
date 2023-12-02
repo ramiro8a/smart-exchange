@@ -1,8 +1,37 @@
-<mat-card class="trabajo">
-    <mat-card-content class="">
-        LISTO PARA HACER SU PRIMER CAMBIO
-        <div class="app-cacula-cambio">
-            <app-cacula-cambio class="app-cacula-cambio"></app-cacula-cambio>
+<br>
+<div class="contenido-general">
+    <form action="">
+        <div class="compra-venta accent-background">
+            <div class="compra">Dólar compra: 3.7180</div>
+            <div class="venta">Dólar venta: 3.7450</div>
         </div>
-    </mat-card-content>
-</mat-card>
+        <br>
+        <div class="envio-recibo">
+            <div class="envio">
+                <div>Envío Soles</div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Envío</mat-label>
+                    <input type="tel" matInput>
+                    <img src='assets/img/peru.png' matSuffix>
+                </mat-form-field>
+            </div>
+            <button mat-fab color="primary" class="cambio" type="button">
+                <mat-icon>swap_horiz</mat-icon>
+            </button>
+            <div class="recibo">
+                <div>Envío Dólares</div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Recibo</mat-label>
+                    <input type="tel" matInput>
+                    <img src='assets/img/usa.png' matSuffix>
+                </mat-form-field>
+            </div>
+        </div>
+        <small class="extra accent-color">Ganas 0.234 más que en el banco</small><br>
+        
+        <button mat-fab extended color="primary">
+            INICIAR OPERACIÓN
+        </button>
+    </form>
+
+</div>

@@ -1,0 +1,32 @@
+<mat-toolbar>
+    <span class="toolbar-section left">
+        <div class="logo-principal">
+            <img src='assets/img/logo.png' alt="">
+        </div>
+    </span>
+    <span class="toolbar-section center">
+        <button mat-button color="primary" class="elemento menu-texto"><b>Nueva operación</b></button>
+        <button mat-button color="primary" class="elemento menu-texto"><b>Mis operaciones</b></button>
+        <button mat-button color="primary" class="elemento menu-texto"><b>Cuentas bancarias</b></button>
+    </span>
+    <span class="toolbar-section right">
+        <small class="accent-color"><b>correo@gmail.com</b> </small>
+        <!-- <button mat-mini-fab color="primary"  class="elemento">
+            <mat-icon matBadge="15" matBadgeColor="warn">account_circle</mat-icon>
+        </button> -->
+        <button mat-mini-fab color="primary"  class="elemento" [matMenuTriggerFor]="menu">
+            <mat-icon matBadge="15" matBadgeColor="warn">account_circle</mat-icon>
+        </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>person</mat-icon>
+              <span>Actualizar mis datos</span>
+            </button>
+            <button mat-menu-item routerLink="/login">
+              <mat-icon>logout</mat-icon>
+              <span>Cerrar sesión</span>
+            </button>
+          </mat-menu>
+    </span>
+</mat-toolbar>
+ <router-outlet></router-outlet>
