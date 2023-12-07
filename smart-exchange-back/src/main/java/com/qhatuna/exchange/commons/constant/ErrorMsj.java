@@ -14,6 +14,7 @@ public enum ErrorMsj {
     USUARIO_VACIO("ERR-0008", "Usuario no encontrado"),
     CONFIRM_ERROR("ERR-0009", "Error al confirmar correo"),
     USUARIO_EXISTE("ERR-0010", "El usuario ya existe"),
+    DB_ERROR("ERR-0011", "Error en el proveedor de datos"),
     GENERIC("ERR-9999", "Error interno del servidor"),
     CORREO_EXISTE("ADV-0001", "El correo ya existe"),
     CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),

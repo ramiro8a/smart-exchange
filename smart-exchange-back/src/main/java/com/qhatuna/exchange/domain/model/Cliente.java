@@ -20,7 +20,7 @@ public class Cliente  extends BaseModel{
     @Column(name = "ap_materno")
     private String materno;
     @Column(name = "tipo_doc")
-    private String tipoDocumento;
+    private Integer tipoDocumento;
     @Column(name = "nro_doc")
     private String nroDocumento;
     private String telefono;

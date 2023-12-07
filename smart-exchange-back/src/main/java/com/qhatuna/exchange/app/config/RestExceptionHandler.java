@@ -4,6 +4,7 @@ import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.log.LogPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -35,6 +36,12 @@ public class RestExceptionHandler {
     protected ResponseEntity<Object> handleMethodProviderException(ProviderException ex) {
         logPrinter.write(ex);
         return buildResponseEntity(new ApiError(ex.getMensaje(),ex.getMensajeTec(), ex.getCodigo(), ex.getStatus()));
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    protected ResponseEntity<Object> handleMethodBadException(DataAccessException ex) {
+        logPrinter.write(ex);
+        return buildResponseEntity(new ApiError(ErrorMsj.DB_ERROR.getMsj(), ex.getMessage(), ErrorMsj.DB_ERROR.getCod(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(Exception.class)

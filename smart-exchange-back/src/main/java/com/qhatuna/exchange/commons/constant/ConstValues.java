@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConstValues {
-    public static final String AUTH_PATH = "/";
+    public static final String AUTH_PATH = "/auth";
     public static final String ASUNTO_VERIFICA = "Confirmación de correo LC-EXCHANGE";
     public static final String CUERPO_VERIFICA = """
                 Estimad@ cliente.<br>Para confirmar su cuenta en LC-EXCHANGE haga clic

@@ -27,25 +27,23 @@ public class SpringSecurityConfig {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-
-        return http
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authRequest ->
-                        authRequest
-                                //.requestMatchers(ConstValues.AUTH_PATH+"**").permitAll()
-                                .anyRequest().permitAll()
-                                //.anyRequest().authenticated()
+                .authorizeHttpRequests(authRequest -> authRequest
+                        .requestMatchers(ConstValues.AUTH_PATH + "/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(sessionManager->
-                        sessionManager
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                /*.exceptionHandling(exceptionHandling ->
-                        exceptionHandling.authenticationEntryPoint(unauthorizedHandler))*/
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
                 .authenticationProvider(authProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
+
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {

@@ -5,7 +5,7 @@ public record ClienteRequest(
         //String sNombre,
         String paterno,
         String materno,
-        String tipoDocumento,
+        Integer tipoDocumento,
         String nroDocumento,
         String telefono,
         String celular,

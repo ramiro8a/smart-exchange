@@ -22,4 +22,8 @@ public class SessionInfoService implements UserDetailsService {
         sessionInfo.setUsusario(usuario);
         return sessionInfo;
     }
+
+    public SessionInfo getSession(){
+    return null;
+    }
 }

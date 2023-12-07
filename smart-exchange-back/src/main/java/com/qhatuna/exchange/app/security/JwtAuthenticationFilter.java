@@ -30,33 +30,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        try {
-            final String token = getTokenFromRequest(request);
-            final String requestUri = request.getRequestURI();
-            String username;
-            if (token==null && requestUri.startsWith(ConstValues.AUTH_PATH)){
-                filterChain.doFilter(request, response);
+
+        final String token = getTokenFromRequest(request);
+        if(token!=null){
+            try {
+                String username = jwtProvider.getNombreUsuarioFromToken(token);
+                if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
+                    UserDetails userDetails=sessionInfoService.loadUserByUsername(username);
+
+                    if (jwtProvider.isTokenValid(token, userDetails)){
+                        UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+
+                }
+            }catch (JwtException ex){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(ex.getMessage());
                 return;
             }
-            username= jwtProvider.getNombreUsuarioFromToken(token);
-
-            if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-                UserDetails userDetails=sessionInfoService.loadUserByUsername(username);
-
-                if (jwtProvider.isTokenValid(token, userDetails)){
-                    UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-
-            }
-        }catch (JwtException ex){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(ex.getMessage());
-            return;
         }
         filterChain.doFilter(request, response);
     }
