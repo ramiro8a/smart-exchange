@@ -1,0 +1,64 @@
+<mat-card class="datos-personales-card">
+    <mat-card-header>
+        <span class="cierra-componente accent-color">
+            <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
+        </span>
+      <mat-card-subtitle>Por favor ingresa tus</mat-card-subtitle>
+      <mat-card-title>Datos personales</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="personalForm" (ngSubmit)="registra()" autocomplete="off">
+        <mat-card-content>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo documento</mat-label>
+                <mat-select formControlName="tipoDocumento">
+                  <mat-option *ngFor="let item of tipoDocumentos" [value]="item.codigo">
+                    {{item.nombre}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Número documento</mat-label>
+                <input matInput type="text" formControlName="nroDocumento">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>{{esPersona()?'Nombres':'Razón social'}}</mat-label>
+                <input matInput type="text" formControlName="nombres">
+            </mat-form-field>
+<!--             <mat-form-field appearance="outline">
+                <mat-label>Segundo nombre</mat-label>
+                <input matInput type="text" formControlName="sNombre">
+            </mat-form-field> -->
+            <mat-form-field appearance="outline" *ngIf="esPersona()">
+                <mat-label>Apellido paterno</mat-label>
+                <input matInput type="text" formControlName="paterno">
+            </mat-form-field>
+            <mat-form-field appearance="outline" *ngIf="esPersona()">
+                <mat-label>Apellido materno</mat-label>
+                <input matInput type="text" formControlName="materno">
+            </mat-form-field>
+<!--             <mat-form-field appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input matInput type="text" formControlName="telefono">
+            </mat-form-field> -->
+            <mat-form-field appearance="outline">
+                <mat-label>Celular</mat-label>
+                <input matInput type="text" formControlName="celular">
+            </mat-form-field>
+            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Change a almacenar mis datos personales</mat-slide-toggle>
+        </mat-card-content>
+        <mat-card-actions>
+        <button mat-fab extended color="primary" [disabled]="estaCargando">
+            <mat-icon>check</mat-icon>
+            Registrar
+        </button>&nbsp;
+        <button type="reset" mat-fab extended color="accent" [disabled]="estaCargando">
+            <mat-icon>block</mat-icon>
+            Cancelar
+        </button>
+        </mat-card-actions>
+    </form>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+  

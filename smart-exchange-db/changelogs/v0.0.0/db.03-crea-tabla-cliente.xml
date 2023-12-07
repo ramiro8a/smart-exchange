@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="v0.0.0-03-crea-t-cliente" author="ramiro.ochoa">
+        <comment>
+			Create table T_CLIENTE
+		</comment>
+        <createTable tableName="T_CLIENTE">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FECHA_CREACION" type="TIMESTAMP"/>
+            <column name="FECHA_ACTUALIZACION" type="TIMESTAMP"/>
+            <column name="USUARIO_CREACION" type="BIGINT"/>
+            <column name="USUARIO_ACTUALIZACION" type="BIGINT"/>
+            <column name="VERSION" type="INTEGER" defaultValue="0"/>
+            <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
+            
+            <column name="NOMBRES" type="VARCHAR(250)" remarks="Primer nombre o Razon social"/>
+            <!-- <column name="SG_NOMBRE" type="VARCHAR(100)" remarks="Segundo nombre"/> -->
+            <column name="AP_PATERNO" type="VARCHAR(100)" remarks="Apellido paterno"/>
+            <column name="AP_MATERNO" type="VARCHAR(100)" remarks="Apellido materno"/>
+            <column name="TIPO_COD" type="INTEGER" remarks="1:DNI,2:RUC,3:Carnet extranjero,4:pasaporte"/>
+            <column name="NRO_DOC" type="VARCHAR(100)" remarks="Numero de documento de identidad"/>
+            <column name="TELEFONO" type="VARCHAR(20)" remarks="Telefono"/>
+            <column name="CELULAR" type="VARCHAR(20)" remarks="Celular"/>
+            <column name="DNI_ANVERSO" type="VARCHAR(250)" remarks="Foto del DNI anverso"/>
+            <column name="DNI_REVERSO" type="VARCHAR(250)" remarks="Foto del DNI reverso"/>
+            <column name="USUARIO_ID" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_cliente_usuario"
+            baseTableName="T_CLIENTE"
+            baseColumnNames="USUARIO_ID"
+            referencedTableName="T_USUARIO"
+            referencedColumnNames="ID"/>
+        <rollback>
+            <dropTable tableName="T_CLIENTE"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

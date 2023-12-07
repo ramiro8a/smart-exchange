@@ -58,9 +58,7 @@ export class UsusariosCrudComponent implements OnInit{
   recuperaUsuarios():void{
     this.restUsuarios.recuperaUsuarios().subscribe({
       next: (response:any) => {
-        console.log(response)
         this.dataSource = response as UsuarioResponse[]
-        console.log(this.dataSource)
       },
       error: (error:any) => {
       }

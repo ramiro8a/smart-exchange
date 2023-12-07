@@ -1,7 +1,10 @@
 package com.qhatuna.exchange.app.rest.controller;
 
+import com.qhatuna.exchange.app.rest.request.ClienteRequest;
 import com.qhatuna.exchange.app.rest.request.UsuarioRequest;
+import com.qhatuna.exchange.app.rest.response.ClienteResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
+import com.qhatuna.exchange.domain.service.ClienteService;
 import com.qhatuna.exchange.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +28,8 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioService service;
+    @Autowired
+    private ClienteService clienteService;
 
     @PostMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<UsuarioResponse> creaUsuario(
@@ -63,5 +68,12 @@ public class UsuarioController {
             @Valid @RequestBody String request) {
         service.actualizaPassword(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/cliente", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ClienteResponse> creaCliente(
+            @Parameter(description = "Datos de tipo cambio a crear", required = true, content = @Content(schema = @Schema(implementation = ClienteRequest.class)))
+            @Valid @NotNull @RequestBody ClienteRequest request) {
+        return new ResponseEntity<>(clienteService.crea(request), HttpStatus.CREATED);
     }
 }

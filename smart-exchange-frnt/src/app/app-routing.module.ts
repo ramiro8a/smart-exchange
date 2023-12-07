@@ -8,16 +8,19 @@ import { OperacionesComponent } from './operaciones/operaciones.component';
 import { ClienteComponent } from './cliente/cliente.component'; 
 import { PrincipalComponent } from './principal/principal.component';
 import { ConfirmaComponent } from './confirma/confirma.component';
+import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
   {path: 'registro', component: RegistrateComponent },
-  {path: 'admin', component: UsusariosCrudComponent },
   {path: 'reportes', component: ReportesComponent },
-  {path: 'operaciones', component: OperacionesComponent },
   {path: 'confirma/:token', component: ConfirmaComponent },
   {path: '', component: PrincipalComponent, children: [
     {path: 'cliente', component: ClienteComponent },
+    {path: 'operaciones', component: OperacionesComponent, children: [
+      {path: 'tipo-cambio', component: TipoCambioComponent },
+    ]},
+    {path: 'admin', component: UsusariosCrudComponent },
   ]
   },
 ];

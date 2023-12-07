@@ -15,4 +15,11 @@ export function ConfirmPasswordValidator(controlName: string, matchingControlNam
       return error;
     };
   }
+
+export function ImporteValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const isValid = /^\d+(\.\d{0,4})?$/.test(control.value);
+    return isValid ? null : { invalidDecimal: true };
+  };
+}
   

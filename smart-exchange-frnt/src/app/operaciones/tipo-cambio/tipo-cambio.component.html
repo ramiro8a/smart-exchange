@@ -1,0 +1,65 @@
+<br>
+<div class="contenido-general">
+    <div class="tcForm">
+        <form [formGroup]="tcForm" (ngSubmit)="registra()" autocomplete="off">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha día/mes/año</mat-label>
+                <input formControlName="fecha"  matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Moneda</mat-label>
+                <mat-select formControlName="moneda">
+                  <mat-option *ngFor="let moneda of monedas" [value]="moneda.codigo">
+                    {{ moneda.nombre }}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Compra</mat-label>
+                <input matInput type="text" formControlName="compra">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Venta</mat-label>
+                <input matInput type="text" formControlName="venta">
+            </mat-form-field><br>
+            <!-- <mat-slide-toggle formControlName="porDefecto" color="primary">Empezar a utilizar</mat-slide-toggle> -->
+            <button mat-fab extended color="primary" [disabled]="estaCargando">
+              <mat-icon>check</mat-icon>
+                Registrar
+            </button>&nbsp;
+            <button type="reset" mat-fab extended color="accent" [disabled]="estaCargando">
+                <mat-icon>block</mat-icon>
+                Cancelar
+            </button><br>
+            </form>
+            <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="tcTable">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef> Fecha </th>
+              <td mat-cell *matCellDef="let item"> {{item.fecha}} </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let item"> {{item.estado==0?'Activo':'Deshabilitado'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="moneda">
+              <th mat-header-cell *matHeaderCellDef> Moneda </th>
+              <td mat-cell *matCellDef="let item"> {{recuperaNombre(item.moneda)}} </td>
+            </ng-container>
+            <ng-container matColumnDef="compra">
+              <th mat-header-cell *matHeaderCellDef> Compra </th>
+              <td mat-cell *matCellDef="let item"> {{item.compra}} </td>
+            </ng-container>
+            <ng-container matColumnDef="venta">
+              <th mat-header-cell *matHeaderCellDef> Venta </th>
+              <td mat-cell *matCellDef="let item">{{item.venta}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </div>    
+</div>

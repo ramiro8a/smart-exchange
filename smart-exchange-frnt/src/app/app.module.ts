@@ -23,6 +23,8 @@ import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { ConfirmacionComponent } from './ui-utils/confirmacion/confirmacion.component';
 import { ConfirmaComponent } from './confirma/confirma.component';
+import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
+import { DatosPersonalesComponent } from './cliente/datos-personales/datos-personales.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -79,6 +81,8 @@ const customNotifierOptions: NotifierOptions = {
     PrincipalComponent,
     ConfirmacionComponent,
     ConfirmaComponent,
+    TipoCambioComponent,
+    DatosPersonalesComponent,
   ],
   imports: [
     BrowserModule,

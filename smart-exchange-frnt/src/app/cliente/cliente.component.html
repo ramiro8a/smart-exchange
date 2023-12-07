@@ -1,29 +1,29 @@
 <br>
 <div class="contenido-general">
     <form action="">
-        <div class="compra-venta accent-background">
-            <div class="compra">Dólar compra: 3.7180</div>
-            <div class="venta">Dólar venta: 3.7450</div>
+        <div class="compra-venta" [ngClass]="tipoCambio?'accent-background':'warn-background'">
+            <div class="compra">Dólar compra: {{tipoCambio?.compra}}</div>
+            <div class="venta">Dólar venta: {{tipoCambio?.venta}}</div>
         </div>
         <br>
         <div class="envio-recibo">
             <div class="envio">
-                <div>Envío Soles</div>
+                <div>{{envio.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Envío</mat-label>
                     <input type="tel" matInput>
-                    <img src='assets/img/peru.png' matSuffix>
+                    <img [src]='envio.img' matSuffix>
                 </mat-form-field>
             </div>
-            <button mat-fab color="primary" class="cambio" type="button">
+            <button (click)="cambiaMoneda()" mat-fab color="primary" class="cambio" type="button">
                 <mat-icon>swap_horiz</mat-icon>
             </button>
             <div class="recibo">
-                <div>Envío Dólares</div>
+                <div>{{recibo.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Recibo</mat-label>
                     <input type="tel" matInput>
-                    <img src='assets/img/usa.png' matSuffix>
+                    <img [src]='recibo.img' matSuffix>
                 </mat-form-field>
             </div>
         </div>

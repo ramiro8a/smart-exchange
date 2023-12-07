@@ -13,10 +13,11 @@ public enum ErrorMsj {
     ENVIO_EMAIL("ERR-0007", "Error al enviar email, favor intente más tarde"),
     USUARIO_VACIO("ERR-0008", "Usuario no encontrado"),
     CONFIRM_ERROR("ERR-0009", "Error al confirmar correo"),
-    CORREO_EXISTE("ADV-0010", "El correo ya existe"),
-    USUARIO_EXISTE("ERR-0011", "El usuario ya existe"),
-    CORREO_NO_VALIDO("ADV-0012", "Su correo no fue confirmado"),
-    GENERIC("ERR-9999", "Error interno del servidor");
+    USUARIO_EXISTE("ERR-0010", "El usuario ya existe"),
+    GENERIC("ERR-9999", "Error interno del servidor"),
+    CORREO_EXISTE("ADV-0001", "El correo ya existe"),
+    CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),
+    TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado");
     final String cod;
     final String msj;
     final String msjTec;

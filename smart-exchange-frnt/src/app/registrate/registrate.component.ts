@@ -5,7 +5,7 @@ import { UsuariosService } from '../rest/usuarios.service';
 import { ReCaptchaV3Service } from "ng-recaptcha";
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { ConfirmPasswordValidator } from '../utils/confirmed.validator';
+import { ConfirmPasswordValidator } from '../utils/validators.validator';
 import { NotifierService } from 'angular-notifier';
 
 @Component({
