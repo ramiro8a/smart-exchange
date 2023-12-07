@@ -6,6 +6,7 @@ import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.domain.service.SessionInfoService;
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,8 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 userDetails.getAuthorities());
                         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }else {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
                     }
 
+                }else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
                 }
             }catch (JwtException ex){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
