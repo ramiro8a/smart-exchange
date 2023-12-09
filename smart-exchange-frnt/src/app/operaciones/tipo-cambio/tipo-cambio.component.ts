@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { TipoCambioService } from 'src/app/rest/tipo-cambio.service';
 import * as Const from 'src/app/utils/constants.service'
@@ -40,6 +40,7 @@ export class TipoCambioComponent implements OnInit{
         porDefecto: [true, Validators.required]
       }); 
     }
+    
   ngOnInit(): void {
     this.recuperaTC();
   }

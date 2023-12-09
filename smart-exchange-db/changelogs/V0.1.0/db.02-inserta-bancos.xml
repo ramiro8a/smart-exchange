@@ -16,7 +16,7 @@
         <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
         <column name="VERSION" valueNumeric="0"/>
         <column name="EST_REG" valueNumeric="0"/>
-        <column name="NOMBRE" value="BGP"/>
+        <column name="NOMBRE" value="BCP"/>
         <column name="LOGO" value="bcp.png"/>
     </insert>
     </changeSet>

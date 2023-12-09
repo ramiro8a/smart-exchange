@@ -11,14 +11,20 @@ export class BancosService {
   path:string = '/api/bancos'
   constructor(private http: HttpClient) { }
 
-  recuperaActivos(): Observable<any> {
+  recuperaCuentasBancarias(): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/cuenta-bancaria`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaBancosActivos(): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}`).pipe(
       catchError(this.errorHandler)
     )
   }
 
   creaCuentaBancaria(data: any): Observable<any> {
-    return this.http.post<any>(`${environment.baseUrl}${this.path}/cuentaBancaria`, data).pipe(
+    return this.http.post<any>(`${environment.baseUrl}${this.path}/crea-cuenta-bancaria`, data).pipe(
       catchError(this.errorHandler)
     )
   }

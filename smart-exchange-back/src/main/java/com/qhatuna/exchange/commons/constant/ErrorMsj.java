@@ -18,7 +18,8 @@ public enum ErrorMsj {
     GENERIC("ERR-9999", "Error interno del servidor"),
     CORREO_EXISTE("ADV-0001", "El correo ya existe"),
     CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),
-    TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado");
+    TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado"),
+    BANCO_NO_EXISTE("ADV-0004", "El banco no existe");
     final String cod;
     final String msj;
     final String msjTec;

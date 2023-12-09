@@ -65,7 +65,7 @@ export class LoginComponent {
                 } else if (this.tokenService.esOperador()) {
                   this.router.navigate(['/operaciones'])
                 } else if (this.tokenService.esCliente()) {
-                  this.router.navigate(['/cliente'])
+                  this.router.navigate(['/cliente/nueva-operacion'])
                 }else{
                   this.router.navigate(['/login']);
                 }

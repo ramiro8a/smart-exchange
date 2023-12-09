@@ -4,11 +4,11 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet id="v0.0.0-04-crea-t-bancos" author="ramiro.ochoa">
+    <changeSet id="v0.0.0-05-crea-t-cuenta-bancaria" author="ramiro.ochoa">
         <comment>
-			Create table T_BANCOS
+			Create table T_CUENTA_BANCARIA
 		</comment>
-        <createTable tableName="T_BANCOS">
+        <createTable tableName="T_CUENTA_BANCARIA">
             <column name="ID" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -19,11 +19,20 @@
             <column name="VERSION" type="INTEGER" defaultValue="0"/>
             <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
             
-            <column name="NOMBRE" type="VARCHAR(250)" remarks="Razon social"/>
-            <column name="LOGO" type="VARCHAR(250)" remarks="LOGO"/>
+            <column name="TIPO_CUENTA" type="INTEGER" defaultValue="0" remarks="1:Ahorro,2:Corriente"/>
+            <column name="MONEDA" type="INTEGER" defaultValue="0" remarks="840:dolares,604:soles,978:euros"/>
+            <column name="BANCO_ID" type="BIGINT" remarks="Id del banco"/>
+            <column name="NRO_CUENTA" type="VARCHAR(250)" remarks="Nro de cuenta"/>
+            <column name="NOMBRE" type="VARCHAR(200)" remarks="Nombre de la cuenta"/>
+            <column name="USUARIO_ID" type="BIGINT" remarks="Id del usuario al que pertenece"/>
         </createTable>
+        <addForeignKeyConstraint constraintName="fk_cuenta_banco"
+            baseTableName="T_CUENTA_BANCARIA"
+            baseColumnNames="BANCO_ID"
+            referencedTableName="T_BANCOS"
+            referencedColumnNames="ID"/>
         <rollback>
-            <dropTable tableName="T_BANCOS"/>
+            <dropTable tableName="T_CUENTA_BANCARIA"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

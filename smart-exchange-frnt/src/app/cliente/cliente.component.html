@@ -1,6 +1,6 @@
 <br>
 <div class="contenido-general">
-    <form action="">
+    <form [formGroup]="operacionForm" (ngSubmit)="registra()" autocomplete="off">
         <div class="compra-venta" [ngClass]="tipoCambio?'accent-background':'warn-background'">
             <div class="compra">Dólar compra: {{tipoCambio?.compra}}</div>
             <div class="venta">Dólar venta: {{tipoCambio?.venta}}</div>
@@ -11,7 +11,7 @@
                 <div>{{envio.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Envío</mat-label>
-                    <input type="tel" matInput>
+                    <input formControlName="envio" type="text" matInput>
                     <img [src]='envio.img' matSuffix>
                 </mat-form-field>
             </div>
@@ -22,7 +22,7 @@
                 <div>{{recibo.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Recibo</mat-label>
-                    <input type="tel" matInput>
+                    <input formControlName="recibo" type="text" matInput>
                     <img [src]='recibo.img' matSuffix>
                 </mat-form-field>
             </div>
@@ -31,16 +31,50 @@
         <mat-card>
             <mat-card-header>
               <mat-card-subtitle>¿De dónde nos envías tu dinero?</mat-card-subtitle>
+              <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary" class="peque-btn">Agregar cuentas</button>
             </mat-card-header>
             <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Banco</mat-label>
+                    <mat-select formControlName="bancoOrigen">
+                      <mat-option *ngFor="let item of bancos" [value]="item.id">
+                        {{item.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cuenta</mat-label>
+                    <mat-select formControlName="cuentaOrigen">
+                      <mat-option *ngFor="let item of cuentasRegistradas" [value]="item.codigo">
+                        {{item.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </mat-card-content>
         </mat-card>
         <br>
         <mat-card>
             <mat-card-header>
               <mat-card-subtitle>¿Dónde quieres recibir tu dinero?</mat-card-subtitle>
+              <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary" class="peque-btn">Agregar cuentas</button>
             </mat-card-header>
             <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Banco</mat-label>
+                    <mat-select formControlName="bancoDestino">
+                      <mat-option *ngFor="let item of bancos" [value]="item.id">
+                        {{item.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cuenta</mat-label>
+                    <mat-select formControlName="cuentaDestino">
+                      <mat-option *ngFor="let item of cuentasRegistradas" [value]="item.codigo">
+                        {{item.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </mat-card-content>
         </mat-card>
 
@@ -49,5 +83,4 @@
             INICIAR OPERACIÓN
         </button>
     </form>
-
 </div>

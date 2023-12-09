@@ -9,6 +9,7 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { ConfirmaComponent } from './confirma/confirma.component';
 import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
+import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
 import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard } from './utils/auht.guard';
 
 const routes: Routes = [
@@ -17,9 +18,12 @@ const routes: Routes = [
   {path: 'confirma/:token', component: ConfirmaComponent },
   {path: '', component: PrincipalComponent, children: [
     {path: 'reportes', component: ReportesComponent, canActivate:[GerenteGuard] },
-    {path: 'cliente', component: ClienteComponent, canActivate:[ClienteGuard] },
+    {path: 'cliente', children:[
+      {path: 'nueva-operacion', component: ClienteComponent },
+      {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
+    ], canActivate:[ClienteGuard] },
     {path: 'operaciones', component: OperacionesComponent, children: [
-      {path: 'tipo-cambio', component: TipoCambioComponent },
+      {path: 'tipo-cambio', component: TipoCambioComponent }
     ], canActivate:[OperadorGuard]},
     {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
   ]

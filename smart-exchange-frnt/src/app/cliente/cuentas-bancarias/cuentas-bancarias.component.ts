@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
@@ -10,7 +10,7 @@ import { BancosService } from 'src/app/rest/bancos.service';
   templateUrl: './cuentas-bancarias.component.html',
   styleUrls: ['./cuentas-bancarias.component.sass']
 })
-export class CuentasBancariasComponent {
+export class CuentasBancariasComponent implements OnInit{
   estaCargando: boolean = false
   cuentaBancariaForm: FormGroup;
   bancos: any[] = []
@@ -31,11 +31,14 @@ export class CuentasBancariasComponent {
       nombre: ['', Validators.required],
       deAcuerdo: [false, [Validators.required]]
     });
+  }
 
+  ngOnInit(): void {
+    this.recupertaBancos();
   }
 
   recupertaBancos():void{
-    this.restBancos.recuperaActivos().subscribe({
+    this.restBancos.recuperaBancosActivos().subscribe({
       next: (response:any) => {
         this.bancos = response
       },
