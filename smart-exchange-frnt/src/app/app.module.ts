@@ -9,7 +9,8 @@ import {MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTION
 
 import { MaterialModule } from './material.modules';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './utils/auth.interceptor';
 import { CaculaCambioComponent } from './cacula-cambio/cacula-cambio.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrateComponent } from './registrate/registrate.component';
@@ -25,6 +26,7 @@ import { ConfirmacionComponent } from './ui-utils/confirmacion/confirmacion.comp
 import { ConfirmaComponent } from './confirma/confirma.component';
 import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
 import { DatosPersonalesComponent } from './cliente/datos-personales/datos-personales.component';
+import { CuentasBancariasComponent } from './cliente/cuentas-bancarias/cuentas-bancarias.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -83,6 +85,7 @@ const customNotifierOptions: NotifierOptions = {
     ConfirmaComponent,
     TipoCambioComponent,
     DatosPersonalesComponent,
+    CuentasBancariasComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,7 +98,8 @@ const customNotifierOptions: NotifierOptions = {
     RecaptchaV3Module,
     NotifierModule.withConfig(customNotifierOptions),
   ],
-  providers: [{ 
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},{ 
     provide: RECAPTCHA_V3_SITE_KEY,
      useValue: "6Le4mg0pAAAAAM6m6mKlFc4Tcrlw_1rI4kSl0SM8"
     },

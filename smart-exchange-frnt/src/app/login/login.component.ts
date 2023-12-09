@@ -15,8 +15,13 @@ import { TokenService } from '../servicios/token.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  resetForm: FormGroup;
   hide: boolean = true;
   estaCargando: boolean = false
+  panelOpen = false
+  leyenda: string =''
+  opcion:string=''
+
   constructor(
     private formBuilder: FormBuilder,
     private restUsuarios: UsuariosService,
@@ -26,8 +31,11 @@ export class LoginComponent {
     private tokenService: TokenService
     ){
       this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required]
+        username: ['admin', Validators.required],
+        password: ['admin', Validators.required]
+      });
+      this.resetForm = this.formBuilder.group({
+        dato: ['', Validators.required]
       });
   }
 
@@ -75,8 +83,60 @@ export class LoginComponent {
     }
   }
 
-  panelManager(){
-
+  panelManager(opc:string):void{
+    if(this.panelOpen && (this.opcion!=opc)){
+      if(opc=='RESET'){
+        this.leyenda='cambiar su contraseña'
+        this.opcion=opc
+      }
+      if(opc=='CONFIRM'){
+        this.leyenda='activar su cuenta.'
+        this.opcion=opc
+      }
+    }else{
+      if(opc=='RESET'){
+        this.panelOpen=!this.panelOpen
+        this.leyenda='cambiar su contraseña'
+        this.opcion=opc
+      }
+      if(opc=='CONFIRM'){
+        this.panelOpen=!this.panelOpen
+        this.leyenda='activar su cuenta'
+        this.opcion=opc
+      }
+    }
   }
 
+  executeAction(action: string): void {
+    if(this.resetForm.valid){
+      this.estaCargando = true;
+      this.recaptchaV3Service.execute('reset-data-login')
+      .pipe(
+        catchError(error => {
+          this.estaCargando = false;
+          return of(error);
+        })
+      )
+      .subscribe(
+        token => {
+          if (token) {
+            let values = this.loginForm.value
+            values.token = token
+            this.restUsuarios.login(values).subscribe({
+              next: (response:any) => {
+                this.estaCargando = false;
+                
+              },
+              error: (error:any) => {
+                this.estaCargando = false;
+                this.notif.notify('error', error);
+              }
+            });
+          }
+        }
+      );
+    }else{
+      this.notif.notify('warning','Complete el formulario por favor');
+    }
+  }
 }

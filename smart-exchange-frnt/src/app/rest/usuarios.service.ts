@@ -20,6 +20,12 @@ export class UsuariosService {
     )
   }
 
+  registraDatosPersonalesCliente(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}${this.path}/cliente`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   registraCliente(data: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}${this.authPath}/registro`, data).pipe(
       catchError(this.errorHandler)

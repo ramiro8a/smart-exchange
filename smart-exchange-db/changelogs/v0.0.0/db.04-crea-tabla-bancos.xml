@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="v0.0.0-03-crea-t-bancos" author="ramiro.ochoa">
+        <comment>
+			Create table T_BANCOS
+		</comment>
+        <createTable tableName="T_BANCOS">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FECHA_CREACION" type="TIMESTAMP"/>
+            <column name="FECHA_ACTUALIZACION" type="TIMESTAMP"/>
+            <column name="USUARIO_CREACION" type="BIGINT"/>
+            <column name="USUARIO_ACTUALIZACION" type="BIGINT"/>
+            <column name="VERSION" type="INTEGER" defaultValue="0"/>
+            <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
+            
+            <column name="NOMBRE" type="VARCHAR(250)" remarks="Razon social"/>
+            <column name="LOGO" type="VARCHAR(250)" remarks="LOGO"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_BANCOS"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

@@ -16,7 +16,8 @@
     <span class="toolbar-section right">
         <small class="accent-color"><b>correo@gmail.com</b> </small>
         <button mat-mini-fab color="primary"  class="elemento" [matMenuTriggerFor]="menu">
-            <mat-icon [matBadge]="notificaciones.length" matBadgeColor="warn">account_circle</mat-icon>
+            <mat-icon [matBadge]="notificaciones.length" *ngIf="notificaciones.length > 0" matBadgeColor="warn">account_circle</mat-icon>
+            <mat-icon *ngIf="notificaciones.length === 0">account_circle</mat-icon>
         </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item>

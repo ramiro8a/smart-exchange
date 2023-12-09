@@ -7,24 +7,18 @@ import { environment } from './../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TipoCambioService {
-  path:string = '/api/tipo-cambio'
+export class BancosService {
+  path:string = '/api/bancos'
   constructor(private http: HttpClient) { }
 
-  creaTipoCambio(data: any): Observable<any> {
-    return this.http.post<any>(`${environment.baseUrl}${this.path}`, data).pipe(
+  recuperaActivos(): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}`).pipe(
       catchError(this.errorHandler)
     )
   }
 
-  recuperaTiposDeCambioCincoDias(moneda: number): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}${this.path}/${moneda}`).pipe(
-      catchError(this.errorHandler)
-    )
-  }
-
-  recuperaTCActual(moneda: number): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}${this.path}/actual/${moneda}`).pipe(
+  creaCuentaBancaria(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}${this.path}/cuentaBancaria`, data).pipe(
       catchError(this.errorHandler)
     )
   }
@@ -43,5 +37,4 @@ export class TipoCambioService {
     }
     return throwError(() => new Error(errorMensaje));
   }
-
 }

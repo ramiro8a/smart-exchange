@@ -4,7 +4,7 @@
             <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
         </span>
       <mat-card-subtitle>Por favor ingresa tus</mat-card-subtitle>
-      <mat-card-title>Datos personales</mat-card-title>
+      <mat-card-title>DATOS PERSONALES</mat-card-title>
     </mat-card-header>
     <form [formGroup]="personalForm" (ngSubmit)="registra()" autocomplete="off">
         <mat-card-content>
@@ -44,10 +44,10 @@
                 <mat-label>Celular</mat-label>
                 <input matInput type="text" formControlName="celular">
             </mat-form-field>
-            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Change a almacenar mis datos personales</mat-slide-toggle>
+            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Exchange a almacenar mis datos personales</mat-slide-toggle>
         </mat-card-content>
         <mat-card-actions>
-        <button mat-fab extended color="primary" [disabled]="estaCargando">
+        <button mat-fab extended color="primary" [disabled]="estaCargando || !estaDeAcuerdo()">
             <mat-icon>check</mat-icon>
             Registrar
         </button>&nbsp;

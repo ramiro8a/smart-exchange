@@ -17,7 +17,7 @@ spring:
 ---
 jwt:
   secret: secretsecretsecretsecretsecretsecretsecretsecret
-  expiration: 30
+  expiration: 60
   confirm:
     expiration: 60
 ---

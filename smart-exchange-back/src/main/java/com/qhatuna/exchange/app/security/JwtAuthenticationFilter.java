@@ -30,46 +30,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
-
-        final String token = getTokenFromRequest(request);
-        if(token!=null){
-            try {
-                String username = jwtProvider.getNombreUsuarioFromToken(token);
-                if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-                    UserDetails userDetails=sessionInfoService.loadUserByUsername(username);
-
-                    if (jwtProvider.isTokenValid(token, userDetails)){
-                        UsernamePasswordAuthenticationToken authToken= new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities());
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }else {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        return;
-                    }
-
-                }else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
-            }catch (JwtException ex){
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write(ex.getMessage());
-                return;
+        try {
+            final String token = getTokenFromRequest(request);
+            if (token != null && isAuthenticated()) {
+                authenticateUser(token, request);
             }
+            filterChain.doFilter(request, response);
+        } catch (JwtException ex) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
         }
-        filterChain.doFilter(request, response);
+    }
+
+    private boolean isAuthenticated() {
+        return SecurityContextHolder.getContext().getAuthentication() == null;
+    }
+
+    private void authenticateUser(String token, HttpServletRequest request) {
+        String username = jwtProvider.getNombreUsuarioFromToken(token);
+        UserDetails userDetails = sessionInfoService.loadUserByUsername(username);
+        if (jwtProvider.isTokenValid(token, userDetails)) {
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        } else {
+            throw new JwtException("Token no válido");
+        }
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        final String authHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")){
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }
         return null;
     }
 }
+

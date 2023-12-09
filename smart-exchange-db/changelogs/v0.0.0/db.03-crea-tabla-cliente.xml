@@ -23,7 +23,7 @@
             <!-- <column name="SG_NOMBRE" type="VARCHAR(100)" remarks="Segundo nombre"/> -->
             <column name="AP_PATERNO" type="VARCHAR(100)" remarks="Apellido paterno"/>
             <column name="AP_MATERNO" type="VARCHAR(100)" remarks="Apellido materno"/>
-            <column name="TIPO_COD" type="INTEGER" remarks="1:DNI,2:RUC,3:Carnet extranjero,4:pasaporte"/>
+            <column name="TIPO_DOC" type="INTEGER" remarks="1:DNI,2:RUC,3:Carnet extranjero,4:pasaporte"/>
             <column name="NRO_DOC" type="VARCHAR(100)" remarks="Numero de documento de identidad"/>
             <column name="TELEFONO" type="VARCHAR(20)" remarks="Telefono"/>
             <column name="CELULAR" type="VARCHAR(20)" remarks="Celular"/>

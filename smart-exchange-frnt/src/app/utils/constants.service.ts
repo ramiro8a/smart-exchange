@@ -11,3 +11,11 @@ export const TIPO_DOCUMENTOS = [
     {codigo: 3, nombre: 'Carnet extranjero'},
     {codigo: 4, nombre: 'Pasaporte'},
 ]
+export const TIPO_CUENTAS = [
+    {codigo: 1, nombre: 'Ahorro'},
+    {codigo: 2, nombre: 'Corriente'},
+]
+export const CUENTA_MONEDAS_CLIENTE = [
+    {codigo: SOLES_ISO, nombre: 'Soles'},
+    {codigo: USD_ISO, nombre: 'Dólares'},
+]

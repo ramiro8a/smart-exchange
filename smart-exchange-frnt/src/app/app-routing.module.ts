@@ -9,18 +9,19 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { ConfirmaComponent } from './confirma/confirma.component';
 import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
+import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard } from './utils/auht.guard';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
   {path: 'registro', component: RegistrateComponent },
-  {path: 'reportes', component: ReportesComponent },
   {path: 'confirma/:token', component: ConfirmaComponent },
   {path: '', component: PrincipalComponent, children: [
-    {path: 'cliente', component: ClienteComponent },
+    {path: 'reportes', component: ReportesComponent, canActivate:[GerenteGuard] },
+    {path: 'cliente', component: ClienteComponent, canActivate:[ClienteGuard] },
     {path: 'operaciones', component: OperacionesComponent, children: [
       {path: 'tipo-cambio', component: TipoCambioComponent },
-    ]},
-    {path: 'admin', component: UsusariosCrudComponent },
+    ], canActivate:[OperadorGuard]},
+    {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
   ]
   },
 ];

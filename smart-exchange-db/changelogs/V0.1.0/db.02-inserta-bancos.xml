@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-bcp" author="ramiro.ochoa">
+        <comment>
+			Inserta banco bcp
+		</comment>
+    <insert tableName="T_BANCOS">
+        <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+        <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+        <column name="USUARIO_CREACION" valueNumeric="1"/>
+        <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+        <column name="VERSION" valueNumeric="0"/>
+        <column name="EST_REG" valueNumeric="0"/>
+        <column name="NOMBRE" value="BGP"/>
+        <column name="LOGO" value="bcp.png"/>
+    </insert>
+    </changeSet>
+    
+    <changeSet id="v0.1.0-02-inserta-t-banco-interbank" author="ramiro.ochoa">
+        <comment>
+			Inserta banco interbank
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="INTERBANK"/>
+            <column name="LOGO" value="interbank.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-bbva" author="ramiro.ochoa">
+        <comment>
+			Inserta banco bbva
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="BBVA"/>
+            <column name="LOGO" value="bbva.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-banbif" author="ramiro.ochoa">
+        <comment>
+			Inserta banco banbif
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="BanBif"/>
+            <column name="LOGO" value="banbif.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-scotia" author="ramiro.ochoa">
+        <comment>
+			Inserta banco scotia
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="SCOTIABANK"/>
+            <column name="LOGO" value="scotia.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-falabella" author="ramiro.ochoa">
+        <comment>
+			Inserta banco falabella
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="FALABELLA"/>
+            <column name="LOGO" value="falabella.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-pichincha" author="ramiro.ochoa">
+        <comment>
+			Inserta banco pichincha
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="PICHINCHA"/>
+            <column name="LOGO" value="banco-pichincha.jpg"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-comercio" author="ramiro.ochoa">
+        <comment>
+			Inserta banco comercio
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="BANCOMERCIO"/>
+            <column name="LOGO" value="comercio.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-citibank" author="ramiro.ochoa">
+        <comment>
+			Inserta banco citibank
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="CITIBANK"/>
+            <column name="LOGO" value="citibank.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-mibanco" author="ramiro.ochoa">
+        <comment>
+			Inserta banco mibanco
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="MIBANCO"/>
+            <column name="LOGO" value="mibanco.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-gnb" author="ramiro.ochoa">
+        <comment>
+			Inserta banco gnb
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="GNB"/>
+            <column name="LOGO" value="gnb.png"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet id="v0.1.0-02-inserta-t-banco-ripley" author="ramiro.ochoa">
+        <comment>
+			Inserta banco ripley
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="RIPLEY"/>
+            <column name="LOGO" value="ripley.png"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-02-inserta-t-banco-nacion" author="ramiro.ochoa">
+        <comment>
+			Inserta banco nacion
+		</comment>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="NACION"/>
+            <column name="LOGO" value="nacion.png"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -20,10 +20,12 @@ export class PrincipalComponent implements OnInit{
     ){}
 
   ngOnInit(): void {
-    this.recuperaNotificaciones()
-    this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
-      this.notificaciones = notificaciones;
-    });
+    if(this.tokenService.esCliente()){
+      this.recuperaNotificaciones()
+      this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
+        this.notificaciones = notificaciones;
+      });
+    }
   }
 
   recuperaNotificaciones():void{
@@ -57,6 +59,9 @@ export class PrincipalComponent implements OnInit{
     const dialogRef = this.dialog.open(DatosPersonalesComponent)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaNotificaciones()
+      }
     })
   }
 
