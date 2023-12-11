@@ -5,6 +5,7 @@ import { FormBuilder ,FormGroup, Validators,FormArray  } from '@angular/forms'
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import * as Const from 'src/app/utils/constants.service'
 import { CuentasBancariasComponent } from './cuentas-bancarias/cuentas-bancarias.component';
+import { OperacionComponent } from './operacion/operacion.component';
 import { BancosService } from '../rest/bancos.service';
 
 @Component({
@@ -30,6 +31,7 @@ export class ClienteComponent implements OnInit{
   cuentasRegistradas: any[] = []
   bancos: any[]=[]
   operacionForm: FormGroup;
+  
 
   constructor(
     private dialog: MatDialog,
@@ -39,39 +41,29 @@ export class ClienteComponent implements OnInit{
     private notif: NotifierService,
     ){
       this.operacionForm = this.formBuilder.group({
-        envio: ['', Validators.required],
-        recibo: [false, [Validators.required]],
-        bancoOrigen: ['', [Validators.required]],
-        cuentaOrigen: ['', [Validators.required]],
-        bancoDestino: ['', [Validators.required]],
-        cuentaDestino: ['', [Validators.required]],
+        envio: [1.00, Validators.required],
+        recibo: [0.00, [Validators.required]],
       });
     }
 
   ngOnInit(): void {
     this.recuperaTC();
-    this.recuperaCuentasBancarias()
-    this
   }
 
-  registra():void{
-
+  iniciarOperacion():void{
+    const dialogRef = this.dialog.open(OperacionComponent)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //this.recuperaCuentasBancarias()
+      }
+    })
   }
 
   recuperaTC():void{
     this.restTC.recuperaTCActual(Const.USD_ISO).subscribe({
       next: (response:any) => {
         this.tipoCambio = response
-      },
-      error: (error:any) => {
-      }
-    });
-  }
-
-  recuperaCuentasBancarias():void{
-    this.restBancos.recuperaCuentasBancarias().subscribe({
-      next: (response:any) => {
-        this.cuentasRegistradas = response
       },
       error: (error:any) => {
       }
@@ -88,15 +80,6 @@ export class ClienteComponent implements OnInit{
     }
   }
 
-  agregaCuentasBancarias(){
-    const dialogRef = this.dialog.open(CuentasBancariasComponent)
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.recuperaCuentasBancarias()
-      }
-    })
-  }
 
   recupertaBancos():void{
     this.restBancos.recuperaBancosActivos().subscribe({

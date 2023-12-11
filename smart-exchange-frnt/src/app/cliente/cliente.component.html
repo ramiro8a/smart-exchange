@@ -1,6 +1,6 @@
 <br>
 <div class="contenido-general">
-    <form [formGroup]="operacionForm" (ngSubmit)="registra()" autocomplete="off">
+    <form [formGroup]="operacionForm" (ngSubmit)="iniciarOperacion()" autocomplete="off">
         <div class="compra-venta" [ngClass]="tipoCambio?'accent-background':'warn-background'">
             <div class="compra">Dólar compra: {{tipoCambio?.compra}}</div>
             <div class="venta">Dólar venta: {{tipoCambio?.venta}}</div>
@@ -11,7 +11,7 @@
                 <div>{{envio.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Envío</mat-label>
-                    <input formControlName="envio" type="text" matInput>
+                    <input formControlName="envio" type="number" matInput>
                     <img [src]='envio.img' matSuffix>
                 </mat-form-field>
             </div>
@@ -22,13 +22,13 @@
                 <div>{{recibo.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Recibo</mat-label>
-                    <input formControlName="recibo" type="text" matInput>
+                    <input formControlName="recibo" type="number" matInput>
                     <img [src]='recibo.img' matSuffix>
                 </mat-form-field>
             </div>
         </div>
         <small class="extra accent-color">Ganas 0.234 más que en el banco</small><br>
-        <mat-card>
+<!--         <mat-card>
             <mat-card-header>
               <mat-card-subtitle>¿De dónde nos envías tu dinero?</mat-card-subtitle>
               <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary" class="peque-btn">Agregar cuentas</button>
@@ -76,7 +76,7 @@
                     </mat-select>
                 </mat-form-field>
             </mat-card-content>
-        </mat-card>
+        </mat-card> -->
 
 
         <button mat-fab extended color="primary">

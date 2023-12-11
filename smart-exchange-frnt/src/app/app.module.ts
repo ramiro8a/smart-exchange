@@ -28,6 +28,7 @@ import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.compo
 import { DatosPersonalesComponent } from './cliente/datos-personales/datos-personales.component';
 import { CuentasBancariasComponent } from './cliente/cuentas-bancarias/cuentas-bancarias.component';
 import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
+import { OperacionComponent } from './cliente/operacion/operacion.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -88,6 +89,7 @@ const customNotifierOptions: NotifierOptions = {
     DatosPersonalesComponent,
     CuentasBancariasComponent,
     ListaCuentasBancariasComponent,
+    OperacionComponent,
   ],
   imports: [
     BrowserModule,
