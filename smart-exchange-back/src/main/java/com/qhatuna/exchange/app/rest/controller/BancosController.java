@@ -4,6 +4,7 @@ import com.qhatuna.exchange.app.rest.request.ClienteRequest;
 import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
+import com.qhatuna.exchange.app.rest.response.CuentasRegistradasResponse;
 import com.qhatuna.exchange.domain.service.BancosService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,5 +44,11 @@ public class BancosController {
     public ResponseEntity<List<CuentaBancariaResponse>> recuperaCuentasBancariasCliente(
     ) {
         return new ResponseEntity<>(service.recuperaCuentasBancariasCliente(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/cuentas-bancarias-registradas", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<CuentasRegistradasResponse> recuperaCuentasRegistradasCliente(
+    ) {
+        return new ResponseEntity<>(service.recuperaCuentasRegistradasCliente(), HttpStatus.OK);
     }
 }

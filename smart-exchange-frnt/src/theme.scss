@@ -69,39 +69,6 @@ $lc-exchange-accent: (
     )
 );
 
-/* $lc-exchange-warn: (
-    50 : #eff0f0,
-    100 : #d7d9db,
-    200 : #bcc0c3,
-    300 : #a1a7aa,
-    400 : #8c9498,
-    500 : #788186,
-    600 : #70797e,
-    700 : #656e73,
-    800 : #5b6469,
-    900 : #485156,
-    A100 : #bbe5fc,
-    A200 : #8ad2fa,
-    A400 : #52c1ff,
-    A700 : #38b8ff,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-); */
-
 $lc-exchange-warn: (
   50 : #fee9e8,
   100 : #fcc9c5,
@@ -193,28 +160,4 @@ body { margin: 0; }
 .warn-background {
   background: mat.get-color-from-palette($angular-warn, 500);
   color: #ffffff;
-}
-
-.mat-mdc-snack-bar-container {
-  &.exito-snackbar {
-    --mdc-snackbar-container-color: #49a5bd;
-    --mat-mdc-snack-bar-button-color: #ffffff !important;
-    --mdc-snackbar-supporting-text-color: #000000;
-  }
-}
-
-.mat-mdc-snack-bar-container {
-  &.advertencia-snackbar {
-    --mdc-snackbar-container-color: #d1bc44;
-    --mat-mdc-snack-bar-button-color: #ffffff !important;
-    --mdc-snackbar-supporting-text-color: #000000;
-  }
-}
-
-.mat-mdc-snack-bar-container {
-  &.error-snackbar {
-    --mdc-snackbar-container-color: #f04704;
-    --mat-mdc-snack-bar-button-color: #ffffff !important;
-    --mdc-snackbar-supporting-text-color: #000000;
-  }
 }

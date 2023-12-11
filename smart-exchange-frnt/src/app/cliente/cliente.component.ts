@@ -16,7 +16,7 @@ import { BancosService } from '../rest/bancos.service';
 export class ClienteComponent implements OnInit{
   notificaciones:number = 0
   soles = {
-    desc: 'Envio Soles',
+    desc: 'Recibo Soles',
     img: 'assets/img/peru.png',
     cod: Const.SOLES_ISO
   }
@@ -25,8 +25,8 @@ export class ClienteComponent implements OnInit{
     img: 'assets/img/usa.png',
     cod: Const.USD_ISO
   }
-  envio = this.soles
-  recibo = this.usd
+  envio = this.usd
+  recibo = this.soles
   tipoCambio: any;
   cuentasRegistradas: any[] = []
   bancos: any[]=[]
@@ -48,14 +48,35 @@ export class ClienteComponent implements OnInit{
 
   ngOnInit(): void {
     this.recuperaTC();
+    this.operacionForm.get('envio')?.valueChanges.subscribe((valorEnvio) => {
+      let montoRecibe = 0
+      if(this.envio.cod===Const.USD_ISO){
+        montoRecibe = valorEnvio*this.tipoCambio.compra
+      }else{
+        montoRecibe = valorEnvio/this.tipoCambio.venta
+      }
+      this.operacionForm.controls['recibo'].setValue(montoRecibe);
+    });
   }
 
   iniciarOperacion():void{
-    const dialogRef = this.dialog.open(OperacionComponent)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      tipoCambioId: this.tipoCambio.id,
+      monto: this.operacionForm.get('envio')?.value,
+      cambiado: this.operacionForm.get('recibo')?.value,
+      origen: {
+        moneda: this.envio.cod
+      },
+      destino: {
+        moneda: this.recibo.cod
+      }
+    } 
+    const dialogRef = this.dialog.open(OperacionComponent, dialogConfig)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        //this.recuperaCuentasBancarias()
+        ///this.recuperaCuentasBancarias()
       }
     })
   }
@@ -64,6 +85,7 @@ export class ClienteComponent implements OnInit{
     this.restTC.recuperaTCActual(Const.USD_ISO).subscribe({
       next: (response:any) => {
         this.tipoCambio = response
+        this.operacionForm.controls['envio'].setValue(10.00);
       },
       error: (error:any) => {
       }
@@ -71,25 +93,18 @@ export class ClienteComponent implements OnInit{
   }
 
   cambiaMoneda():void{
+    this.operacionForm.controls['envio'].setValue(10.00);
     if(this.envio.cod===Const.SOLES_ISO){
       this.envio = this.usd
+      this.envio.desc ='Envio Dólares'
       this.recibo = this.soles
+      this.recibo.desc ='Recibo Soles'
     }else{
       this.envio = this.soles
+      this.envio.desc ='Envio Soles'
       this.recibo = this.usd
+      this.recibo.desc ='Recibo Dólares'
     }
-  }
-
-
-  recupertaBancos():void{
-    this.restBancos.recuperaBancosActivos().subscribe({
-      next: (response:any) => {
-        this.bancos = response
-      },
-      error: (error:any) => {
-        this.notif.notify('error', error);
-      }
-    });
   }
 
 }

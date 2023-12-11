@@ -22,64 +22,13 @@
                 <div>{{recibo.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Recibo</mat-label>
-                    <input formControlName="recibo" type="number" matInput>
+                    <input formControlName="recibo" type="number" matInput readonly>
                     <img [src]='recibo.img' matSuffix>
                 </mat-form-field>
             </div>
         </div>
-        <small class="extra accent-color">Ganas 0.234 más que en el banco</small><br>
-<!--         <mat-card>
-            <mat-card-header>
-              <mat-card-subtitle>¿De dónde nos envías tu dinero?</mat-card-subtitle>
-              <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary" class="peque-btn">Agregar cuentas</button>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-form-field appearance="outline">
-                    <mat-label>Banco</mat-label>
-                    <mat-select formControlName="bancoOrigen">
-                      <mat-option *ngFor="let item of bancos" [value]="item.id">
-                        {{item.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Cuenta</mat-label>
-                    <mat-select formControlName="cuentaOrigen">
-                      <mat-option *ngFor="let item of cuentasRegistradas" [value]="item.codigo">
-                        {{item.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-content>
-        </mat-card>
-        <br>
-        <mat-card>
-            <mat-card-header>
-              <mat-card-subtitle>¿Dónde quieres recibir tu dinero?</mat-card-subtitle>
-              <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary" class="peque-btn">Agregar cuentas</button>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-form-field appearance="outline">
-                    <mat-label>Banco</mat-label>
-                    <mat-select formControlName="bancoDestino">
-                      <mat-option *ngFor="let item of bancos" [value]="item.id">
-                        {{item.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Cuenta</mat-label>
-                    <mat-select formControlName="cuentaDestino">
-                      <mat-option *ngFor="let item of cuentasRegistradas" [value]="item.codigo">
-                        {{item.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-content>
-        </mat-card> -->
-
-
-        <button mat-fab extended color="primary">
+        <small class="extra accent-color">Ahorras 0.234% más que en el banco</small><br>
+        <button mat-fab extended color="primary" [disabled]="tipoCambio?false:true">
             INICIAR OPERACIÓN
         </button>
     </form>

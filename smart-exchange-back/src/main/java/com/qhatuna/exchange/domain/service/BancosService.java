@@ -3,6 +3,7 @@ package com.qhatuna.exchange.domain.service;
 import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
+import com.qhatuna.exchange.app.rest.response.CuentasRegistradasResponse;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.domain.model.Bancos;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -27,6 +30,17 @@ public class BancosService {
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosPorUsuarioId(usuario.getId());
         return cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
+    }
+
+    public CuentasRegistradasResponse recuperaCuentasRegistradasCliente(){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosPorUsuarioId(usuario.getId());
+        Set<BancoResponse> bancos = cuentasBacarias.stream()
+                .map(CuentaBancaria::getBanco)
+                .map(Bancos::aResponse)
+                .collect(Collectors.toSet());
+        List<CuentaBancariaResponse> cuentas = cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
+        return new CuentasRegistradasResponse(bancos, cuentas);
     }
 
     public List<BancoResponse> recuperaActivos(){
