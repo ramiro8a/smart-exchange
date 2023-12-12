@@ -11,8 +11,8 @@ export class BancosService {
   path:string = '/api/bancos'
   constructor(private http: HttpClient) { }
 
-  recuperaCuentasRegistradas(): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}${this.path}/cuentas-bancarias-registradas`).pipe(
+  recuperaCuentasRegistradas(monedaOrigen:number, monedaDestino:number): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/cuentas-bancarias-registradas/${monedaOrigen}/${monedaDestino}`).pipe(
       catchError(this.errorHandler)
     )
   }

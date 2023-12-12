@@ -7,6 +7,7 @@ import * as Const from 'src/app/utils/constants.service'
 import { CuentasBancariasComponent } from './cuentas-bancarias/cuentas-bancarias.component';
 import { OperacionComponent } from './operacion/operacion.component';
 import { BancosService } from '../rest/bancos.service';
+import { ImporteValidator } from '../utils/validators.validator';
 
 @Component({
   selector: 'app-cliente',
@@ -41,8 +42,8 @@ export class ClienteComponent implements OnInit{
     private notif: NotifierService,
     ){
       this.operacionForm = this.formBuilder.group({
-        envio: [1.00, Validators.required],
-        recibo: [0.00, [Validators.required]],
+        envio: [1.00, [Validators.required, ImporteValidator()]],
+        recibo: [0.00, [Validators.required, ImporteValidator()]],
       });
     }
 
@@ -51,34 +52,42 @@ export class ClienteComponent implements OnInit{
     this.operacionForm.get('envio')?.valueChanges.subscribe((valorEnvio) => {
       let montoRecibe = 0
       if(this.envio.cod===Const.USD_ISO){
-        montoRecibe = valorEnvio*this.tipoCambio.compra
+        montoRecibe = this.redondearHalfUp(valorEnvio*this.tipoCambio.compra, 2)
       }else{
-        montoRecibe = valorEnvio/this.tipoCambio.venta
+        montoRecibe = this.redondearHalfUp(valorEnvio/this.tipoCambio.venta, 2)
       }
       this.operacionForm.controls['recibo'].setValue(montoRecibe);
     });
   }
 
   iniciarOperacion():void{
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      tipoCambioId: this.tipoCambio.id,
-      monto: this.operacionForm.get('envio')?.value,
-      cambiado: this.operacionForm.get('recibo')?.value,
-      origen: {
-        moneda: this.envio.cod
-      },
-      destino: {
-        moneda: this.recibo.cod
+    if(this.operacionForm.valid){
+      if(this.validarImporte()){
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          tipoCambioId: this.tipoCambio.id,
+          monto: this.operacionForm.get('envio')?.value,
+          cambiado: this.operacionForm.get('recibo')?.value,
+          origen: {
+            moneda: this.envio.cod
+          },
+          destino: {
+            moneda: this.recibo.cod
+          }
+        } 
+        const dialogRef = this.dialog.open(OperacionComponent, dialogConfig)
+        dialogRef.disableClose = true;
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            ///this.recuperaCuentasBancarias()
+          }
+        })
+      }else{
+        this.notif.notify('warning','La operacion mínima es de 1 dólar o su equivalente en soles');
       }
-    } 
-    const dialogRef = this.dialog.open(OperacionComponent, dialogConfig)
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        ///this.recuperaCuentasBancarias()
-      }
-    })
+    }else{
+      this.notif.notify('warning','Complete el formulario con datos válidos por favor');
+    }
   }
 
   recuperaTC():void{
@@ -90,6 +99,14 @@ export class ClienteComponent implements OnInit{
       error: (error:any) => {
       }
     });
+  }
+
+  validarImporte():boolean{
+    let monto:number = this.operacionForm.get('envio')?.value
+    if(this.envio.cod===Const.SOLES_ISO){
+      monto = this.redondearHalfUp(monto/this.tipoCambio.venta, 2)
+    }
+    return monto>=1
   }
 
   cambiaMoneda():void{
@@ -105,6 +122,11 @@ export class ClienteComponent implements OnInit{
       this.recibo = this.usd
       this.recibo.desc ='Recibo Dólares'
     }
+  }
+
+  redondearHalfUp(numero: number, decimales: number): number {
+    const factor = Math.pow(10, decimales);
+    return Math.round(numero * factor) / factor;
   }
 
 }

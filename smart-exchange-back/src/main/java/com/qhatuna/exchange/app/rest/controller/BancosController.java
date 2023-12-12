@@ -46,9 +46,11 @@ public class BancosController {
         return new ResponseEntity<>(service.recuperaCuentasBancariasCliente(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/cuentas-bancarias-registradas", produces = {MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/cuentas-bancarias-registradas/{monedaOrigen}/{monedaDestino}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<CuentasRegistradasResponse> recuperaCuentasRegistradasCliente(
+            @PathVariable Integer monedaOrigen,
+            @PathVariable Integer monedaDestino
     ) {
-        return new ResponseEntity<>(service.recuperaCuentasRegistradasCliente(), HttpStatus.OK);
+        return new ResponseEntity<>(service.recuperaCuentasRegistradasCliente(monedaOrigen, monedaDestino), HttpStatus.OK);
     }
 }

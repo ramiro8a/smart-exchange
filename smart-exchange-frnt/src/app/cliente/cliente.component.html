@@ -11,7 +11,7 @@
                 <div>{{envio.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Envío</mat-label>
-                    <input formControlName="envio" type="number" matInput>
+                    <input formControlName="envio" type="text" matInput>
                     <img [src]='envio.img' matSuffix>
                 </mat-form-field>
             </div>
@@ -22,7 +22,7 @@
                 <div>{{recibo.desc}}</div>
                 <mat-form-field appearance="outline">
                     <mat-label>Recibo</mat-label>
-                    <input formControlName="recibo" type="number" matInput readonly>
+                    <input formControlName="recibo" type="text" matInput readonly>
                     <img [src]='recibo.img' matSuffix>
                 </mat-form-field>
             </div>

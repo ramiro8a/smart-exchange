@@ -8,6 +8,17 @@
     </mat-card-header>
     <form [formGroup]="cuentaBancariaForm" (ngSubmit)="registra()" autocomplete="off">
         <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Banco</mat-label>
+            <mat-select formControlName="banco">
+              <mat-option *ngFor="let item of bancos" [value]="item.id">
+                <span class="option-banco-logo" style="display: flex; align-items: center;">
+                  <img [src]="'assets/bancos/'+item.logo" class="option-banco-logo">
+                  {{item.nombre}}
+                </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Tipo cuenta</mat-label>
                 <mat-select formControlName="tipoCuenta">
@@ -20,14 +31,6 @@
                 <mat-label>Moneda</mat-label>
                 <mat-select formControlName="moneda">
                   <mat-option *ngFor="let item of monedas" [value]="item.codigo">
-                    {{item.nombre}}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Banco</mat-label>
-                <mat-select formControlName="banco">
-                  <mat-option *ngFor="let item of bancos" [value]="item.id">
                     {{item.nombre}}
                   </mat-option>
                 </mat-select>

@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,15 +34,29 @@ public class BancosService {
         return cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
     }
 
-    public CuentasRegistradasResponse recuperaCuentasRegistradasCliente(){
+    public CuentasRegistradasResponse recuperaCuentasRegistradasCliente(Integer monedaOrigen, Integer monedaDestino){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosPorUsuarioId(usuario.getId());
-        Set<BancoResponse> bancos = cuentasBacarias.stream()
+        Set<BancoResponse> bancosOrigen = new HashSet<>();
+        Set<BancoResponse> bancosDestino = new HashSet<>();
+        List<CuentaBancariaResponse> cuentasOrigen = new ArrayList<>();
+        List<CuentaBancariaResponse> cuentasDestino = new ArrayList<>();
+        cuentasBacarias.forEach(item->{
+            if(monedaOrigen.equals(item.getMoneda())) {
+                bancosOrigen.add(Bancos.aResponse(item.getBanco()));
+                cuentasOrigen.add(CuentaBancaria.aResponse(item));
+            }
+            if(monedaDestino.equals(item.getMoneda())) {
+                bancosDestino.add(Bancos.aResponse(item.getBanco()));
+                cuentasDestino.add(CuentaBancaria.aResponse(item));
+            }
+        });
+/*        Set<BancoResponse> bancos = cuentasBacarias.stream()
                 .map(CuentaBancaria::getBanco)
                 .map(Bancos::aResponse)
                 .collect(Collectors.toSet());
-        List<CuentaBancariaResponse> cuentas = cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
-        return new CuentasRegistradasResponse(bancos, cuentas);
+        List<CuentaBancariaResponse> cuentas = cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();*/
+        return new CuentasRegistradasResponse(bancosOrigen, bancosDestino, cuentasOrigen, cuentasDestino);
     }
 
     public List<BancoResponse> recuperaActivos(){
