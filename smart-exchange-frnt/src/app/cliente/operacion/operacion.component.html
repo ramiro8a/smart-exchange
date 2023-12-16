@@ -166,13 +166,23 @@
                 </mat-step>
 
                 <!-- FINALIZANDO -->
-                <mat-step>
-                  <ng-template matStepLabel>Finalizando</ng-template>
-                  <p>You are now done.</p>
-                  <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset()">Reset</button>
-                  </div>
+                <mat-step [stepControl]="finalizaForm" [editable]="isEditable" [state]="pasoIds.finalizar" >
+                  <br>
+                  <form [formGroup]="finalizaForm" autocomplete="off">
+                    <ng-template matStepLabel>Finalizando</ng-template>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Código transferencia</mat-label>
+                            <input matInput type="text" formControlName="codigoTransferencia">
+                        </mat-form-field>
+                      <div class="botones-operacion">
+                          <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
+                              Atrás
+                          </button>&nbsp;
+                          <button mat-fab extended color="primary" (click)="guardarFinalizar()" [disabled]="estaCargando || !transfirio()">
+                              Guardar y finalizar
+                          </button>
+                      </div>
+                  </form>
                 </mat-step>
               </mat-stepper>
         </mat-card-content>

@@ -9,6 +9,7 @@ import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancaria
 import { DatosCompartidosService, Notificacion } from 'src/app/servicios/datos-compartidos.service'; 
 import { UtilsService } from 'src/app/rest/utils.service';
 import { ConfirmacionComponent } from 'src/app/ui-utils/confirmacion/confirmacion.component';
+import { OperacionService } from 'src/app/rest/operacion.service';
 
 interface Cambio {
   monto: number;
@@ -36,6 +37,7 @@ export class OperacionComponent implements OnInit{
     transferencia: 'transferencia',
     finalizar: 'finalizar'
   };
+  operacionId:number=0
   stepper:any={}
   cuentaTransferencia: any
   notificaciones: Notificacion[] = []
@@ -70,6 +72,9 @@ export class OperacionComponent implements OnInit{
   transferenciaForm = this.formBuilder.group({
     deAcuerdo: [false, [Validators.required]]
   });
+  finalizaForm = this.formBuilder.group({
+    codigoTransferencia: ['', [Validators.required]]
+  });
 
   isEditable = true;
 
@@ -81,10 +86,10 @@ export class OperacionComponent implements OnInit{
     private restBancos: BancosService,
     private datosCompartidos: DatosCompartidosService,
     private restUtils: UtilsService,
+    private restOperacion: OperacionService,
     @Inject(MAT_DIALOG_DATA) data:Cambio
   ){
     this.cambio = data
-    console.warn(this.cambio)
   }
 
   ngOnInit(): void {
@@ -117,6 +122,10 @@ export class OperacionComponent implements OnInit{
     })
   }
 
+  guardarFinalizar():void{
+    this.close(true)
+  }
+
   onStepChange(event: StepperSelectionEvent): void {
     let stepId = event.selectedStep.state;
     switch (stepId) {
@@ -135,20 +144,24 @@ export class OperacionComponent implements OnInit{
   recuperaCuentaLCExchange(stepper:any):void{
     this.stepper = stepper
     if(!this.cuentaTransferencia){
-      this.estaCargando = true
-      this.restBancos.recuperaDestinoTransferencia(
-        this.cambio.origen.bancoId,
-        this.cambio.origen.moneda
-      ).subscribe({next: (response:any) => {
-          this.estaCargando = false
-          this.cuentaTransferencia = response
-          this.stepper.next()
-        },
-        error: (error:any) => {
-          this.notif.notify('error',error);
-          this.estaCargando = false
-        }
-      });
+      if(this.cuentasFormGroup.valid){
+        this.estaCargando = true
+        this.restBancos.recuperaDestinoTransferencia(
+          this.cambio.origen.bancoId,
+          this.cambio.origen.moneda
+        ).subscribe({next: (response:any) => {
+            this.estaCargando = false
+            this.cuentaTransferencia = response
+            this.stepper.next()
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
+      }else{
+        this.notif.notify('warning','Complete el formulario con datos válidos por favor');
+      }
     }else{
       this.stepper.next()
     }
@@ -165,7 +178,28 @@ export class OperacionComponent implements OnInit{
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.stepper.next()
+        this.estaCargando = true
+        let datos ={
+          monto: this.cambio.monto,
+          cuentaOrigenId: this.cuentasFormGroup.controls['cuentaOrigen'].value,
+          cuentaDestinoId: this.cuentasFormGroup.controls['cuentaDestino'].value,
+          cuentaTransferenciaId: this.cuentaTransferencia.id,
+          tipoCambioId: this.cambio.tipoCambioId,
+          personal: {}
+        }
+        if(this.pedirDatospersonales()){
+          datos.personal = this.personalForm.value
+        }
+        this.restOperacion.registraTransferencia(datos).subscribe({next: (response:any) => {
+            this.estaCargando = false
+            this.operacionId = response
+            this.stepper.next()
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
       }
     })
   }
@@ -185,6 +219,9 @@ export class OperacionComponent implements OnInit{
   }
 
   close(data:boolean){
+    if(data){
+      this.notif.notify('success','Operación registrada con éxito, consulte MIS OPERACIONES para obtener más detalles');
+    }
     this.dialogRef.close(data);
   }
 
