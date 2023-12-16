@@ -4,6 +4,7 @@ import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
 import { NotifierService } from 'angular-notifier';
 import { BancosService } from 'src/app/rest/bancos.service';
+import { TokenService } from 'src/app/servicios/token.service';
 
 @Component({
   selector: 'app-cuentas-bancarias',
@@ -21,7 +22,8 @@ export class CuentasBancariasComponent implements OnInit{
     private dialogRef: MatDialogRef<CuentasBancariasComponent>,
     private formBuilder: FormBuilder,
     private notif: NotifierService,
-    private restBancos: BancosService
+    private restBancos: BancosService,
+    private tokenService: TokenService
   ){
     this.cuentaBancariaForm = this.formBuilder.group({
       tipoCuenta: ['', [Validators.required]],
@@ -29,12 +31,28 @@ export class CuentasBancariasComponent implements OnInit{
       banco: ['', [Validators.required]],
       numeroCuenta: ['', Validators.required],
       nombre: ['', Validators.required],
-      deAcuerdo: [false, [Validators.required]]
+      ruc: [''],
+      deAcuerdo: [true, [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.recupertaBancos();
+    if(this.esCliente()){
+      this.cuentaBancariaForm.controls['deAcuerdo'].setValue(false);
+    }
+    if(this.esOperador()){
+      this.cuentaBancariaForm.controls['ruc'].setValidators([Validators.required]);
+      this.cuentaBancariaForm.controls['ruc'].updateValueAndValidity();
+    }
+  }
+
+  esCliente():boolean{
+    return this.tokenService.esCliente();
+  }
+
+  esOperador():boolean{
+    return this.tokenService.esOperador();
   }
 
   recupertaBancos():void{

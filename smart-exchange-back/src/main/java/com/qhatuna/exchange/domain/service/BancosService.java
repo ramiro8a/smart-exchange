@@ -15,11 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -28,10 +24,31 @@ public class BancosService {
     private final SessionInfoService sessionInfoService;
     private final CuentaBancariaRepository cuentaBancariaRepository;
 
+    public CuentaBancariaResponse recuperaDestinoTransferencia(Long bancoId, Integer moneda){
+        List<CuentaBancaria> cuentasBancarias = cuentaBancariaRepository.recuperaCuentaTransferencia(bancoId, moneda);
+        if (!cuentasBancarias.isEmpty()){
+            return CuentaBancaria.aResponse(cuentasBancarias.get(0));
+        }else{
+            List<CuentaBancaria> cuentasBancariasDefault = cuentaBancariaRepository.recuperaCuentaTransferenciaDefault(moneda);
+            if(!cuentasBancariasDefault.isEmpty()){
+                return CuentaBancaria.aResponse(cuentasBancariasDefault.get(0));
+            }else {
+                throw new ProviderException(ErrorMsj.MONEDA_NO_CONFIGURADA.getMsj(), ErrorMsj.MONEDA_NO_CONFIGURADA.getCod());
+            }
+        }
+    }
+
     public List<CuentaBancariaResponse> recuperaCuentasBancariasCliente(){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
-        List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosPorUsuarioId(usuario.getId());
-        return cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
+        List<CuentaBancariaResponse> lista;
+        if(usuario.esCliente()){
+            List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosPorUsuarioId(usuario.getId());
+            lista = cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
+        }else {
+            List<CuentaBancaria> cuentasBacarias = cuentaBancariaRepository.recuperaActivosEmpresa();
+            lista = cuentasBacarias.stream().map(CuentaBancaria::aResponse).toList();
+        }
+        return lista;
     }
 
     public CuentasRegistradasResponse recuperaCuentasRegistradasCliente(Integer monedaOrigen, Integer monedaDestino){
@@ -80,7 +97,11 @@ public class BancosService {
                 .usuarioId(usuario.getId())
                 .usuarioCreacion(usuario.getId())
                 .banco(banco)
+                .ruc(request.ruc())
                 .build();
+        if(!usuario.esCliente()){
+            cuenta.setUsuarioId(0L);
+        }
         return CuentaBancaria.aResponse(cuentaBancariaRepository.save(cuenta));
     }
 }

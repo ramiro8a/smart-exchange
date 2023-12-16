@@ -24,7 +24,8 @@ const routes: Routes = [
     ], canActivate:[ClienteGuard] },
     {path: 'operaciones', children: [
       {path: 'principal', component: OperacionesComponent },
-      {path: 'tipo-cambio', component: TipoCambioComponent }
+      {path: 'tipo-cambio', component: TipoCambioComponent },
+      {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
     ], canActivate:[OperadorGuard]},
     {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
   ]

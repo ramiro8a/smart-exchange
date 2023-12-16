@@ -63,7 +63,7 @@ export class LoginComponent {
                 } else if (this.tokenService.esGerente()) {
                   this.router.navigate(['/reportes'])
                 } else if (this.tokenService.esOperador()) {
-                  this.router.navigate(['/operaciones'])
+                  this.router.navigate(['/operaciones/principal'])
                 } else if (this.tokenService.esCliente()) {
                   this.router.navigate(['/cliente/nueva-operacion'])
                 }else{

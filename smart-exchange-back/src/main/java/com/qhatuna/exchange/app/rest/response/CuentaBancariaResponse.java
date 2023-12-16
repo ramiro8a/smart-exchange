@@ -5,8 +5,10 @@ public record CuentaBancariaResponse(
         Integer tipoCuenta,
         Integer moneda,
         Long banco,
+        String bancoNombre,
         String numeroCuenta,
         String nombre,
-        Integer estado
+        Integer estado,
+        String ruc
 ) {
 }

@@ -5,5 +5,6 @@ public record CuentaBancariaRequest (
         Integer moneda,
         Long banco,
         String numeroCuenta,
-        String nombre
+        String nombre,
+        String ruc
 ) {}

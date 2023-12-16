@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,6 +27,7 @@ public class CuentaBancaria extends BaseModel{
     @Column(name = "usuario_id")
     private Long usuarioId;
     private String nombre;
+    private String ruc;
 
     public static CuentaBancariaResponse aResponse(CuentaBancaria cuenta){
         return new CuentaBancariaResponse(
@@ -32,9 +35,11 @@ public class CuentaBancaria extends BaseModel{
                 cuenta.getTipoCuenta(),
                 cuenta.getMoneda(),
                 cuenta.getBanco().getId(),
+                cuenta.getBanco().getNombre(),
                 cuenta.getNroCuenta(),
                 cuenta.getNombre(),
-                cuenta.getEstado()
+                cuenta.getEstado(),
+                cuenta.getRuc()
         );
     }
 }

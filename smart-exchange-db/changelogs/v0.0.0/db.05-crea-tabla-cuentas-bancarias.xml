@@ -24,6 +24,8 @@
             <column name="BANCO_ID" type="BIGINT" remarks="Id del banco"/>
             <column name="NRO_CUENTA" type="VARCHAR(250)" remarks="Nro de cuenta"/>
             <column name="NOMBRE" type="VARCHAR(200)" remarks="Nombre de la cuenta"/>
+            <column name="RUC" type="VARCHAR(100)" remarks="Ruc para la cuenta"/>
+            <column name="QR" type="BYTEA" remarks="Imagen QR"/>
             <column name="USUARIO_ID" type="BIGINT" remarks="Id del usuario al que pertenece"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_cuenta_banco"

@@ -7,9 +7,59 @@
       <mat-card-title>Nueva operación <small class="descripcion-cambio accent-background">{{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></mat-card-title>
     </mat-card-header>
         <mat-card-content>
-            <mat-stepper linear #stepper>
+            <mat-stepper linear #stepper (selectionChange)="onStepChange($event)">
+                <!-- DATOS PERSONALES -->
+                <mat-step [stepControl]="personalForm" [editable]="isEditable" *ngIf="pedirDatospersonales()" [state]="pasoIds.personal" >
+                    <br>
+                    <form [formGroup]="personalForm" autocomplete="off">
+                        <ng-template matStepLabel>Datos personales</ng-template>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Tipo documento</mat-label>
+                                <mat-select formControlName="tipoDocumento">
+                                    <mat-option *ngFor="let item of tipoDocumentos" [value]="item.codigo">
+                                    {{item.nombre}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Número documento</mat-label>
+                                <input matInput type="text" formControlName="nroDocumento">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>{{esPersona()?'Nombres':'Razón social'}}</mat-label>
+                                <input matInput type="text" formControlName="nombres">
+                            </mat-form-field>
+                    <!--             <mat-form-field appearance="outline">
+                                <mat-label>Segundo nombre</mat-label>
+                                <input matInput type="text" formControlName="sNombre">
+                            </mat-form-field> -->
+                            <mat-form-field appearance="outline" *ngIf="esPersona()">
+                                <mat-label>Apellido paterno</mat-label>
+                                <input matInput type="text" formControlName="paterno">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" *ngIf="esPersona()">
+                                <mat-label>Apellido materno</mat-label>
+                                <input matInput type="text" formControlName="materno">
+                            </mat-form-field>
+                    <!--             <mat-form-field appearance="outline">
+                                <mat-label>Teléfono</mat-label>
+                                <input matInput type="text" formControlName="telefono">
+                            </mat-form-field> -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>Celular</mat-label>
+                                <input matInput type="text" formControlName="celular">
+                            </mat-form-field>
+                            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Exchange a almacenar mis datos personales</mat-slide-toggle>
+                        <div class="botones-operacion">
+                            <button matStepperNext mat-fab extended color="primary" [disabled]="estaCargando || !estaDeAcuerdo()">
+                                Siguiente
+                            </button>
+                        </div>
+                    </form>
+                </mat-step>
+
                 <!-- CUENTAS -->
-                <mat-step [stepControl]="cuentasFormGroup" [editable]="isEditable">
+                <mat-step [stepControl]="cuentasFormGroup" [editable]="isEditable" [state]="pasoIds.cuentas" >
                   <form [formGroup]="cuentasFormGroup">
                     <ng-template matStepLabel>Origen cuenta y destino</ng-template>
                     <div>
@@ -56,70 +106,63 @@
                         <mat-form-field appearance="outline" class="select-cuenta">
                             <mat-label>Cuenta</mat-label>
                             <mat-select formControlName="cuentaDestino">
-                                <mat-option *ngFor="let item of cuentasDestino" [value]="item.id">
+                                <mat-option *ngFor="let item of cuentasDestinoActual" [value]="item.id">
                                     {{item.nombre}} {{item.numeroCuenta}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <div class="botones-operacion">
-                        <button mat-fab extended color="primary" matStepperNext>Siguiente</button>
+                        <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando" *ngIf="pedirDatospersonales()">
+                            Atrás
+                        </button>&nbsp;
+                        <button mat-fab extended color="primary" (click)="recuperaCuentaLCExchange(stepper)" [disabled]="estaCargando">
+                            Siguiente
+                        </button>
                     </div>
                   </form>
                 </mat-step>
 
-                <!-- DATOS PERSONALES -->
-                <mat-step [stepControl]="personalForm" [editable]="isEditable" *ngIf="pedirDatospersonales()">
-                <form [formGroup]="personalForm" autocomplete="off">
-                    <ng-template matStepLabel>Datos personales</ng-template>
-                    <mat-card-content>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Tipo documento</mat-label>
-                            <mat-select formControlName="tipoDocumento">
-                                <mat-option *ngFor="let item of tipoDocumentos" [value]="item.codigo">
-                                {{item.nombre}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Número documento</mat-label>
-                            <input matInput type="text" formControlName="nroDocumento">
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>{{esPersona()?'Nombres':'Razón social'}}</mat-label>
-                            <input matInput type="text" formControlName="nombres">
-                        </mat-form-field>
-                <!--             <mat-form-field appearance="outline">
-                            <mat-label>Segundo nombre</mat-label>
-                            <input matInput type="text" formControlName="sNombre">
-                        </mat-form-field> -->
-                        <mat-form-field appearance="outline" *ngIf="esPersona()">
-                            <mat-label>Apellido paterno</mat-label>
-                            <input matInput type="text" formControlName="paterno">
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" *ngIf="esPersona()">
-                            <mat-label>Apellido materno</mat-label>
-                            <input matInput type="text" formControlName="materno">
-                        </mat-form-field>
-                <!--             <mat-form-field appearance="outline">
-                            <mat-label>Teléfono</mat-label>
-                            <input matInput type="text" formControlName="telefono">
-                        </mat-form-field> -->
-                        <mat-form-field appearance="outline">
-                            <mat-label>Celular</mat-label>
-                            <input matInput type="text" formControlName="celular">
-                        </mat-form-field>
-                        <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Exchange a almacenar mis datos personales</mat-slide-toggle>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
-                            Atrás
-                        </button>&nbsp;
-                        <button matStepperNext mat-fab extended color="primary" [disabled]="estaCargando || !estaDeAcuerdo()">
-                            Siguiente
-                        </button>
-                    </mat-card-actions>
-                </form>
+                <!-- TRANSFIERE A LC EXCHANGE -->
+                <mat-step [stepControl]="transferenciaForm" [editable]="isEditable" [state]="pasoIds.transferencia" >
+                    <br>
+                    <form [formGroup]="transferenciaForm" autocomplete="off">
+                        <ng-template matStepLabel>Transfiere a LC Exchange</ng-template>
+                        <div class="tranferencia">
+                            <span>1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</span> <br>
+                        <table>
+                            <tr>
+                                <td>Banco</td><th>{{cuentaTransferencia?.bancoNombre}}</th><td></td>
+                            </tr>
+                            <tr>
+                                <td>Número cuenta</td><th>{{cuentaTransferencia?.numeroCuenta}}</th>
+                                <td><mat-icon (click)="copiar(cuentaTransferencia?.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                            </tr>
+                            <tr>
+                                <td>RUC</td><th>{{cuentaTransferencia?.ruc}}</th>
+                                <td><mat-icon (click)="copiar(cuentaTransferencia?.ruc)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                            </tr>
+                            <tr>
+                                <td>Titular de la cuenta</td><th>LC Exchange</th>
+                            </tr>
+                            <tr>
+                                <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <span>2. Guarda el código de tu transferencia para el siguiente paso</span> <br>
+                        <div class="letra-pequena"><small><i>LC Exchange NO realiza débito automático de ninguna cuenta.</i></small></div>
+                        </div>
+                        <div class="botones-operacion">
+                            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Ya hice la transferencia</mat-slide-toggle> <br>
+                            <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
+                                Atrás
+                            </button>&nbsp;
+                            <button mat-fab extended color="primary" (click)="guardaTransferencia(stepper)" [disabled]="estaCargando || !transfirio()">
+                                Siguiente
+                            </button>
+                        </div>
+                    </form>
                 </mat-step>
 
                 <!-- FINALIZANDO -->

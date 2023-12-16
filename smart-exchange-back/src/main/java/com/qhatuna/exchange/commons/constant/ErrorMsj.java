@@ -19,7 +19,8 @@ public enum ErrorMsj {
     CORREO_EXISTE("ADV-0001", "El correo ya existe"),
     CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),
     TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado"),
-    BANCO_NO_EXISTE("ADV-0004", "El banco no existe");
+    BANCO_NO_EXISTE("ADV-0004", "El banco no existe"),
+    MONEDA_NO_CONFIGURADA("ADV-0005", "Actualmente LC Exchange no trabaja con la moneda origen");
     final String cod;
     final String msj;
     final String msjTec;

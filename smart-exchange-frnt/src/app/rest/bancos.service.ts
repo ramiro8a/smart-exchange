@@ -23,6 +23,12 @@ export class BancosService {
     )
   }
 
+  recuperaDestinoTransferencia(banco: number| undefined, moneda:number): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/destino-transferencia/${banco}/${moneda}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   recuperaBancosActivos(): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}`).pipe(
       catchError(this.errorHandler)
