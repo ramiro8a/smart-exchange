@@ -3,18 +3,19 @@ package com.qhatuna.exchange.domain.service;
 import com.qhatuna.exchange.app.rest.request.TipoCambioRequest;
 import com.qhatuna.exchange.app.rest.response.TipoCambioResponse;
 import com.qhatuna.exchange.commons.constant.Const;
+import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.domain.model.TipoCambio;
 import com.qhatuna.exchange.domain.repository.TipoCambioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -28,20 +29,21 @@ public class TipoCambioService {
             if(request.fecha().isAfter(LocalDate.now())){
                 ultimosTipoCambios = tipoCambioRepository.buscaTipoDeCambioPorMonedaYFechaDespues(
                         request.moneda(),
+                        request.tipo(),
                         request.fecha()
                 );
             }else{
                 ultimosTipoCambios = tipoCambioRepository.buscaTipoDeCambioPorMoneda(
                         request.moneda(),
+                        request.tipo(),
                         LocalDate.now()
                 );
             }
-            ultimosTipoCambios.forEach(item->{
-                item.setEstado(Const.EstadoRegistro.DESHABILITADO);
-            });
+            ultimosTipoCambios.forEach(item-> item.setEstado(Const.EstadoRegistro.DESHABILITADO));
             tipoCambioRepository.saveAll(ultimosTipoCambios);
         }
         TipoCambio tipoCambio = TipoCambio.builder()
+                .tipo(request.tipo())
                 .venta(request.venta())
                 .compra(request.compra())
                 .fecha(request.fecha())
@@ -51,7 +53,7 @@ public class TipoCambioService {
                 )
                 .build();
         tipoCambio = tipoCambioRepository.save(tipoCambio);
-        return TipoCambio.aResponse(tipoCambio);
+        return TipoCambio.aResponseList(tipoCambio);
     }
 
     public List<TipoCambioResponse> recuperaUltimoCincoDias(Integer moneda){
@@ -64,28 +66,27 @@ public class TipoCambioService {
                 hasta
         );
         return tiposDeCambios.stream()
-                .map(TipoCambio::aResponse)
+                .map(TipoCambio::aResponseList)
                 .toList();
     }
 
     public TipoCambioResponse recuperaTipoCambioUSD(Integer moneda){
-        TipoCambio tipoCambio=null;
-        Optional<TipoCambio> tipoCambioActual = tipoCambioRepository.buscaTipoDeCambioPorMonedaYFecha(
+        List<TipoCambio> oficial = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
                 moneda,
-                LocalDate.now()
+                ConstValues.TC_OFICIAL,
+                LocalDate.now(),
+                PageRequest.of(0, 1)
         );
-        if (tipoCambioActual.isPresent()){
-            tipoCambio = tipoCambioActual.get();
-        }else{
-            Optional<TipoCambio> ultimoTipoCambio = tipoCambioRepository.buscaTipoDeCambioPorMoneda(
-                    moneda
-            );
-            if (ultimoTipoCambio.isPresent()){
-                tipoCambio = ultimoTipoCambio.get();
-            }else{
-                throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
-            }
+        List<TipoCambio> empresa = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                moneda,
+                ConstValues.TC_EMPRESA,
+                LocalDate.now(),
+                PageRequest.of(0, 1)
+        );
+        if(oficial.isEmpty() || empresa.isEmpty()){
+            throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
         }
-        return TipoCambio.aResponse(tipoCambio);
+
+        return TipoCambio.aResponse(empresa.get(0), oficial.get(0));
     }
 }

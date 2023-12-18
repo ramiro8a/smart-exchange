@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TipoCambioRequest (
+        Integer tipo,
         boolean porDefecto,
         LocalDate fecha,
         Integer moneda,
