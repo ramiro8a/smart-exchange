@@ -1,4 +1,4 @@
-import { Component,Inject } from '@angular/core';
+import { Component,Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
@@ -10,7 +10,7 @@ import { UsuariosService } from 'src/app/rest/usuarios.service';
   templateUrl: './datos-personales.component.html',
   styleUrls: ['./datos-personales.component.sass']
 })
-export class DatosPersonalesComponent {
+export class DatosPersonalesComponent implements OnInit{
   estaCargando: boolean = false
   personalForm: FormGroup;
   tipoDocumentos: any[] = Const.TIPO_DOCUMENTOS
@@ -32,6 +32,17 @@ export class DatosPersonalesComponent {
                 deAcuerdo: [false, [Validators.required]]
               });
     }
+  
+  ngOnInit(): void {
+    this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
+      if(tipoDocumento===2){
+        this.personalForm.controls['paterno'].setValidators([]);
+      }else{
+        this.personalForm.controls['paterno'].setValidators([Validators.required]);
+      }
+      this.personalForm.controls['paterno'].updateValueAndValidity();
+    });
+  }
 
   registra():void{
     if(this.personalForm.valid){

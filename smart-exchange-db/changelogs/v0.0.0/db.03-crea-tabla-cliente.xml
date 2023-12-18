@@ -30,6 +30,7 @@
             <column name="DNI_ANVERSO" type="VARCHAR(250)" remarks="Foto del DNI anverso"/>
             <column name="DNI_REVERSO" type="VARCHAR(250)" remarks="Foto del DNI reverso"/>
             <column name="USUARIO_ID" type="BIGINT"/>
+            <column name="VALIDADO" type="BOOLEAN" defaultValueBoolean="false" remarks="Si los datos personales fueron validados"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_cliente_usuario"
             baseTableName="T_CLIENTE"

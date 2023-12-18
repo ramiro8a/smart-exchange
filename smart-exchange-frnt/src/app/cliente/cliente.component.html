@@ -27,7 +27,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <small class="extra accent-color">Ahorras 0.234% más que en el banco</small><br>
+        <small class="extra accent-color">Ahorro estimado {{ahorroImporte | number:'1.2-2'}} {{recuperaNombre(recibo.cod)}}</small><br>
         <button mat-fab extended color="primary" [disabled]="tipoCambio?false:true">
             INICIAR OPERACIÓN
         </button>

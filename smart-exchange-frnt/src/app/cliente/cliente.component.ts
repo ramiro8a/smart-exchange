@@ -26,12 +26,14 @@ export class ClienteComponent implements OnInit{
     img: 'assets/img/usa.png',
     cod: Const.USD_ISO
   }
+  ahorroImporte:number=0
   envio = this.usd
   recibo = this.soles
   tipoCambio: any;
   cuentasRegistradas: any[] = []
   bancos: any[]=[]
   operacionForm: FormGroup;
+  monedas: any[] = Const.CUENTA_MONEDAS_CLIENTE
   
 
   constructor(
@@ -53,8 +55,10 @@ export class ClienteComponent implements OnInit{
       let montoRecibe = 0
       if(this.envio.cod===Const.USD_ISO){
         montoRecibe = this.redondearHalfUp(valorEnvio*this.tipoCambio.compra, 2)
+        this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.compra)-(valorEnvio*this.tipoCambio.compraOficial), 2)
       }else{
         montoRecibe = this.redondearHalfUp(valorEnvio/this.tipoCambio.venta, 2)
+        this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.ventaOficial)-(valorEnvio*this.tipoCambio.venta), 2)
       }
       this.operacionForm.controls['recibo'].setValue(montoRecibe);
     });
@@ -127,6 +131,11 @@ export class ClienteComponent implements OnInit{
   redondearHalfUp(numero: number, decimales: number): number {
     const factor = Math.pow(10, decimales);
     return Math.round(numero * factor) / factor;
+  }
+
+  recuperaNombre(codig:number):string{
+    const item = this.monedas.find(elemento => elemento.codigo == codig);
+    return item ? item.nombre : '';
   }
 
 }

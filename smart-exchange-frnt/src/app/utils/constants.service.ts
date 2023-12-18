@@ -19,3 +19,7 @@ export const CUENTA_MONEDAS_CLIENTE = [
     {codigo: SOLES_ISO, nombre: 'Soles'},
     {codigo: USD_ISO, nombre: 'Dólares'},
 ]
+export const TIPO_CAMBIOS = [
+    {codigo: 1, nombre: 'Oficial'},
+    {codigo: 2, nombre: 'Empresa'},
+]

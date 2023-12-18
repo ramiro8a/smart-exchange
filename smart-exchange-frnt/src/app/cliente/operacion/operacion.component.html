@@ -51,7 +51,7 @@
                             </mat-form-field>
                             <mat-slide-toggle formControlName="deAcuerdo" color="primary">Authorizo a LC Exchange a almacenar mis datos personales</mat-slide-toggle>
                         <div class="botones-operacion">
-                            <button matStepperNext mat-fab extended color="primary" [disabled]="estaCargando || !estaDeAcuerdo()">
+                            <button mat-fab extended color="primary" (click)="guardaDatosPersonal(stepper)" [disabled]="estaCargando || !estaDeAcuerdo()">
                                 Siguiente
                             </button>
                         </div>

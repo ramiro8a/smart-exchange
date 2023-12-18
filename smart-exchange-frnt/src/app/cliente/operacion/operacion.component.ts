@@ -10,6 +10,7 @@ import { DatosCompartidosService, Notificacion } from 'src/app/servicios/datos-c
 import { UtilsService } from 'src/app/rest/utils.service';
 import { ConfirmacionComponent } from 'src/app/ui-utils/confirmacion/confirmacion.component';
 import { OperacionService } from 'src/app/rest/operacion.service';
+import { UsuariosService } from 'src/app/rest/usuarios.service';
 
 interface Cambio {
   monto: number;
@@ -87,6 +88,7 @@ export class OperacionComponent implements OnInit{
     private datosCompartidos: DatosCompartidosService,
     private restUtils: UtilsService,
     private restOperacion: OperacionService,
+    private restUsuario: UsuariosService,
     @Inject(MAT_DIALOG_DATA) data:Cambio
   ){
     this.cambio = data
@@ -120,6 +122,14 @@ export class OperacionComponent implements OnInit{
         }
       })
     })
+    this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
+      if(tipoDocumento===2){
+        this.personalForm.controls['paterno'].setValidators([]);
+      }else{
+        this.personalForm.controls['paterno'].setValidators([Validators.required]);
+      }
+      this.personalForm.controls['paterno'].updateValueAndValidity();
+    });
   }
 
   guardarFinalizar():void{
@@ -141,6 +151,35 @@ export class OperacionComponent implements OnInit{
     }
   }
 
+
+  guardaDatosPersonal(stepper:any):void{
+    this.stepper = stepper
+    if(this.personalForm.valid){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        titulo: 'CONFIRME',
+        descripcion:'Los datos ingresados son los correctos y pueden ser validados por el sistema'
+      } 
+      const dialogRef = this.dialog.open(ConfirmacionComponent, dialogConfig)
+      dialogRef.disableClose = true;
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          this.restUsuario.registraDatosPersonalesCliente(this.personalForm.value).subscribe({next: (response:any) => {
+              this.estaCargando = false
+              this.stepper.next()
+            },
+            error: (error:any) => {
+              this.notif.notify('error',error);
+              this.estaCargando = false
+            }
+          });
+        }
+      })
+    }else{
+      this.notif.notify('warning','Complete el formulario con datos válidos por favor');
+    }
+  }
+  
   recuperaCuentaLCExchange(stepper:any):void{
     this.stepper = stepper
     if(!this.cuentaTransferencia){
@@ -186,9 +225,6 @@ export class OperacionComponent implements OnInit{
           cuentaTransferenciaId: this.cuentaTransferencia.id,
           tipoCambioId: this.cambio.tipoCambioId,
           personal: {}
-        }
-        if(this.pedirDatospersonales()){
-          datos.personal = this.personalForm.value
         }
         this.restOperacion.registraTransferencia(datos).subscribe({next: (response:any) => {
             this.estaCargando = false
@@ -272,9 +308,11 @@ export class OperacionComponent implements OnInit{
   estaDeAcuerdo():boolean{
     return this.personalForm.get('deAcuerdo')?.value?true:false
   }
+
   transfirio():boolean{
     return this.transferenciaForm.get('deAcuerdo')?.value?true:false
   }
+
   esPersona():boolean{
     return this.personalForm.get('tipoDocumento')?.value != 2
   }

@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 
 interface TipoCambioResponse{
   id: number;
+  tipo: number;
   estado: number;
   moneda: number;
   compra: number;
@@ -21,10 +22,11 @@ interface TipoCambioResponse{
   styleUrls: ['./tipo-cambio.component.sass']
 })
 export class TipoCambioComponent implements OnInit{
+  tipos:any[]=Const.TIPO_CAMBIOS
   tcForm: FormGroup;
   estaCargando: boolean = false
   dataSource: TipoCambioResponse[] = [];
-  displayedColumns: string[] = ['fecha', 'estado','moneda', 'compra', 'venta'];
+  displayedColumns: string[] = ['tipo','fecha', 'estado','moneda', 'compra', 'venta'];
   monedas: any[]=Const.MONEDAS
   constructor(
     private dialog: MatDialog,
@@ -33,6 +35,7 @@ export class TipoCambioComponent implements OnInit{
     private notif: NotifierService,
     ){
       this.tcForm = this.formBuilder.group({
+        tipo: ['', Validators.required],
         fecha: ['', Validators.required],
         moneda: ['', [Validators.required]],
         compra: ['', [Validators.required, ImporteValidator()]],
@@ -61,6 +64,11 @@ export class TipoCambioComponent implements OnInit{
   }
   cambioPassword(item:TipoCambioResponse):void{
 
+  }
+
+  recuperaTipo(codig:number):string{
+    const item = this.tipos.find(elemento => elemento.codigo == codig);
+    return item ? item.nombre : '';
   }
 
   recuperaNombre(codig:number):string{
