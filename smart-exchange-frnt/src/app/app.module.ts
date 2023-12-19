@@ -29,6 +29,8 @@ import { DatosPersonalesComponent } from './cliente/datos-personales/datos-perso
 import { CuentasBancariasComponent } from './cliente/cuentas-bancarias/cuentas-bancarias.component';
 import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
 import { OperacionComponent } from './cliente/operacion/operacion.component';
+import { ValidaClienteComponent } from './operaciones/valida-cliente/valida-cliente.component';
+import { ClientesComponent } from './operaciones/clientes/clientes.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -90,6 +92,8 @@ const customNotifierOptions: NotifierOptions = {
     CuentasBancariasComponent,
     ListaCuentasBancariasComponent,
     OperacionComponent,
+    ValidaClienteComponent,
+    ClientesComponent,
   ],
   imports: [
     BrowserModule,

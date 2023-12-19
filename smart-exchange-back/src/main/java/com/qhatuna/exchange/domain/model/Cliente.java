@@ -29,6 +29,7 @@ public class Cliente  extends BaseModel{
     private String dniAnverso;
     @Column(name = "dni_reverso")
     private String dniReverso;
+    private boolean validado;
     @Column(name = "usuario_id")
     private Long usuarioId;
 /*    @OneToOne

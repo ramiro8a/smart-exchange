@@ -33,11 +33,7 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(
-                                "/auth/**",
-                                "/login",
-                                "/confirma/**",
-                                "/registro"
-                                ).permitAll()
+                                "/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManagement ->
@@ -55,10 +51,11 @@ public class SpringSecurityConfig {
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(86400L);
+        config.applyPermitDefaultValues();
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);

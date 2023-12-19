@@ -1,9 +1,7 @@
 package com.qhatuna.exchange.app.rest.controller;
 
 import com.qhatuna.exchange.app.rest.request.TipoCambioRequest;
-import com.qhatuna.exchange.app.rest.request.UsuarioRequest;
 import com.qhatuna.exchange.app.rest.response.TipoCambioResponse;
-import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.domain.service.TipoCambioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

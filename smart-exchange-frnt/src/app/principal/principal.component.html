@@ -36,7 +36,7 @@
           </mat-menu>
           <mat-menu #notif="matMenu">
             <ng-container *ngFor="let item of notificaciones">
-              <button (click)="ejecutarMetodo(item.metodo)" mat-menu-item>{{item.descripcion}}</button>
+              <button (click)="ejecutarMetodo(item.metodo, item.valor)" mat-menu-item>{{item.descripcion}}</button>
             </ng-container>
           </mat-menu>
     </span>

@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 public class ClienteService {
     private final ClienteRepository repository;
     private final SessionInfoService sessionInfoService;
+    private final NotificacionService notificacionService;
+    private final SunatValidacionService sunatValidacionService;
 
     public ClienteResponse crea(ClienteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
+        boolean clienteValido = sunatValidacionService.datosValidos(request);
         Cliente cliente = Cliente.builder()
                 .tipoDocumento(request.tipoDocumento())
                 .nroDocumento(request.nroDocumento())
@@ -25,7 +28,12 @@ public class ClienteService {
                 .paterno(request.paterno())
                 .materno(request.materno())
                 .usuarioId(usuario.getId())
+                .validado(clienteValido)
                 .build();
-        return Cliente.aResponse(repository.save(cliente));
+        cliente = repository.save(cliente);
+        if(!clienteValido){
+            notificacionService.notifValidarCLiente(cliente);
+        }
+        return Cliente.aResponse(cliente);
     }
 }

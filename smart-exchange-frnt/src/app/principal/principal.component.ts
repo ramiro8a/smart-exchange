@@ -4,6 +4,9 @@ import { UtilsService } from '../rest/utils.service';
 import { DatosCompartidosService, Notificacion } from '../servicios/datos-compartidos.service';
 import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
 import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-personales.component';
+import { SocketService } from '../servicios/socket.service';
+import { ValidaClienteComponent } from '../operaciones/valida-cliente/valida-cliente.component';
+
 
 @Component({
   selector: 'app-principal',
@@ -12,21 +15,33 @@ import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-pers
 })
 export class PrincipalComponent implements OnInit{
   notificaciones: Notificacion[] = []
+  private stompClient: any;
   constructor(
     private tokenService: TokenService,
     private restUtils: UtilsService,
     private datosCompartidos: DatosCompartidosService,
     private dialog: MatDialog,
-    ){}
+    private socket: SocketService
+    ){
+    }
 
   ngOnInit(): void {
-    if(this.tokenService.esCliente()){
-      this.recuperaNotificaciones()
-      this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
-        this.notificaciones = notificaciones;
-      });
+    this.recuperaNotificaciones()
+    this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
+      this.notificaciones = notificaciones;
+      console.warn(this.notificaciones.length)
+    });
+    if(this.tokenService.esOperador()){
+      this.socket.joinRoom("OPERADOR");
     }
   }
+
+
+/*   escuchaNotificaciones() {
+    this.socket.getMessageSubject().subscribe((messages: any) => {
+      console.warn(messages)
+    });
+  } */
 
   recuperaNotificaciones():void{
     this.restUtils.recuperaNotificaciones().subscribe({
@@ -41,13 +56,27 @@ export class PrincipalComponent implements OnInit{
     });
   }
 
-  ejecutarMetodo(nombreMetodo: string) {
+  ejecutarMetodo(nombreMetodo: string, valor:string) {
+    console.error(`método '${nombreMetodo}' valor '${valor}'`);
     const metodo = (this as any)[nombreMetodo];
     if (typeof metodo == 'function') {
       metodo.bind(this)();
-    } else {
-      console.error(`No existe un método llamado '${nombreMetodo}'`);
     }
+    if (nombreMetodo=='validaDatosCliente') {
+      this.validaDatosClienteMetodo(valor)
+    }
+  }
+
+  validaDatosClienteMetodo(clientId:string){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data =Number(clientId)
+    const dialogRef = this.dialog.open(ValidaClienteComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaNotificaciones()
+      }
+    })
   }
 
   pedirDatospersonales():boolean{

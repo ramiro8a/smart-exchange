@@ -19,11 +19,12 @@ public class UtilsService {
     public List<NotificacionResponse> notificaciones(){
         List<NotificacionResponse> lista = new ArrayList<>();
         Usuario usuario = sessionInfoService.getSession().getUsusario();
-        Optional<Cliente> cliente = clienteRepository.findByUsuarioId(usuario.getId());
-        if (cliente.isEmpty() || cliente.get().getNombres().isBlank()) {
-            lista.add(new NotificacionResponse("Datos personales", "datosPersonales"));
+        if(usuario.esCliente()){
+            Optional<Cliente> cliente = clienteRepository.findByUsuarioId(usuario.getId());
+            if (cliente.isEmpty() || cliente.get().getNombres().isBlank()) {
+                lista.add(new NotificacionResponse("Datos personales", "datosPersonales", null));
+            }
         }
         return lista;
-
     }
 }

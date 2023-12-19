@@ -4,6 +4,7 @@ import { Observable, Subject,BehaviorSubject } from 'rxjs'
 export interface Notificacion{
   descripcion: string;
   metodo: string;
+  valor: string;
 }
 
 @Injectable({
@@ -16,6 +17,11 @@ export class DatosCompartidosService {
 
   actualizarNotificaciones(nuevasNotificaciones: Notificacion[]) {
     this.notificacionesSubject.next(nuevasNotificaciones);
+  }
+  agregarNotificacion(nuevaNotificacion: Notificacion) {
+    const notificacionesActuales = this.notificacionesSubject.value;
+    const notificacionesActualizadas = [...notificacionesActuales, nuevaNotificacion];
+    this.notificacionesSubject.next(notificacionesActualizadas);
   }
 
 }
