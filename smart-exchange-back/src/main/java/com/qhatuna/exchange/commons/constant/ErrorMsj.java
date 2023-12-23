@@ -21,9 +21,11 @@ public enum ErrorMsj {
     TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado"),
     BANCO_NO_EXISTE("ADV-0004", "El banco no existe"),
     MONEDA_NO_CONFIGURADA("ADV-0005", "Actualmente LC Exchange no trabaja con la moneda origen"),
-    CUENTA_ORIGEN("ADV-0006", "Cuenta origen no existe"),
-    CUENTA_DESTINO("ADV-0007", "Cuenta destino no existe"),
-    CUENTA_TRANSFERENCIA("ADV-0008", "Cuenta transferencia no existe");
+    CUENTA_NO_EXISTE("ADV-0006", "Cuenta origen no existe"),
+    CLIENTE_NOEXISTE("ADV-0009", "El cliente no existe"),
+    TIPO_BUSQUEDA_NO_EXISTE("ADV-0010", "El tipo de búsqueda no existe"),
+    OPCION_NO_EXISTE("ADV-0011", "La opción no existe"),
+    OPERACION_NOEXISTE("ADV-0012", "La operacion no existe");
     final String cod;
     final String msj;
     final String msjTec;

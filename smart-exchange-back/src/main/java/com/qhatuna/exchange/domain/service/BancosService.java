@@ -104,4 +104,13 @@ public class BancosService {
         }
         return CuentaBancaria.aResponse(cuentaBancariaRepository.save(cuenta));
     }
+
+    public CuentaBancaria recuperaCuentaBancariaPorId(Long id){
+        return cuentaBancariaRepository.findById(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.CUENTA_NO_EXISTE.getMsj(),
+                        ErrorMsj.CUENTA_NO_EXISTE.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
+    }
 }

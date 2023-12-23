@@ -3,7 +3,36 @@ import {  Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import { HttpHeaders } from '@angular/common/http';
+import { ClienteResponse } from './usuarios.service';
+import { CuentaBancariaResponse } from './bancos.service';
+import { TipoCambioResponse } from './tipo-cambio.service';
+import { UsuarioResponse } from './usuarios.service';
+import { HttpParams } from '@angular/common/http';
+
+export interface PaginaOperacionResponse {
+  content: OperacionResponse[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+export interface OperacionResponse{
+  id: number;
+  fechaCreacion: Date;
+  version: number;
+  estado: number;
+  tipoTransferencia: number;
+  monto: number;
+  montoFinal: number;
+  codigoTransferencia: string;
+  ticket: string;
+  cliente: ClienteResponse;
+  cuentaOrigen: CuentaBancariaResponse;
+  cuentaDestino: CuentaBancariaResponse;
+  cuentaTransferencia: CuentaBancariaResponse;
+  tipoCambio: TipoCambioResponse;
+  operador: UsuarioResponse;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +42,26 @@ export class OperacionService {
 
   constructor(private http: HttpClient) { }
 
-  registraTransferencia(data: any): Observable<any> {
+  recuperaOperacionesPaginado(pagina:number, tamano: number, criterios: any): Observable<PaginaOperacionResponse>{
+    let params = new HttpParams();
+    Object.keys(criterios).forEach(key => {
+        if (criterios[key] !== null) {
+            params = params.set(key, criterios[key]);
+        }
+    });
+    console.log(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`)
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`,{ params: params }).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  actualizaOperacion(operacionId:number,opcion:number,data: any): Observable<number> {
+    return this.http.put<any>(`${environment.baseUrl}${this.path}/${operacionId}/${opcion}`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  creaOperacion(data: any): Observable<number> {
     return this.http.post<any>(`${environment.baseUrl}${this.path}`, data).pipe(
       catchError(this.errorHandler)
     )

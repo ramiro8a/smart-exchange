@@ -10,7 +10,9 @@ import { PrincipalComponent } from './principal/principal.component';
 import { ConfirmaComponent } from './confirma/confirma.component';
 import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
 import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
+import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard } from './utils/auht.guard';
+import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
@@ -21,11 +23,13 @@ const routes: Routes = [
     {path: 'cliente', children:[
       {path: 'nueva-operacion', component: ClienteComponent },
       {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
+      {path: 'operaciones', component: MisOperacionesComponent },
     ], canActivate:[ClienteGuard] },
     {path: 'operaciones', children: [
       {path: 'principal', component: OperacionesComponent },
       {path: 'tipo-cambio', component: TipoCambioComponent },
       {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
+      {path: 'clientes/:nroDocumento', component: ClientesComponent },
     ], canActivate:[OperadorGuard]},
     {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
   ]

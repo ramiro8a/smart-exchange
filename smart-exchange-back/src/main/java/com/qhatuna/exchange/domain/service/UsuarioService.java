@@ -118,4 +118,8 @@ public class UsuarioService {
                 +"/confirma/"+token;
     }
 
+    public List<Usuario> recuperaOperadoresActivos(){
+        return usuarioRepository.buscaUsuarioPorNombreDeRol("OPERADOR");
+    }
+
 }

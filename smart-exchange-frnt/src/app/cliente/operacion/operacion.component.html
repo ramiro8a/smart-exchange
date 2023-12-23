@@ -128,33 +128,33 @@
                     <br>
                     <form [formGroup]="transferenciaForm" autocomplete="off">
                         <ng-template matStepLabel>Transfiere a LC Exchange</ng-template>
-                        <div class="tranferencia">
-                            <span>1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</span> <br>
-                        <table>
-                            <tr>
-                                <td>Banco</td><th>{{cuentaTransferencia?.bancoNombre}}</th><td></td>
-                            </tr>
-                            <tr>
-                                <td>Número cuenta</td><th>{{cuentaTransferencia?.numeroCuenta}}</th>
-                                <td><mat-icon (click)="copiar(cuentaTransferencia?.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
-                            </tr>
-                            <tr>
-                                <td>RUC</td><th>{{cuentaTransferencia?.ruc}}</th>
-                                <td><mat-icon (click)="copiar(cuentaTransferencia?.ruc)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
-                            </tr>
-                            <tr>
-                                <td>Titular de la cuenta</td><th>LC Exchange</th>
-                            </tr>
-                            <tr>
-                                <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>
-                                <td></td>
-                            </tr>
-                        </table>
-                        <span>2. Guarda el código de tu transferencia para el siguiente paso</span> <br>
-                        <div class="letra-pequena"><small><i>LC Exchange NO realiza débito automático de ninguna cuenta.</i></small></div>
+                        <div class="area-notificaciones">
+                                <span>1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</span> <br>
+                            <table>
+                                <tr>
+                                    <td>Banco</td><th>{{cuentaTransferencia?.bancoNombre}}</th><td></td>
+                                </tr>
+                                <tr>
+                                    <td>Número cuenta</td><th>{{cuentaTransferencia?.numeroCuenta}}</th>
+                                    <td><mat-icon (click)="copiar(cuentaTransferencia?.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                                </tr>
+                                <tr>
+                                    <td>RUC</td><th>{{cuentaTransferencia?.ruc}}</th>
+                                    <td><mat-icon (click)="copiar(cuentaTransferencia?.ruc)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                                </tr>
+                                <tr>
+                                    <td>Titular de la cuenta</td><th>LC Exchange</th>
+                                </tr>
+                                <tr>
+                                    <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <span>2. Guarda el código de tu transferencia para el siguiente paso</span> <br>
+                            <div class="letra-pequena"><small><i>LC Exchange NO realiza débito automático de ninguna cuenta.</i></small></div>
                         </div>
                         <div class="botones-operacion">
-                            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Ya hice la transferencia</mat-slide-toggle> <br>
+                            <mat-slide-toggle formControlName="transferido" color="primary">Ya hice la transferencia</mat-slide-toggle> <br>
                             <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
                                 Atrás
                             </button>&nbsp;
@@ -170,11 +170,16 @@
                   <br>
                   <form [formGroup]="finalizaForm" autocomplete="off">
                     <ng-template matStepLabel>Finalizando</ng-template>
+                    <div class="area-notificaciones">
+                        <span>En caso de no contar con el código de transferencia solamente marque <i>No lo tengo</i> y guarde la operación</span><br>
                         <mat-form-field appearance="outline">
                             <mat-label>Código transferencia</mat-label>
                             <input matInput type="text" formControlName="codigoTransferencia">
-                        </mat-form-field>
+                        </mat-form-field><br>
+                        <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
+                    </div>
                       <div class="botones-operacion">
+                        <mat-slide-toggle formControlName="noTiene" color="primary">No lo tengo</mat-slide-toggle> <br>
                           <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
                               Atrás
                           </button>&nbsp;

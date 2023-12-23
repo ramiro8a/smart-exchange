@@ -2,11 +2,22 @@ package com.qhatuna.exchange.domain.service;
 
 import com.qhatuna.exchange.app.rest.request.ClienteRequest;
 import com.qhatuna.exchange.app.rest.response.ClienteResponse;
+import com.qhatuna.exchange.commons.constant.Const;
+import com.qhatuna.exchange.commons.constant.ErrorMsj;
+import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.domain.model.Cliente;
 import com.qhatuna.exchange.domain.model.Usuario;
 import com.qhatuna.exchange.domain.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -35,5 +46,55 @@ public class ClienteService {
             notificacionService.notifValidarCLiente(cliente);
         }
         return Cliente.aResponse(cliente);
+    }
+
+    public List<ClienteResponse> lista(Integer page, Integer size, Integer tipo, String valor){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        List<Cliente> clientes;
+        if(tipo.equals(1)){
+            clientes = repository.recuperaTodo(pageable);
+        } else if (tipo.equals(2)) {
+            clientes = repository.recuperaPorApellido(valor, pageable);
+        } else if (tipo.equals(3)) {
+            clientes = repository.recuperaPorNroDocumento(valor, pageable);
+        }else {
+            throw new ProviderException(ErrorMsj.TIPO_BUSQUEDA_NO_EXISTE.getMsj(),
+                    ErrorMsj.TIPO_BUSQUEDA_NO_EXISTE.getCod(),HttpStatus.BAD_REQUEST);
+        }
+        return clientes.stream().map(Cliente::aResponse).toList();
+    }
+
+    public void valida(Long id){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Cliente cliente = recuperaClientePorId(id);
+        cliente.setValidado(!cliente.isValidado());
+        cliente.setUsuarioActualizacion(usuario.getId());
+        repository.save(cliente);
+    }
+
+    public void cambiaEstadoHabilitadoDeshabilitado(Long id){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Cliente cliente = recuperaClientePorId(id);
+        cliente.setEstado(cliente.getEstado().equals(Const.EstadoRegistro.ACTIVO)?Const.EstadoRegistro.DESHABILITADO:Const.EstadoRegistro.ACTIVO);
+        cliente.setUsuarioActualizacion(usuario.getId());
+        repository.save(cliente);
+    }
+
+    public Cliente recuperaClientePorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.CLIENTE_NOEXISTE.getMsj(),
+                        ErrorMsj.CLIENTE_NOEXISTE.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
+    }
+
+    public Cliente recuperaClientePorUsuarioId(Long id){
+        return repository.findByUsuarioId(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.CLIENTE_NOEXISTE.getMsj(),
+                        ErrorMsj.CLIENTE_NOEXISTE.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
     }
 }

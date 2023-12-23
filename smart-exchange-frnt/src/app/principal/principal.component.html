@@ -6,13 +6,14 @@
     </span>
     <span class="toolbar-section center" *ngIf="esCliente()">
         <button routerLink="/cliente/nueva-operacion" mat-button color="primary" class="elemento menu-texto"><b>Nueva operación</b></button>
-        <button mat-button color="primary" class="elemento menu-texto"><b>Mis operaciones</b></button>
+        <button routerLink="/cliente/operaciones"mat-button color="primary" class="elemento menu-texto"><b>Mis operaciones</b></button>
         <button routerLink="/cliente/cuentas-bancarias" mat-button color="primary" class="elemento menu-texto"><b>Cuentas bancarias</b></button>
     </span>
         <span class="toolbar-section center" *ngIf="esOperador()">
         <button routerLink="/operaciones/principal" mat-button color="primary" class="elemento menu-texto"><b>Operaciones</b></button>
         <button routerLink="/operaciones/tipo-cambio" mat-button color="primary" class="elemento menu-texto"><b>Tipos de cambio</b></button>
         <button routerLink="/operaciones/cuentas-bancarias" mat-button color="primary" class="elemento menu-texto"><b>Cuentas bancarias</b></button>
+        <button routerLink="/operaciones/clientes/todo" mat-button color="primary" class="elemento menu-texto"><b>Clientes</b></button>
     </span>
     <span class="toolbar-section right">
         <small class="accent-color"><b>correo@gmail.com</b> </small>

@@ -1,20 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { TipoCambioService } from 'src/app/rest/tipo-cambio.service';
+import { TipoCambioService, TipoCambioResponse } from 'src/app/rest/tipo-cambio.service';
 import * as Const from 'src/app/utils/constants.service'
 import { FormBuilder ,FormGroup, Validators,FormArray  } from '@angular/forms'
 import { ImporteValidator } from 'src/app/utils/validators.validator';
 import { NotifierService } from 'angular-notifier';
-
-interface TipoCambioResponse{
-  id: number;
-  tipo: number;
-  estado: number;
-  moneda: number;
-  compra: number;
-  venta: number;
-  fecha: Date;
-}
 
 @Component({
   selector: 'app-tipo-cambio',

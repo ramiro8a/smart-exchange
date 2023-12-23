@@ -1,27 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UsuariosFormComponent } from '../usuarios-form/usuarios-form.component';
-import { UsuariosService } from '../rest/usuarios.service';
-
-interface UsuarioResponse{
-  id: number;
-  creacion: string;
-  actualizacion: string;
-  version: number;
-  estado: number;
-  usuario: string;
-  correo: string;
-  celular: string;
-  bloqueado: boolean;
-  inicio: Date;
-  fin: Date;
-  roles: RolResponse[];
-}
-interface RolResponse{
-  id: number;
-  nombre: string;
-  descripcion: string;
-}
+import { UsuariosService, UsuarioResponse } from '../rest/usuarios.service';
 
 @Component({
   selector: 'app-ususarios-crud',

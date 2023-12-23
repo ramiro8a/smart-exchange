@@ -12,7 +12,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,5 +78,26 @@ public class UsuarioController {
             @Parameter(description = "Datos de tipo cambio a crear", required = true, content = @Content(schema = @Schema(implementation = ClienteRequest.class)))
             @Valid @NotNull @RequestBody ClienteRequest request) {
         return new ResponseEntity<>(clienteService.crea(request), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/cliente/{page}/{size}/{tipo}/{valor}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<ClienteResponse>> listaClientes(
+            @PathVariable final Integer page,
+            @PathVariable final Integer size,
+            @PathVariable final Integer tipo,
+            @PathVariable final String valor
+    ) {
+        return new ResponseEntity<>(clienteService.lista(page, size, tipo, valor), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/cliente/valida/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> validaCliente(@PathVariable final Long id) {
+        clienteService.valida(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PatchMapping(path = "/cliente/estado/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> cambiaEstado(@PathVariable final Long id) {
+        clienteService.cambiaEstadoHabilitadoDeshabilitado(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

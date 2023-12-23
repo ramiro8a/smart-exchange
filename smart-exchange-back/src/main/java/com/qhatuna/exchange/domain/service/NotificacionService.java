@@ -16,6 +16,6 @@ public class NotificacionService {
     public void notifValidarCLiente(Cliente cliente){
         log.info("enviando notificacion_"+"/topic/valida-cliente/" + "OPERADOR"+":   Validación datos de cliente "+cliente.getNroDocumento());
         messagingtemplate.convertAndSend("/topic/valida-cliente/" + "OPERADOR",
-                new NotificacionResponse("Validación datos de cliente "+cliente.getNroDocumento(), "validaDatosCliente", cliente.getId().toString()));
+                new NotificacionResponse("Validación datos de cliente "+cliente.getNroDocumento(), "validaDatosCliente", cliente.getNroDocumento()));
     }
 }

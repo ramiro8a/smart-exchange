@@ -14,18 +14,6 @@
             <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Nombres</mat-label>
-            <input matInput type="text" formControlName="nombres">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Paterno</mat-label>
-            <input matInput type="text" formControlName="paterno">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Nro. documento</mat-label>
-            <input matInput type="text" formControlName="nroDocumento">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
             <mat-label>Ticket</mat-label>
             <input matInput type="text" formControlName="ticket">
         </mat-form-field>
@@ -81,10 +69,6 @@
             <ng-container matColumnDef="transferencia">
                 <th mat-header-cell *matHeaderCellDef> Cta. Transferencia </th>
                 <td mat-cell *matCellDef="let item">{{item.cuentaTransferencia.bancoNombre}}</td>
-            </ng-container>
-            <ng-container matColumnDef="operador">
-                <th mat-header-cell *matHeaderCellDef> Asignado </th>
-                <td mat-cell *matCellDef="let item">{{item.operador.usuario}}</td>
             </ng-container>
             <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef> </th>

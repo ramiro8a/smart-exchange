@@ -4,6 +4,18 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 
+export interface CuentaBancariaResponse{
+  id: number;
+  tipoCuenta: number;
+  moneda: number;
+  banco: number;
+  bancoNombre: string;
+  numeroCuenta: string;
+  nombre: string;
+  estado: number;
+  ruc: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })

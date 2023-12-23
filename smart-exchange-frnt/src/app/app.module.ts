@@ -29,17 +29,17 @@ import { DatosPersonalesComponent } from './cliente/datos-personales/datos-perso
 import { CuentasBancariasComponent } from './cliente/cuentas-bancarias/cuentas-bancarias.component';
 import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
 import { OperacionComponent } from './cliente/operacion/operacion.component';
-import { ValidaClienteComponent } from './operaciones/valida-cliente/valida-cliente.component';
 import { ClientesComponent } from './operaciones/clientes/clientes.component';
+import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
 		horizontal: {
-			position: 'left',
+			position: 'middle',
 			distance: 12
 		},
 		vertical: {
-			position: 'top',
+			position: 'bottom',
 			distance: 12,
 			gap: 10
 		}
@@ -92,8 +92,8 @@ const customNotifierOptions: NotifierOptions = {
     CuentasBancariasComponent,
     ListaCuentasBancariasComponent,
     OperacionComponent,
-    ValidaClienteComponent,
     ClientesComponent,
+    MisOperacionesComponent,
   ],
   imports: [
     BrowserModule,

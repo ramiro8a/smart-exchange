@@ -4,6 +4,16 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 
+export interface TipoCambioResponse{
+  id: number;
+  tipo: number;
+  estado: number;
+  moneda: number;
+  compra: number;
+  venta: number;
+  fecha: Date;
+}
+
 @Injectable({
   providedIn: 'root'
 })

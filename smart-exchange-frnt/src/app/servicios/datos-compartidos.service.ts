@@ -23,6 +23,11 @@ export class DatosCompartidosService {
     const notificacionesActualizadas = [...notificacionesActuales, nuevaNotificacion];
     this.notificacionesSubject.next(notificacionesActualizadas);
   }
+  eliminarNotificacionPorValor(valor: string) {
+    const notificacionesActuales = this.notificacionesSubject.value;
+    const notificacionesFiltradas = notificacionesActuales.filter(notificacion => notificacion.valor !== valor);
+    this.notificacionesSubject.next(notificacionesFiltradas);
+  }
 
 }
 

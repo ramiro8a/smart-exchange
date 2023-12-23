@@ -71,10 +71,11 @@ export class OperacionComponent implements OnInit{
     deAcuerdo: [false, [Validators.required]]
   });
   transferenciaForm = this.formBuilder.group({
-    deAcuerdo: [false, [Validators.required]]
+    transferido: [false, [Validators.required]]
   });
   finalizaForm = this.formBuilder.group({
-    codigoTransferencia: ['', [Validators.required]]
+    codigoTransferencia: ['', [Validators.required]],
+    noTiene: [false, [Validators.required]]
   });
 
   isEditable = true;
@@ -130,10 +131,33 @@ export class OperacionComponent implements OnInit{
       }
       this.personalForm.controls['paterno'].updateValueAndValidity();
     });
+    this.finalizaForm.get('noTiene')?.valueChanges.subscribe((noTiene) => {
+      if(noTiene){
+        this.finalizaForm.controls['codigoTransferencia'].setValidators([]);
+      }else{
+        this.finalizaForm.controls['codigoTransferencia'].setValidators([Validators.required]);
+      }
+      this.finalizaForm.controls['codigoTransferencia'].updateValueAndValidity();
+    });
   }
 
   guardarFinalizar():void{
-    this.close(true)
+    if(this.finalizaForm.valid){
+      let datos ={
+        codigoTransferencia: this.finalizaForm.controls['codigoTransferencia'].value,
+      }
+      this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({next: (response:any) => {
+          this.estaCargando = false
+          this.close(true)
+        },
+        error: (error:any) => {
+          this.notif.notify('error',error);
+          this.estaCargando = false
+        }
+      });
+    }else{
+      this.notif.notify('warning','Complete el formulario por favor');
+    }
   }
 
   onStepChange(event: StepperSelectionEvent): void {
@@ -223,10 +247,9 @@ export class OperacionComponent implements OnInit{
           cuentaOrigenId: this.cuentasFormGroup.controls['cuentaOrigen'].value,
           cuentaDestinoId: this.cuentasFormGroup.controls['cuentaDestino'].value,
           cuentaTransferenciaId: this.cuentaTransferencia.id,
-          tipoCambioId: this.cambio.tipoCambioId,
-          personal: {}
+          tipoCambioId: this.cambio.tipoCambioId
         }
-        this.restOperacion.registraTransferencia(datos).subscribe({next: (response:any) => {
+        this.restOperacion.creaOperacion(datos).subscribe({next: (response:number) => {
             this.estaCargando = false
             this.operacionId = response
             this.stepper.next()
@@ -310,7 +333,7 @@ export class OperacionComponent implements OnInit{
   }
 
   transfirio():boolean{
-    return this.transferenciaForm.get('deAcuerdo')?.value?true:false
+    return this.transferenciaForm.get('transferido')?.value?true:false
   }
 
   esPersona():boolean{

@@ -6,14 +6,19 @@ export const MONEDAS = [
     {codigo: EURO_ISO, nombre: 'Euros'},
 ]
 export const TIPO_DOCUMENTOS = [
-    {codigo: 1, nombre: 'DNI'},
-    {codigo: 2, nombre: 'RUC'},
-    {codigo: 3, nombre: 'Carnet extranjero'},
-    {codigo: 4, nombre: 'Pasaporte'},
+    {codigo: 1, nombre: 'DNI', abrev:'DNI'},
+    {codigo: 2, nombre: 'RUC', abrev:'RUC'},
+    {codigo: 3, nombre: 'Carnet extranjero', abrev:'CE'},
+    {codigo: 4, nombre: 'Pasaporte', abrev:'P'},
 ]
 export const TIPO_CUENTAS = [
     {codigo: 1, nombre: 'Ahorro'},
     {codigo: 2, nombre: 'Corriente'},
+]
+export const TIPO_BUSQUEDAS_CLIENTES = [
+    {codigo: 1, nombre: 'TODO'},
+    {codigo: 2, nombre: 'APELLIDO'},
+    {codigo: 3, nombre: 'NRO. DOCUMENTO'},
 ]
 export const CUENTA_MONEDAS_CLIENTE = [
     {codigo: SOLES_ISO, nombre: 'Soles'},

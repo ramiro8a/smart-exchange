@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -39,13 +41,16 @@ public class Cliente  extends BaseModel{
     public static ClienteResponse aResponse(Cliente cliente){
         return new ClienteResponse(
                 cliente.getId(),
+                cliente.getFechaCreacion(),
                 cliente.getNombres(),
                 cliente.getPaterno(),
                 cliente.getMaterno(),
                 cliente.getTipoDocumento(),
                 cliente.getNroDocumento(),
                 cliente.getTelefono(),
-                cliente.getCelular()
+                cliente.getCelular(),
+                cliente.getEstado(),
+                cliente.isValidado()
         );
     }
 }

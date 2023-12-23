@@ -5,7 +5,7 @@ import { DatosCompartidosService, Notificacion } from '../servicios/datos-compar
 import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
 import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-personales.component';
 import { SocketService } from '../servicios/socket.service';
-import { ValidaClienteComponent } from '../operaciones/valida-cliente/valida-cliente.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,18 +21,20 @@ export class PrincipalComponent implements OnInit{
     private restUtils: UtilsService,
     private datosCompartidos: DatosCompartidosService,
     private dialog: MatDialog,
-    private socket: SocketService
+    private socket: SocketService,
+    private router: Router,
     ){
     }
 
   ngOnInit(): void {
-    this.recuperaNotificaciones()
     this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
       this.notificaciones = notificaciones;
-      console.warn(this.notificaciones.length)
     });
     if(this.tokenService.esOperador()){
       this.socket.joinRoom("OPERADOR");
+    }
+    if(this.tokenService.esCliente()){
+      this.recuperaNotificaciones()
     }
   }
 
@@ -68,7 +70,10 @@ export class PrincipalComponent implements OnInit{
   }
 
   validaDatosClienteMetodo(clientId:string){
-    const dialogConfig = new MatDialogConfig();
+    console.error(`RAMIRO '${clientId}'`);
+    //this.router.navigate([`/operaciones/clientes`, clientId])
+    this.router.navigate([`/operaciones/clientes/${clientId}`])
+/*     const dialogConfig = new MatDialogConfig();
     dialogConfig.data =Number(clientId)
     const dialogRef = this.dialog.open(ValidaClienteComponent, dialogConfig)
     dialogRef.disableClose = true;
@@ -76,7 +81,7 @@ export class PrincipalComponent implements OnInit{
       if(result){
         this.recuperaNotificaciones()
       }
-    })
+    }) */
   }
 
   pedirDatospersonales():boolean{

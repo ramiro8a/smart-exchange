@@ -5,6 +5,40 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
+export interface ClienteResponse{
+  id:number,
+  fechaCreacion:Date,
+  nombres:string,
+  paterno:string,
+  materno:string,
+  tipoDocumento:number,
+  nroDocumento:string,
+  telefono:string,
+  celular:string,
+  estado:number,
+  validado:boolean
+}
+
+export interface UsuarioResponse{
+  id: number;
+  creacion: string;
+  actualizacion: string;
+  version: number;
+  estado: number;
+  usuario: string;
+  correo: string;
+  celular: string;
+  bloqueado: boolean;
+  inicio: Date;
+  fin: Date;
+  roles: RolResponse[];
+}
+export interface RolResponse{
+  id: number;
+  nombre: string;
+  descripcion: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +56,22 @@ export class UsuariosService {
 
   registraDatosPersonalesCliente(data: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}${this.path}/cliente`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaClientes(tipo:number, valor: string, pagina:number, tamano:number): Observable<ClienteResponse[]> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/cliente/${pagina}/${tamano}/${tipo}/${valor}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  cambiaEstado(id:number): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/cliente/estado/${id}`, null).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+  validaCliente(id:number): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/cliente/valida/${id}`, null).pipe(
       catchError(this.errorHandler)
     )
   }

@@ -11,6 +11,7 @@ import com.qhatuna.exchange.domain.repository.TipoCambioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -88,5 +89,14 @@ public class TipoCambioService {
         }
 
         return TipoCambio.aResponse(empresa.get(0), oficial.get(0));
+    }
+
+    public TipoCambio recuperaTipoCambioPorId(Long id){
+        return tipoCambioRepository.findById(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.TIPO_CAMBIO.getMsj(),
+                        ErrorMsj.TIPO_CAMBIO.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
     }
 }

@@ -38,7 +38,7 @@ public class LoggingFilter implements Filter {
             logInfo.setPath(httpServletRequest.getRequestURI());
             logInfo.setMethod(httpServletRequest.getMethod());
             logInfo.setHeaders(buildHeaders(httpServletRequest));
-            logInfo.setQueryParameters(buildParameters(httpServletRequest));
+            //logInfo.setQueryParameters(buildParameters(httpServletRequest));
 
             //BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
             ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);

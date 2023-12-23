@@ -1,6 +1,8 @@
 package com.qhatuna.exchange.app.rest.controller;
 
+import com.qhatuna.exchange.app.rest.request.OperacionCriteriaRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionRequest;
+import com.qhatuna.exchange.app.rest.response.OperacionResponse;
 import com.qhatuna.exchange.domain.service.OperacionService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,14 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(path = "/api/operacion")
@@ -25,10 +29,30 @@ public class OperacionController {
     private OperacionService service;
 
     @PostMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Long> creaCuentaBancaria(
+    public ResponseEntity<Long> creaOperaion(
             @Parameter(description = "Datos de cuenta bancaria a crear", required = true, content = @Content(schema = @Schema(implementation = OperacionRequest.class)))
             @Valid @NotNull @RequestBody OperacionRequest request
     ) {
         return new ResponseEntity<>(service.crea(request), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{id}/{op}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> confirmaOperacion(
+            @PathVariable Long id,
+            @PathVariable Integer op,
+            @Parameter(description = "Datos de cuenta bancaria a actualizar", required = true, content = @Content(schema = @Schema()))
+            @RequestBody OperacionRequest request
+    ) {
+        service.actualiza(id, op, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{page}/{size}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Page<OperacionResponse>> operacionPaginado(
+            @PathVariable final Integer page,
+            @PathVariable final Integer size,
+            @Valid @ParameterObject OperacionCriteriaRequest request
+            ) {
+        return new ResponseEntity<>(service.operacionPaginado(page, size,request),HttpStatus.OK);
     }
 }
