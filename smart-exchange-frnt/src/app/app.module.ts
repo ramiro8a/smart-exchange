@@ -31,6 +31,7 @@ import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancaria
 import { OperacionComponent } from './cliente/operacion/operacion.component';
 import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
+import { DetallesComponent } from './ui-utils/detalles/detalles.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -94,6 +95,7 @@ const customNotifierOptions: NotifierOptions = {
     OperacionComponent,
     ClientesComponent,
     MisOperacionesComponent,
+    DetallesComponent,
   ],
   imports: [
     BrowserModule,

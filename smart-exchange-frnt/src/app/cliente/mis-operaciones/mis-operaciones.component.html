@@ -35,47 +35,49 @@
             <td mat-cell *matCellDef="let item"> {{item.ticket}} </td>
           </ng-container>
             <ng-container matColumnDef="estado">
-              <th mat-header-cell *matHeaderCellDef> Estado </th>
-              <td mat-cell *matCellDef="let item"> {{item.estado}} </td>
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let item"> 
+                    {{buscarNombreDeEstado(item.estado)}}
+                    <button mat-mini-fab color="warn" *ngIf="item.estado==6">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>
+                </td>
             </ng-container>
             <ng-container matColumnDef="tipoTransferencia">
                 <th mat-header-cell *matHeaderCellDef> Tipo transferencia </th>
-                <td mat-cell *matCellDef="let item"> {{item.tipoTransferencia}} </td>
+                <td mat-cell *matCellDef="let item"> {{buscarNombreDeTransferencia(item.tipoTransferencia)}} </td>
             </ng-container>
             <ng-container matColumnDef="monto">
               <th mat-header-cell *matHeaderCellDef> Monto </th>
-              <td mat-cell *matCellDef="let item">{{item.monto}} </td>
+              <td mat-cell *matCellDef="let item">{{item.monto | number:'1.2-2'}} {{buscarNombreDeMoneda(item.cuentaOrigen.moneda)}}</td>
             </ng-container>
             <ng-container matColumnDef="montoFinal">
               <th mat-header-cell *matHeaderCellDef> Monto final </th>
-              <td mat-cell *matCellDef="let item"> {{item.montoFinal}} </td>
+              <td mat-cell *matCellDef="let item"> {{item.montoFinal | number:'1.2-2'}} {{buscarNombreDeMoneda(item.cuentaDestino.moneda)}}</td>
             </ng-container>
             <ng-container matColumnDef="codigoTransferencia">
                 <th mat-header-cell *matHeaderCellDef> Cód. transferencia </th>
                 <td mat-cell *matCellDef="let item">{{item.codigoTransferencia}}</td>
             </ng-container>
-            <ng-container matColumnDef="cliente">
-                <th mat-header-cell *matHeaderCellDef> Cliente </th>
-                <td mat-cell *matCellDef="let item">{{item.cliente.nombres}}</td>
-            </ng-container>
             <ng-container matColumnDef="origen">
                 <th mat-header-cell *matHeaderCellDef> Cta. Origen </th>
-                <td mat-cell *matCellDef="let item">{{item.cuentaOrigen.bancoNombre}}</td>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cuentaOrigen.bancoNombre}} {{item.cuentaOrigen.numeroCuenta}}
+                    <mat-icon class="mas-detalles" (click)="abrirDetalles(1, item.cuentaOrigen)" matTooltip="Más detales">info</mat-icon>
+                </td>
             </ng-container>
             <ng-container matColumnDef="destino">
                 <th mat-header-cell *matHeaderCellDef> Cta. Destino </th>
-                <td mat-cell *matCellDef="let item">{{item.cuentaDestino.bancoNombre}}</td>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cuentaDestino.bancoNombre}} {{item.cuentaDestino.numeroCuenta}}
+                    <mat-icon class="mas-detalles" (click)="abrirDetalles(2, item.cuentaDestino)" matTooltip="Más detales">info</mat-icon>
+                </td>
             </ng-container>
             <ng-container matColumnDef="transferencia">
                 <th mat-header-cell *matHeaderCellDef> Cta. Transferencia </th>
-                <td mat-cell *matCellDef="let item">{{item.cuentaTransferencia.bancoNombre}}</td>
-            </ng-container>
-            <ng-container matColumnDef="opciones">
-                <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let item">
-                <button mat-mini-fab [color]="item.validado?'primary':'warn'" matTooltip="Datos validados">
-                    <mat-icon>verified</mat-icon>
-                </button>
+                    {{item.cuentaTransferencia.bancoNombre}} {{item.cuentaTransferencia.numeroCuenta}}
+                    <mat-icon class="mas-detalles" (click)="abrirDetalles(3, item.cuentaTransferencia)" matTooltip="Más detales">info</mat-icon>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>

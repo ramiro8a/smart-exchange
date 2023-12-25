@@ -1,0 +1,34 @@
+<span class="cierra-componente accent-color">
+    <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
+</span>
+<h3>{{titulo}}</h3>
+<div>
+    <ol  *ngIf="opc===1 || opc===2 || opc===3">
+        <li>
+            <small><strong>Banco</strong></small>
+            <p>{{datos.bancoNombre}}</p>
+        </li>
+        <li>
+            <small><strong>Número de cuenta</strong></small>
+            <p>{{datos.numeroCuenta}}</p>
+        </li>
+        <li>
+            <small><strong>Tipo de cuenta</strong></small>
+            <p>{{buscarNombreTipoCuenta(datos.tipoCuenta)}}</p>
+        </li>
+      </ol>
+      <ol  *ngIf="opc===1 || opc===2 || opc===3">
+        <li>
+            <small><strong>Moneda</strong></small>
+            <p>{{buscarNombreDeMoneda(datos.moneda)}}</p>
+        </li>
+        <li>
+            <small><strong>Nombre de cuenta</strong></small>
+            <p>{{datos.nombre}}</p>
+        </li>
+        <li>
+            <small><strong>Estado</strong></small>
+            <p>{{buscarNombreDeEstadoCuenta(datos.estado)}}</p>
+        </li>
+      </ol>
+</div>

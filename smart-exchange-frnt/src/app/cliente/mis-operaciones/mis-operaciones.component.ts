@@ -1,8 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
-import { OperacionService, PaginaOperacionResponse, OperacionResponse  } from 'src/app/rest/operacion.service';
+import { OperacionService, PaginaOperacionResponse, OperacionResponse } from 'src/app/rest/operacion.service';
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'
+import * as Const from 'src/app/utils/constants.service'
+import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material/bottom-sheet';
+import { DetallesComponent } from 'src/app/ui-utils/detalles/detalles.component';
+import { CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -13,7 +17,7 @@ export class MisOperacionesComponent implements OnInit{
   estaCargando: boolean = false
   criterioForm: FormGroup;
   dataSource: OperacionResponse[] = [];
-  displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','cliente','origen','destino','transferencia','opciones'];
+  displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','origen','destino','transferencia'];
   paginable: any
   filasInicial: number=5
   paginaInicial: number=0
@@ -24,6 +28,7 @@ export class MisOperacionesComponent implements OnInit{
     private restOperacion:OperacionService,
     private notif: NotifierService,
     private formBuilder: FormBuilder,
+    private bottomSheet: MatBottomSheet
     ){
       this.criterioForm = this.formBuilder.group({
         inicio: ['', Validators.required],
@@ -34,6 +39,15 @@ export class MisOperacionesComponent implements OnInit{
 
   ngOnInit(): void {
     this.recuperaInicial();
+  }
+
+  abrirDetalles(opc:number, data: CuentaBancariaResponse): void {
+    const bottomSheetConfig = new MatBottomSheetConfig();
+    bottomSheetConfig.data = {
+      opc: opc,
+      datos: data
+    }
+    this.bottomSheet.open(DetallesComponent, bottomSheetConfig);
   }
 
   resetForm(){
@@ -49,19 +63,41 @@ export class MisOperacionesComponent implements OnInit{
   }
 
   recuperaOperacionesPaginado(pagina:number, filas:number ){
-    this.restOperacion.recuperaOperacionesPaginado(pagina, filas, this.criterioForm.value).subscribe({
+    this.estaCargando=true
+    const valoresFormulario = this.criterioForm.value;
+    let datos={
+      inicio: new Date(valoresFormulario.inicio).toISOString().split('T')[0],
+      fin: new Date(valoresFormulario.fin).toISOString().split('T')[0],
+      nombres: valoresFormulario.nombres,
+      paterno: valoresFormulario.paterno,
+      nroDocumento: valoresFormulario.nroDocumento,
+      ticket: valoresFormulario.ticket
+    }
+    this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({
       next: (response:PaginaOperacionResponse) => {
         this.dataSource = response.content
         this.paginable = response
+        this.estaCargando=false
       },
       error: (error:any) => {
         this.notif.notify('error', error);
+        this.estaCargando=false
       }
     });
   }
 
   buscar():void{
     this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
+  }
+
+  buscarNombreDeEstado(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.ESTADOS_OPERACION);
+  }
+  buscarNombreDeTransferencia(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.TIPO_TRANSFERENCIAS);
+  }
+  buscarNombreDeMoneda(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.CUENTA_MONEDAS_CLIENTE);
   }
 
 }

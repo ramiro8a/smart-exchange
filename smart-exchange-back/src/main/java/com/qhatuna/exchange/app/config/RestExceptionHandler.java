@@ -20,15 +20,18 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        logPrinter.write(ex);
         return buildResponseEntity(new ApiError(ErrorMsj.JSON.getMsj(), ErrorMsj.JSON.getMsjTec(), ErrorMsj.JSON.getCod(), HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        logPrinter.write(ex);
         return buildResponseEntity(new ApiError(ErrorMsj.REQUEST.getMsj(), ErrorMsj.REQUEST.getMsjTec(), ErrorMsj.REQUEST.getCod(), HttpStatus.BAD_REQUEST));
     }
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected ResponseEntity<Object> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
+        logPrinter.write(ex);
         return buildResponseEntity(new ApiError(ErrorMsj.REQUEST.getMsj(), ex.getMessage(), ErrorMsj.REQUEST.getCod(), HttpStatus.BAD_REQUEST));
     }
 

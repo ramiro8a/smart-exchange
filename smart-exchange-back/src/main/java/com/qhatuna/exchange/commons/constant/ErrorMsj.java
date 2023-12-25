@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ErrorMsj {
     JSON("ERR-0001", "Error de datos", "El json no se ha podido deserializar"),
     PROCESSING_LOG("ERR-0002", "Error when preprocessing log"),
-    REQUEST("ERR-0003", "Error en los datos recibidos"),
+    REQUEST("ERR-0003", "Error en los datos datos enviado por el cliente"),
     BASIC_AUTH("ERR-0004", "No existe credenciales"),
     UNAUTHORIZED("ERR-0005", "Acceso no authorizado"),
     NO_HAY_ROL("ERR-0006", "El rol a utilizar no existe"),
@@ -25,7 +25,9 @@ public enum ErrorMsj {
     CLIENTE_NOEXISTE("ADV-0009", "El cliente no existe"),
     TIPO_BUSQUEDA_NO_EXISTE("ADV-0010", "El tipo de búsqueda no existe"),
     OPCION_NO_EXISTE("ADV-0011", "La opción no existe"),
-    OPERACION_NOEXISTE("ADV-0012", "La operacion no existe");
+    OPERACION_NOEXISTE("ADV-0012", "La operacion no existe"),
+    INICIO_ANTES_FIN("ADV-0013", "La fecha inicio debe ser antes que la fecha fin"),
+    CONVERSION_NO_PERMITIDO("ADV-0014", "Conversión no permitida");
     final String cod;
     final String msj;
     final String msjTec;

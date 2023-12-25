@@ -17,6 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,8 @@ public class OperacionService {
     private final ClienteService clienteService;
 
     public Page<OperacionResponse> operacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){
+        if(request.inicio().isAfter(request.fin()))
+            throw new ProviderException(ErrorMsj.INICIO_ANTES_FIN.getMsj(), ErrorMsj.INICIO_ANTES_FIN.getCod());
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         if(usuario.esCliente()){
@@ -64,6 +68,7 @@ public class OperacionService {
                 .cuentaDestino(destino)
                 .cuentaTransferencia(transferencia)
                 .monto(request.monto())
+                .montoFinal(calculaCambio(origen, destino, request.monto(), tipoCambio))
                 .estado(6)
                 .usuarioCreacion(usuario.getId())
                 .tipoCambio(tipoCambio)
@@ -96,6 +101,16 @@ public class OperacionService {
                 ));
     }
 
+    public BigDecimal calculaCambio(CuentaBancaria cuentaOrigen, CuentaBancaria cuentaDestino, BigDecimal monto, TipoCambio tipoCambio){
+        if(cuentaOrigen.esDolares() && cuentaDestino.esSoles()){
+            return monto.multiply(tipoCambio.getCompra()).setScale(2, RoundingMode.HALF_UP);
+        } else if (cuentaOrigen.esSoles() && cuentaDestino.esDolares()) {
+            return monto.divide(tipoCambio.getVenta(), 2, RoundingMode.HALF_UP);
+        } else {
+            throw new ProviderException(ErrorMsj.CONVERSION_NO_PERMITIDO.getMsj(), ErrorMsj.CONVERSION_NO_PERMITIDO.getCod(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public Usuario asignaOperador(){
         List<Usuario> operadores = usuarioService.recuperaOperadoresActivos();
         if(!operadores.isEmpty()){
@@ -124,6 +139,7 @@ public class OperacionService {
         operacion.setCuentaTransferencia(transferencia);
         operacion.setTipoCambio(tipoCambio);
         operacion.setMonto(request.monto());
+        operacion.setMontoFinal(calculaCambio(origen, destino, request.monto(), tipoCambio));
         operacion.setUsuarioActualizacion(usuario.getId());
         operacionRepository.save(operacion);
     }

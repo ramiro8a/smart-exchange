@@ -1,6 +1,7 @@
 package com.qhatuna.exchange.domain.model;
 
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
+import com.qhatuna.exchange.commons.constant.ConstValues;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,13 @@ public class CuentaBancaria extends BaseModel{
     private Long usuarioId;
     private String nombre;
     private String ruc;
+
+    public boolean esDolares(){
+        return this.moneda.equals(ConstValues.USD_ISO);
+    }
+    public boolean esSoles(){
+        return this.moneda.equals(ConstValues.SOLES_ISO);
+    }
 
     public static CuentaBancariaResponse aResponse(CuentaBancaria cuenta){
         return new CuentaBancariaResponse(
