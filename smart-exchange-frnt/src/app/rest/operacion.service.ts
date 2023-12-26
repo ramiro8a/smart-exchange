@@ -10,12 +10,17 @@ import { UsuarioResponse } from './usuarios.service';
 import { HttpParams } from '@angular/common/http';
 
 export interface PaginaOperacionResponse {
-  content: OperacionResponse[];
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
+  content: OperacionResponse[]; //cotenido
+  empty: boolean;//vacio
+  first: boolean;//primero
+  last: boolean; //ultimo
+  number: number;///pagina actual
+  numberOfElements: number; ///mostrando cantidad
+  size: number;//cantidad de elementos pedidos
+  totalElements: number;///total de filas
+  totalPages: number;///total de paginas
 }
+
 export interface OperacionResponse{
   id: number;
   fechaCreacion: Date;
@@ -41,7 +46,6 @@ export class OperacionService {
   path:string = '/api/operacion'
 
   constructor(private http: HttpClient) { }
-
   recuperaOperacionesPaginado(pagina:number, tamano: number, criterios: any): Observable<PaginaOperacionResponse>{
     let params = new HttpParams();
     Object.keys(criterios).forEach(key => {
@@ -49,7 +53,6 @@ export class OperacionService {
             params = params.set(key, criterios[key]);
         }
     });
-    console.log(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`)
     return this.http.get<any>(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`,{ params: params }).pipe(
       catchError(this.errorHandler)
     )

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core'
 import {MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 import { MaterialModule } from './material.modules';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -32,6 +33,7 @@ import { OperacionComponent } from './cliente/operacion/operacion.component';
 import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 import { DetallesComponent } from './ui-utils/detalles/detalles.component';
+import { getSpanishPaginatorIntl } from './labels';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -123,7 +125,9 @@ const customNotifierOptions: NotifierOptions = {
     {
       provide: RECAPTCHA_LANGUAGE,
       useValue: "es",
-    }],
+    },
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

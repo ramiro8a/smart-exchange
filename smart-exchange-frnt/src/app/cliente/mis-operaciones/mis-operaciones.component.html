@@ -24,8 +24,8 @@
             Limpiar filtros
         </button>
     </form>
-    <div class="op-table">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="">
             <ng-container matColumnDef="fechaCreacion">
                 <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
                 <td mat-cell *matCellDef="let item"> {{item.fechaCreacion | date: 'dd/MM/yyyy HH:mm'}} </td>
@@ -38,9 +38,9 @@
                 <th mat-header-cell *matHeaderCellDef> Estado </th>
                 <td mat-cell *matCellDef="let item"> 
                     {{buscarNombreDeEstado(item.estado)}}
-                    <button mat-mini-fab color="warn" *ngIf="item.estado==6">
-                        <mat-icon>edit_note</mat-icon>
-                    </button>
+                    <div (click)="abrirDetalles(1, item.cuentaOrigen)" *ngIf="item.estado==6" matTooltip="Más detales" class="btn-personal">
+                        <mat-icon>launch</mat-icon>
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="tipoTransferencia">
@@ -63,26 +63,39 @@
                 <th mat-header-cell *matHeaderCellDef> Cta. Origen </th>
                 <td mat-cell *matCellDef="let item">
                     {{item.cuentaOrigen.bancoNombre}} {{item.cuentaOrigen.numeroCuenta}}
-                    <mat-icon class="mas-detalles" (click)="abrirDetalles(1, item.cuentaOrigen)" matTooltip="Más detales">info</mat-icon>
+                    <div (click)="abrirDetalles(1, item.cuentaOrigen)" matTooltip="Más detales" class="btn-personal">
+                        <mat-icon>expand_more</mat-icon>
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="destino">
                 <th mat-header-cell *matHeaderCellDef> Cta. Destino </th>
                 <td mat-cell *matCellDef="let item">
                     {{item.cuentaDestino.bancoNombre}} {{item.cuentaDestino.numeroCuenta}}
-                    <mat-icon class="mas-detalles" (click)="abrirDetalles(2, item.cuentaDestino)" matTooltip="Más detales">info</mat-icon>
+                    <div (click)="abrirDetalles(2, item.cuentaDestino)" matTooltip="Más detales" class="btn-personal">
+                        <mat-icon>expand_more</mat-icon>
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="transferencia">
                 <th mat-header-cell *matHeaderCellDef> Cta. Transferencia </th>
                 <td mat-cell *matCellDef="let item">
                     {{item.cuentaTransferencia.bancoNombre}} {{item.cuentaTransferencia.numeroCuenta}}
-                    <mat-icon class="mas-detalles" (click)="abrirDetalles(3, item.cuentaTransferencia)" matTooltip="Más detales">info</mat-icon>
+                    <div (click)="abrirDetalles(3, item.cuentaTransferencia)" matTooltip="Más detales" class="btn-personal">
+                        <mat-icon>expand_more</mat-icon>
+                    </div>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
           </table>
-    </div>    
+          <mat-paginator
+          [showFirstLastButtons]="showFirstLastButtons"
+          [length]="paginaActual.totalElements"
+          [pageSize]="paginaActual.size"
+          [pageSizeOptions]="[5, 10]"
+          [pageIndex]="paginaActual.number">
+          </mat-paginator>
+    </div>
     <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
 </div>

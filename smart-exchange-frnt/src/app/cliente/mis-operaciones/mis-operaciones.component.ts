@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
 import { OperacionService, PaginaOperacionResponse, OperacionResponse } from 'src/app/rest/operacion.service';
 import { NotifierService } from 'angular-notifier';
@@ -7,20 +7,34 @@ import * as Const from 'src/app/utils/constants.service'
 import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material/bottom-sheet';
 import { DetallesComponent } from 'src/app/ui-utils/detalles/detalles.component';
 import { CuentaBancariaResponse } from 'src/app/rest/bancos.service';
+import {PageEvent} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-mis-operaciones',
   templateUrl: './mis-operaciones.component.html',
   styleUrls: ['./mis-operaciones.component.sass']
 })
-export class MisOperacionesComponent implements OnInit{
+export class MisOperacionesComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   estaCargando: boolean = false
+  showFirstLastButtons = true;
   criterioForm: FormGroup;
   dataSource: OperacionResponse[] = [];
   displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','origen','destino','transferencia'];
-  paginable: any
   filasInicial: number=5
   paginaInicial: number=0
+  paginaActual : PaginaOperacionResponse = {
+    content: [],
+    empty: true,
+    first: true,
+    last: true,
+    number: 0,
+    numberOfElements: 0,
+    size: this.filasInicial,
+    totalElements: 0,
+    totalPages: 0
+  };
   hoy = new Date();
   fechaFormateada = this.hoy.toISOString().split('T')[0];
   constructor(
@@ -39,6 +53,12 @@ export class MisOperacionesComponent implements OnInit{
 
   ngOnInit(): void {
     this.recuperaInicial();
+  }
+
+  ngAfterViewInit() {
+    this.paginator.page.subscribe((pageEvent: PageEvent) => {
+      this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
+    });
   }
 
   abrirDetalles(opc:number, data: CuentaBancariaResponse): void {
@@ -76,7 +96,7 @@ export class MisOperacionesComponent implements OnInit{
     this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({
       next: (response:PaginaOperacionResponse) => {
         this.dataSource = response.content
-        this.paginable = response
+        this.paginaActual = response
         this.estaCargando=false
       },
       error: (error:any) => {
