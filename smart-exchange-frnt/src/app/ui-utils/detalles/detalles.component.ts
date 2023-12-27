@@ -32,7 +32,7 @@ export class DetallesComponent {
       default:
         console.log('Opcion por defecto');
     }
-    console.log(data); // Accede a los datos aquí
+    
   }
   close(data:boolean){
     this.bottomSheetRef.dismiss()

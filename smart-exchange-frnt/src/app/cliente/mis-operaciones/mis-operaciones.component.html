@@ -38,9 +38,6 @@
                 <th mat-header-cell *matHeaderCellDef> Estado </th>
                 <td mat-cell *matCellDef="let item"> 
                     {{buscarNombreDeEstado(item.estado)}}
-                    <div (click)="abrirDetalles(1, item.cuentaOrigen)" *ngIf="item.estado==6" matTooltip="Más detales" class="btn-personal">
-                        <mat-icon>launch</mat-icon>
-                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="tipoTransferencia">
@@ -57,7 +54,12 @@
             </ng-container>
             <ng-container matColumnDef="codigoTransferencia">
                 <th mat-header-cell *matHeaderCellDef> Cód. transferencia </th>
-                <td mat-cell *matCellDef="let item">{{item.codigoTransferencia}}</td>
+                <td mat-cell *matCellDef="let item">
+                    {{item.codigoTransferencia}}
+                    <div (click)="abrirDetalles(1, item.cuentaOrigen)" *ngIf="item.estado==6" matTooltip="Más detales" class="btn-personal">
+                        <mat-icon>launch</mat-icon>
+                    </div>
+                </td>
             </ng-container>
             <ng-container matColumnDef="origen">
                 <th mat-header-cell *matHeaderCellDef> Cta. Origen </th>
