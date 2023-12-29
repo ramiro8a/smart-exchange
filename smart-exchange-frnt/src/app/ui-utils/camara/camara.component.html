@@ -4,10 +4,17 @@
         <mat-card-title>{{contenido.titulo}}</mat-card-title>
         <mat-card-subtitle *ngIf="contenido.subtitulo?true:false">{{contenido.subtitulo}}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content  *ngIf="contenido.descripcion?true:false">
-        <p>
-        {{contenido.descripcion}}
-        </p>
+    <mat-card-content>
+        <div *ngIf="!webcamImage">
+            <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+            [allowCameraSwitch]="allowCameraSwitch" 
+            (initError)="handleInitError($event)"></webcam>
+            <button class="actionBtn" (click)="triggerSnapshot();">Tomar la foto</button>
+        </div>
+        <div class="snapshot" *ngIf="webcamImage">
+            <img [src]="webcamImage.imageAsDataUrl"/>
+            <button class="actionBtn" (click)="limpiar();">Tomar otra foto</button>
+        </div>
     </mat-card-content>
     <mat-card-actions>
         <button (click)="close(true)" mat-fab extended color="primary">

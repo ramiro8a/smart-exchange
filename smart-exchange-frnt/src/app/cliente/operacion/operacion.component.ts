@@ -11,6 +11,7 @@ import { UtilsService } from 'src/app/rest/utils.service';
 import { ConfirmacionComponent } from 'src/app/ui-utils/confirmacion/confirmacion.component';
 import { OperacionService } from 'src/app/rest/operacion.service';
 import { UsuariosService } from 'src/app/rest/usuarios.service';
+import { CamaraComponent } from 'src/app/ui-utils/camara/camara.component';
 
 interface Cambio {
   monto: number;
@@ -140,6 +141,28 @@ export class OperacionComponent implements OnInit{
       this.finalizaForm.controls['codigoTransferencia'].updateValueAndValidity();
     });
   }
+
+  onFileSelected(event: any):void{
+    const file = event.target.files[0];
+    if (file) {
+        // Procesa el archivo aquí
+        console.log(file);
+    }
+  }
+  abrirCamara():void{
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titulo: 'Tome una foto al comprobante',
+      subtitulo: 'Asegurese de que la imagen sea nítida'
+    } 
+    const dialogRef = this.dialog.open(CamaraComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+      }
+    })
+  }
+
 
   guardarFinalizar():void{
     if(this.finalizaForm.valid){

@@ -34,6 +34,8 @@ import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 import { DetallesComponent } from './ui-utils/detalles/detalles.component';
 import { getSpanishPaginatorIntl } from './labels';
+import { CamaraComponent } from './ui-utils/camara/camara.component';
+import { WebcamModule } from 'ngx-webcam';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -98,6 +100,7 @@ const customNotifierOptions: NotifierOptions = {
     ClientesComponent,
     MisOperacionesComponent,
     DetallesComponent,
+    CamaraComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,6 +111,7 @@ const customNotifierOptions: NotifierOptions = {
     FormsModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
+    WebcamModule,
     NotifierModule.withConfig(customNotifierOptions),
   ],
   providers: [

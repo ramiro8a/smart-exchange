@@ -3,6 +3,10 @@
         <span class="cierra-componente accent-color">
             <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
         </span>
+        <button (click)="abrirCamara()" mat-fab extended color="warn" type="button">
+            <mat-icon>photo_camera</mat-icon>
+            Tomar foto
+        </button>&nbsp;
       <!-- <mat-card-subtitle>Administración de</mat-card-subtitle> -->
       <mat-card-title>Nueva operación <small class="descripcion-cambio accent-background">{{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></mat-card-title>
     </mat-card-header>
@@ -176,6 +180,18 @@
                             <mat-label>Código transferencia</mat-label>
                             <input matInput type="text" formControlName="codigoTransferencia">
                         </mat-form-field><br>
+                        <div class="carga-comprobante">
+                            <button (click)="abrirCamara()" mat-fab extended color="warn" type="button">
+                                <mat-icon>photo_camera</mat-icon>
+                                Tomar foto
+                            </button>&nbsp;
+                            <input type="file" accept=".jpg" #fileInput style="display: none;" (change)="onFileSelected($event)" />
+                            <button (click)="fileInput.click()" mat-fab extended color="warn" type="button">
+                                <mat-icon>image</mat-icon>
+                                Subir una imagen
+                            </button>
+                        </div>
+                        <br>
                         <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
                     </div>
                       <div class="botones-operacion">
