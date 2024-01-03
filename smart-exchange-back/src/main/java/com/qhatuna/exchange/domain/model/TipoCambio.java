@@ -35,6 +35,7 @@ public class TipoCambio extends BaseModel{
                 tipoCambio.getCompra(),
                 tipoCambio.getVenta(),
                 tipoCambio.getFecha(),
+                tipoCambio.getFechaCreacion(),
                 tipoCambioOficial.getCompra(),
                 tipoCambioOficial.getVenta()
         );
@@ -49,6 +50,7 @@ public class TipoCambio extends BaseModel{
                 tipoCambio.getCompra(),
                 tipoCambio.getVenta(),
                 tipoCambio.getFecha(),
+                tipoCambio.getFechaCreacion(),
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
         );

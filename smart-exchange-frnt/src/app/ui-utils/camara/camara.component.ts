@@ -16,9 +16,9 @@ interface Contenido {
 })
 export class CamaraComponent implements OnInit{
   contenido: Contenido
-  public allowCameraSwitch = false;
-  private trigger: Subject<void> = new Subject<void>();
-  public webcamImage: WebcamImage | undefined;
+  allowCameraSwitch = false;
+  trigger: Subject<void> = new Subject<void>();
+  webcamImage: WebcamImage | undefined;
 
   constructor(
     private dialogRef: MatDialogRef<CamaraComponent>,
@@ -27,8 +27,7 @@ export class CamaraComponent implements OnInit{
     this.contenido = data
   }
 
-  public ngOnInit(): void {
-    console.log(this.webcamImage)
+  ngOnInit(): void {
   }
 
   handleInitError(error: WebcamInitError): void {
@@ -37,13 +36,11 @@ export class CamaraComponent implements OnInit{
     }
   }
 
-  public triggerSnapshot(): void {
+  triggerSnapshot(): void {
     this.trigger.next();
-    console.log(this.webcamImage)
   }
 
-  public handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
+  handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
   }
 
@@ -51,11 +48,15 @@ export class CamaraComponent implements OnInit{
     this.webcamImage = undefined;
   }
 
-  public get triggerObservable(): Observable<void> {
+  get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
 
   close(data:boolean){
     this.dialogRef.close(data);
+  }
+
+  devuelveDatos(){
+    this.dialogRef.close({base64: this.webcamImage?.imageAsDataUrl});
   }
 }

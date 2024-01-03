@@ -16,7 +16,7 @@ export class TipoCambioComponent implements OnInit{
   tcForm: FormGroup;
   estaCargando: boolean = false
   dataSource: TipoCambioResponse[] = [];
-  displayedColumns: string[] = ['tipo','fecha', 'estado','moneda', 'compra', 'venta'];
+  displayedColumns: string[] = ['tipo','registro','fecha', 'estado','moneda', 'compra', 'venta'];
   monedas: any[]=Const.MONEDAS
   constructor(
     private dialog: MatDialog,

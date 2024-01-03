@@ -9,16 +9,16 @@
         <comment>
 			Inserta banco bcp
 		</comment>
-    <insert tableName="T_BANCOS">
-        <column name="FECHA_CREACION" valueDate="current_timestamp"/>
-        <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
-        <column name="USUARIO_CREACION" valueNumeric="1"/>
-        <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
-        <column name="VERSION" valueNumeric="0"/>
-        <column name="EST_REG" valueNumeric="0"/>
-        <column name="NOMBRE" value="BCP"/>
-        <column name="LOGO" value="bcp.png"/>
-    </insert>
+        <insert tableName="T_BANCOS">
+            <column name="FECHA_CREACION" valueDate="current_timestamp"/>
+            <column name="FECHA_ACTUALIZACION" valueDate="current_timestamp"/>
+            <column name="USUARIO_CREACION" valueNumeric="1"/>
+            <column name="USUARIO_ACTUALIZACION" valueNumeric="1"/>
+            <column name="VERSION" valueNumeric="0"/>
+            <column name="EST_REG" valueNumeric="0"/>
+            <column name="NOMBRE" value="BCP"/>
+            <column name="LOGO" value="bcp.png"/>
+        </insert>
     </changeSet>
     
     <changeSet id="v0.1.0-02-inserta-t-banco-interbank" author="ramiro.ochoa">

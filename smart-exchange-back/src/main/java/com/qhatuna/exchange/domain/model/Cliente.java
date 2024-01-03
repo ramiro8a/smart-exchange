@@ -17,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 @Table(name="t_cliente")
 public class Cliente  extends BaseModel{
     private String nombres;
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
     @Column(name = "ap_paterno")
     private String paterno;
     @Column(name = "ap_materno")

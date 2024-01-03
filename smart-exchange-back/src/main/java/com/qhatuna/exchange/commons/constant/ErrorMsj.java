@@ -15,6 +15,7 @@ public enum ErrorMsj {
     CONFIRM_ERROR("ERR-0009", "Error al confirmar correo"),
     USUARIO_EXISTE("ERR-0010", "El usuario ya existe"),
     DB_ERROR("ERR-0011", "Error en el proveedor de datos"),
+    PROCESSING_OBJECT("ERR-0012", "Error al mapear objetos"),
     GENERIC("ERR-9999", "Error interno del servidor"),
     CORREO_EXISTE("ADV-0001", "El correo ya existe"),
     CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),
@@ -27,7 +28,11 @@ public enum ErrorMsj {
     OPCION_NO_EXISTE("ADV-0011", "La opción no existe"),
     OPERACION_NOEXISTE("ADV-0012", "La operacion no existe"),
     INICIO_ANTES_FIN("ADV-0013", "La fecha inicio debe ser antes que la fecha fin"),
-    CONVERSION_NO_PERMITIDO("ADV-0014", "Conversión no permitida");
+    CONVERSION_NO_PERMITIDO("ADV-0014", "Conversión no permitida"),
+    GUARDAR_COMPROBANTE("ADV-0015", "Error al guardar el comprobante"),
+    PATH_COMPROBANTE("ADV-0016", "Error al crear la carpeta para guardar el comprobante"),
+    API_PERU_ERROR("ADV-0017", "Error en el servicio de verificacion"),
+    API_PERU_DATA_ERROR("ADV-0018", "No existe datos con los criterios de búsqueda enviados");
     final String cod;
     final String msj;
     final String msjTec;

@@ -12,6 +12,7 @@ export interface TipoCambioResponse{
   compra: number;
   venta: number;
   fecha: Date;
+  fechaRegistro: Date;
 }
 
 @Injectable({

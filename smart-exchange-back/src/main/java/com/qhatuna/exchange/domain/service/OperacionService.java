@@ -5,9 +5,11 @@ import com.qhatuna.exchange.app.rest.request.OperacionRequest;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
+import com.qhatuna.exchange.commons.utils.Util;
 import com.qhatuna.exchange.domain.model.*;
 import com.qhatuna.exchange.domain.repository.OperacionRepository;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,6 +57,7 @@ public class OperacionService {
         return operaciones.map(Operacion::aResponse);
     }
 
+    @Transactional
     public Long crea(OperacionRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         CuentaBancaria origen =  bancosService.recuperaCuentaBancariaPorId(request.cuentaOrigenId());
@@ -75,7 +78,10 @@ public class OperacionService {
                 .operador(asignaOperador())
                 .cliente(cliente)
                 .build();
-        return (operacionRepository.save(operacion)).getId();
+        operacion = operacionRepository.save(operacion);
+        String ticket = String.format("%08d", operacion.getId());
+        operacionRepository.updateTicket(operacion.getId(), ticket);
+        return operacion.getId();
     }
 
     public void actualiza(Long id, Integer op, OperacionRequest request){
@@ -147,8 +153,11 @@ public class OperacionService {
     private void confirma(Long id, OperacionRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Operacion operacion = recuperaOperacionPorId(id);
+        String path = Util.recuperaPathComprobantes();
+        String direccionComprobante = Util.guardaComprobante(request.comprobante(), path, operacion.getTicket());
         operacion.setEstado(0);
         operacion.setCodigoTransferencia(request.codigoTransferencia());
+        operacion.setComprobante(direccionComprobante);
         operacion.setUsuarioActualizacion(usuario.getId());
         operacionRepository.save(operacion);
     }

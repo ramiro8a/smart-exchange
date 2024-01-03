@@ -71,7 +71,6 @@ export class OperacionService {
   }
 
   errorHandler(error:any) {
-    console.warn(error)
     let errorMensaje = '';
     if(error.error instanceof ErrorEvent) {
       errorMensaje = error.error.mensaje;

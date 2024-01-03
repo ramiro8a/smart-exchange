@@ -1,29 +1,40 @@
 <mat-card>
     <mat-card-header>
+        <span class="cierra-componente accent-color">
+            <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
+        </span>
         <div mat-card-avatar class="example-header-image"></div>
         <mat-card-title>{{contenido.titulo}}</mat-card-title>
         <mat-card-subtitle *ngIf="contenido.subtitulo?true:false">{{contenido.subtitulo}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div *ngIf="!webcamImage">
+        <div class="camara-imagen" *ngIf="!webcamImage">
             <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
             [allowCameraSwitch]="allowCameraSwitch" 
             (initError)="handleInitError($event)"></webcam>
-            <button class="actionBtn" (click)="triggerSnapshot();">Tomar la foto</button>
+            <div class="botones-camara">
+                <button (click)="triggerSnapshot()" *ngIf="!webcamImage" mat-fab extended color="primary">
+                    <mat-icon>photo_camera</mat-icon>
+                    Capturar foto
+                </button>&nbsp;
+            </div>
         </div>
-        <div class="snapshot" *ngIf="webcamImage">
+        <div class="camara-imagen" *ngIf="webcamImage">
             <img [src]="webcamImage.imageAsDataUrl"/>
-            <button class="actionBtn" (click)="limpiar();">Tomar otra foto</button>
+            <div class="botones-camara">
+                <button  (click)="limpiar()" *ngIf="webcamImage" mat-fab extended color="primary">
+                    <mat-icon>flip_camera_ios</mat-icon>
+                    Hacer otra captura
+                </button>&nbsp;
+                <button (click)="devuelveDatos()" *ngIf="webcamImage" mat-fab extended color="accent">
+                    <mat-icon>add_a_photo</mat-icon>
+                    Listo, ya está
+                </button>
+            </div>
         </div>
+
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="close(true)" mat-fab extended color="primary">
-            <mat-icon>done</mat-icon>
-            Si
-        </button>&nbsp;
-        <button (click)="close(false)" mat-fab extended color="accent">
-            <mat-icon>block</mat-icon>
-            No
-        </button>
+
     </mat-card-actions>
 </mat-card>

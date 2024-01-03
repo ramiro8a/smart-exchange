@@ -13,7 +13,16 @@ import org.springframework.stereotype.Component;
 public class TareasAutomáticas {
     @Autowired
     private SimpMessagingTemplate template;
+    @Autowired
+    private TipoCambioService tipoCambioService;
     private Integer i =0;
+
+    @Scheduled(cron = "0 30 * * * *")
+    public void recuperaTipoCambio() {
+        log.info("Recuperando tipo cambio");
+        tipoCambioService.sincroniza();
+    }
+
    // @Scheduled(cron = "*/5 * * * * *")
     public void enviaNotif() {
         log.info("Enviando un mensaje {}",i++);

@@ -7,9 +7,12 @@ import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.domain.model.TipoCambio;
+import com.qhatuna.exchange.domain.provider.ApiPeruProvider;
+import com.qhatuna.exchange.domain.provider.dto.TipoCambioResponseDTO;
 import com.qhatuna.exchange.domain.repository.TipoCambioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,32 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class TipoCambioService {
     private final TipoCambioRepository tipoCambioRepository;
+    private final ApiPeruProvider apiPeruProvider;
+
+
+    public void sincroniza(){
+        try {
+            TipoCambioResponseDTO tc = apiPeruProvider.recuperaTipoCambio();
+            if(tc.data()!=null){
+                TipoCambioRequest tcr= new TipoCambioRequest(
+                        ConstValues.TC_OFICIAL,
+                        true,
+                        LocalDate.now(),
+                        ConstValues.USD_ISO,
+                        tc.data().compra(),
+                        tc.data().venta()
+                        );
+                    crea(tcr);
+            }
+        }catch (Exception ex){
+            log.error("Error al sincronizar tipo de cambio: {}", ex.getMessage());
+        }
+    }
 
     @Transactional
     public TipoCambioResponse crea(TipoCambioRequest request){

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="v0.0.0-07-crea-t-propiedades" author="ramiro.ochoa">
+        <comment>
+			Create table T_PROPIEDADES
+		</comment>
+        <createTable tableName="T_PROPIEDADES">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="PROPIEDAD" type="VARCHAR(200)" remarks="La prop key para acceder al valor"/>
+            <column name="VALOR" type="VARCHAR(500)" remarks="El valor de la propiedad"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_PROPIEDADES"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

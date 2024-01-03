@@ -3,10 +3,6 @@
         <span class="cierra-componente accent-color">
             <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
         </span>
-        <button (click)="abrirCamara()" mat-fab extended color="warn" type="button">
-            <mat-icon>photo_camera</mat-icon>
-            Tomar foto
-        </button>&nbsp;
       <!-- <mat-card-subtitle>Administración de</mat-card-subtitle> -->
       <mat-card-title>Nueva operación <small class="descripcion-cambio accent-background">{{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></mat-card-title>
     </mat-card-header>
@@ -175,18 +171,18 @@
                   <form [formGroup]="finalizaForm" autocomplete="off">
                     <ng-template matStepLabel>Finalizando</ng-template>
                     <div class="area-notificaciones">
-                        <span>En caso de no contar con el código de transferencia solamente marque <i>No lo tengo</i> y guarde la operación</span><br>
                         <mat-form-field appearance="outline">
                             <mat-label>Código transferencia</mat-label>
                             <input matInput type="text" formControlName="codigoTransferencia">
                         </mat-form-field><br>
+                        <span>Suba una foto del comprobante, puede <i>TOMAR UNA FOTO</i> o <i>SUBIR UNA IMAGEN</i> existente</span><br>
                         <div class="carga-comprobante">
-                            <button (click)="abrirCamara()" mat-fab extended color="warn" type="button">
+                            <button (click)="abrirCamara()" mat-fab extended [color]="imagen.captura?'primary':'warn'" type="button">
                                 <mat-icon>photo_camera</mat-icon>
                                 Tomar foto
                             </button>&nbsp;
-                            <input type="file" accept=".jpg" #fileInput style="display: none;" (change)="onFileSelected($event)" />
-                            <button (click)="fileInput.click()" mat-fab extended color="warn" type="button">
+                            <input type="file" accept=".jpg" #fileInput style="display: none;" (change)="archivoSeleccionado($event)" />
+                            <button (click)="fileInput.click()" mat-fab extended [color]="imagen.carga?'primary':'warn'" type="button">
                                 <mat-icon>image</mat-icon>
                                 Subir una imagen
                             </button>
@@ -195,13 +191,13 @@
                         <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
                     </div>
                       <div class="botones-operacion">
-                        <mat-slide-toggle formControlName="noTiene" color="primary">No lo tengo</mat-slide-toggle> <br>
-                          <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
-                              Atrás
-                          </button>&nbsp;
-                          <button mat-fab extended color="primary" (click)="guardarFinalizar()" [disabled]="estaCargando || !transfirio()">
-                              Guardar y finalizar
-                          </button>
+                            <!-- <mat-slide-toggle formControlName="noTiene" color="primary">No lo tengo</mat-slide-toggle> <br> -->
+                            <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
+                                Atrás
+                            </button>&nbsp;
+                            <button mat-fab extended color="primary" (click)="guardarFinalizar()" [disabled]="estaCargando || !finalizaForm.valid">
+                                Guardar y finalizar
+                            </button>
                       </div>
                   </form>
                 </mat-step>

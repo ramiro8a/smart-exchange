@@ -17,4 +17,5 @@ public class ConstValues {
     public static final Integer EURO_ISO = 978;
     public static final Integer TC_OFICIAL = 1;
     public static final Integer TC_EMPRESA = 2;
+    public static final Integer TD_RUC = 2;
 }

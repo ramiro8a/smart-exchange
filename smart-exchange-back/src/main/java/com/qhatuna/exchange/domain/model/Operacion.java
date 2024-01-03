@@ -47,12 +47,13 @@ public class Operacion extends BaseModel{
     @ManyToOne
     @JoinColumn(name="cliente_id",referencedColumnName="id")
     private Cliente cliente;
+    private String comprobante;
 
-    @PrePersist
+/*    @PrePersist
     public void prePersistTicket(){
         if(this.ticket==null)
             this.ticket = Util.generadorTicket();
-    }
+    }*/
 
     public static OperacionResponse aResponse(Operacion operacion){
         return new OperacionResponse(

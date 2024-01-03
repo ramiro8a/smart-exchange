@@ -88,9 +88,6 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
     let datos={
       inicio: new Date(valoresFormulario.inicio).toISOString().split('T')[0],
       fin: new Date(valoresFormulario.fin).toISOString().split('T')[0],
-      nombres: valoresFormulario.nombres,
-      paterno: valoresFormulario.paterno,
-      nroDocumento: valoresFormulario.nroDocumento,
       ticket: valoresFormulario.ticket
     }
     this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({

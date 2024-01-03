@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-01" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.apiperu.url
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.apiperu.url"/>
+            <column name="VALOR" value="https://apiperu.net"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-02" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.apiperu.token
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.apiperu.token"/>
+            <column name="VALOR" value="FypNhK3041XgP4QPLLJYpcdS8eJWrybWlCTTXjbnrcRsEnP8Uo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-03" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.apiperu.dni.path
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.apiperu.dni.path"/>
+            <column name="VALOR" value="/api/dni"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-04" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.apiperu.ruc.path
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.apiperu.ruc.path"/>
+            <column name="VALOR" value="/api/ruc"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-05" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.apiperu.tipo-cambio.path
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.apiperu.tipo-cambio.path"/>
+            <column name="VALOR" value="/api/tipo_de_cambio"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

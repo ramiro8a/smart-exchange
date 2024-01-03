@@ -39,6 +39,10 @@ export class OperacionComponent implements OnInit{
     transferencia: 'transferencia',
     finalizar: 'finalizar'
   };
+  imagen={
+    captura: false,
+    carga:false
+  }
   operacionId:number=0
   stepper:any={}
   cuentaTransferencia: any
@@ -76,7 +80,8 @@ export class OperacionComponent implements OnInit{
   });
   finalizaForm = this.formBuilder.group({
     codigoTransferencia: ['', [Validators.required]],
-    noTiene: [false, [Validators.required]]
+    comprobante: ['', [Validators.required]],
+    noTiene: [false]
   });
 
   isEditable = true;
@@ -142,13 +147,26 @@ export class OperacionComponent implements OnInit{
     });
   }
 
-  onFileSelected(event: any):void{
+  asignaComprobante(base64: string):void{
+    this.finalizaForm.controls['comprobante'].setValue(base64);
+  }
+
+  archivoSeleccionado(event: any):void{
     const file = event.target.files[0];
     if (file) {
-        // Procesa el archivo aquí
-        console.log(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+          const base64 = e.target.result;
+          this.asignaComprobante(base64)
+          this.imagen = {
+            captura: false,
+            carga: true
+          }
+      };
+      reader.readAsDataURL(file);
     }
   }
+
   abrirCamara():void{
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -159,6 +177,11 @@ export class OperacionComponent implements OnInit{
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.asignaComprobante(result.base64)
+        this.imagen = {
+          captura: true,
+          carga: false
+        }
       }
     })
   }
@@ -168,6 +191,7 @@ export class OperacionComponent implements OnInit{
     if(this.finalizaForm.valid){
       let datos ={
         codigoTransferencia: this.finalizaForm.controls['codigoTransferencia'].value,
+        comprobante: this.finalizaForm.controls['comprobante'].value,
       }
       this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({next: (response:any) => {
           this.estaCargando = false

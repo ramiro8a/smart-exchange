@@ -20,6 +20,7 @@
             <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
             
             <column name="NOMBRES" type="VARCHAR(250)" remarks="Primer nombre o Razon social"/>
+            <column name="NOMBRE_COMPLETO" type="VARCHAR(500)" remarks="Nombre completo de persona"/>
             <!-- <column name="SG_NOMBRE" type="VARCHAR(100)" remarks="Segundo nombre"/> -->
             <column name="AP_PATERNO" type="VARCHAR(100)" remarks="Apellido paterno"/>
             <column name="AP_MATERNO" type="VARCHAR(100)" remarks="Apellido materno"/>

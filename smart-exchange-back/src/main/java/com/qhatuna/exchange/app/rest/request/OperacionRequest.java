@@ -16,5 +16,6 @@ public record OperacionRequest (
         Long cuentaTransferenciaId,
         @NotNull
         Long tipoCambioId,
-        String codigoTransferencia
+        String codigoTransferencia,
+        String comprobante
 ){}

@@ -30,6 +30,7 @@
             <column name="CODIGO_TRANSFERENCIA" type="VARCHAR(200)" remarks="Código de transferencia"/>
             <column name="OPERADOR_ASIGNADO_ID" type="BIGINT" remarks="Usuario asignado para la atención"/>
             <column name="CLIENTE_ID" type="BIGINT" remarks="Id del cliente"/>
+            <column name="COMPROBANTE" type="VARCHAR(500)" remarks="url del comprobante"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_cuenta_origen_operacion"
             baseTableName="T_OPERACION"

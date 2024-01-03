@@ -3,10 +3,14 @@ package com.qhatuna.exchange.domain.service;
 import com.qhatuna.exchange.app.rest.request.ClienteRequest;
 import com.qhatuna.exchange.app.rest.response.ClienteResponse;
 import com.qhatuna.exchange.commons.constant.Const;
+import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.domain.model.Cliente;
 import com.qhatuna.exchange.domain.model.Usuario;
+import com.qhatuna.exchange.domain.provider.ApiPeruProvider;
+import com.qhatuna.exchange.domain.provider.dto.EmpresaResponse;
+import com.qhatuna.exchange.domain.provider.dto.PersonaResponse;
 import com.qhatuna.exchange.domain.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -25,11 +29,10 @@ public class ClienteService {
     private final ClienteRepository repository;
     private final SessionInfoService sessionInfoService;
     private final NotificacionService notificacionService;
-    private final SunatValidacionService sunatValidacionService;
+    private final ApiPeruProvider apiPeruProvider;
 
     public ClienteResponse crea(ClienteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
-        boolean clienteValido = sunatValidacionService.datosValidos(request);
         Cliente cliente = Cliente.builder()
                 .tipoDocumento(request.tipoDocumento())
                 .nroDocumento(request.nroDocumento())
@@ -39,10 +42,14 @@ public class ClienteService {
                 .paterno(request.paterno())
                 .materno(request.materno())
                 .usuarioId(usuario.getId())
-                .validado(clienteValido)
                 .build();
+        if(request.tipoDocumento().equals(ConstValues.TD_RUC)) {
+            validaEmpresa(cliente, request.nroDocumento());
+        } else {
+            validaPersona(cliente, request.nroDocumento());
+        }
         cliente = repository.save(cliente);
-        if(!clienteValido){
+        if(!cliente.isValidado()){
             notificacionService.notifValidarCLiente(cliente);
         }
         return Cliente.aResponse(cliente);
@@ -96,5 +103,32 @@ public class ClienteService {
                         ErrorMsj.CLIENTE_NOEXISTE.getCod(),
                         HttpStatus.BAD_REQUEST
                 ));
+    }
+
+    private void validaPersona(Cliente cliente, String dni){
+        try {
+            PersonaResponse persona = apiPeruProvider.recuperaPorDNI(dni);
+            if(persona!=null && persona.data()!=null){
+                cliente.setNombres(persona.data().nombres());
+                cliente.setNombreCompleto(persona.data().nombreCompleto());
+                cliente.setPaterno(persona.data().paterno());
+                cliente.setMaterno(persona.data().materno());
+                cliente.setValidado(true);
+            }
+        }catch (Exception ex){
+            //
+        }
+    }
+
+    private void validaEmpresa(Cliente cliente, String ruc){
+        try {
+            EmpresaResponse empresa = apiPeruProvider.recuperaPorRUC(ruc);
+            if(empresa!=null && empresa.data()!=null && empresa.data().estado().equalsIgnoreCase("ACTIVO")){
+                cliente.setNombres(empresa.data().razonSocial());
+                cliente.setValidado(true);
+            }
+        }catch (Exception ex){
+            //
+        }
     }
 }
