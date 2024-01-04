@@ -13,5 +13,6 @@ public record ClienteResponse(
         String telefono,
         String celular,
         Integer estado,
-        boolean validado
+        boolean validado,
+        Long usuarioId
 ) {}

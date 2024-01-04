@@ -3,14 +3,14 @@
 </span>
 <h3>{{titulo}}</h3>
 <div>
-    <ol  *ngIf="opc===1 || opc===2 || opc===3">
+    <ol  *ngIf="opc===1 || opc===2 || opc===3"><!---CUENTAS-->
         <li>
             <small><strong>Banco</strong></small>
             <p>{{datos.bancoNombre}}</p>
         </li>
         <li>
             <small><strong>Número de cuenta</strong></small>
-            <p>{{datos.numeroCuenta}}</p>
+            <p>{{datos.numeroCuenta}}<mat-icon (click)="copiar(datos.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></p>
         </li>
         <li>
             <small><strong>Tipo de cuenta</strong></small>
@@ -29,6 +29,46 @@
         <li>
             <small><strong>Estado</strong></small>
             <p>{{buscarNombreDeEstadoCuenta(datos.estado)}}</p>
+        </li>
+      </ol>
+
+      <ol  *ngIf="opc===1 || opc===2 || opc===3">
+        <li>
+            <small><strong>Banco</strong></small>
+            <p>{{datos.bancoNombre}}</p>
+        </li>
+        <li>
+            <small><strong>Número de cuenta</strong></small>
+            <p>{{datos.numeroCuenta}}<mat-icon (click)="copiar(datos.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></p>
+        </li>
+        <li>
+            <small><strong>Tipo de cuenta</strong></small>
+            <p>{{buscarNombreTipoCuenta(datos.tipoCuenta)}}</p>
+        </li>
+      </ol>
+
+      <ol  *ngIf="opc===4"><!---CLIENTE-->
+        <li>
+            <small><strong>Nombres o RS</strong></small>
+            <p>{{datos.nombres}} {{datos.paterno}} {{datos.materno}}</p>
+        </li>
+        <li>
+            <small><strong>Nro. documento</strong></small>
+            <p>{{datos.nroDocumento}}<mat-icon (click)="copiar(datos.nroDocumento)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></p>
+        </li>
+        <li>
+            <small><strong>Celular</strong></small>
+            <p>{{datos.celular}}</p>
+        </li>
+      </ol>
+      <ol  *ngIf="opc===4">
+        <li>
+            <small><strong>Tipo documento</strong></small>
+            <p>{{buscarNombreTipoDocumento(datos.tipoDocumento)}}</p>
+        </li>
+        <li>
+            <small><strong>Correo</strong></small>
+            <p>{{datos.correo}} </p>
         </li>
       </ol>
 </div>

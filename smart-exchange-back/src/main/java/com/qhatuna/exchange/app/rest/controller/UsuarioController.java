@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +38,20 @@ public class UsuarioController {
         return new ResponseEntity<>(service.crea(request), HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<UsuarioResponse> recuperaUsuarioPorId(
+            @Parameter(description = "id del usuario a recuperar", required = true) @NotNull() @PathVariable final Long id
+    ) {
+        return new ResponseEntity<>(service.recuperaUsuarioResponsePorId(id), HttpStatus.OK);
+    }
+
     @GetMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<UsuarioResponse>> recuperaTodo() {
         return new ResponseEntity<>(service.recuperaTodo(), HttpStatus.OK);
+    }
+    @GetMapping(path = "/operadores", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<UsuarioResponse>> recuperaOperadores() {
+        return new ResponseEntity<>(service.recuperaOperadores(), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })

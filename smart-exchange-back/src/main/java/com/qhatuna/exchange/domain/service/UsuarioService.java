@@ -8,6 +8,7 @@ import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.utils.Util;
+import com.qhatuna.exchange.domain.model.Cliente;
 import com.qhatuna.exchange.domain.model.Rol;
 import com.qhatuna.exchange.domain.model.Usuario;
 import com.qhatuna.exchange.domain.repository.RolRepository;
@@ -109,6 +110,10 @@ public class UsuarioService {
         return null;
     }
 
+    public UsuarioResponse recuperaUsuarioResponsePorId(Long id){
+        return Usuario.aResponse(recuperaUsuarioPorId(id));
+    }
+
     public void actualizaPassword(Long id, String request){
 
     }
@@ -120,6 +125,20 @@ public class UsuarioService {
 
     public List<Usuario> recuperaOperadoresActivos(){
         return usuarioRepository.buscaUsuarioPorNombreDeRol("OPERADOR");
+    }
+
+    public List<UsuarioResponse> recuperaOperadores(){
+        List<Usuario> usuarios = usuarioRepository.buscaUsuarioPorNombreDeRol("OPERADOR");
+        return usuarios.stream().map(Usuario::aResponse).toList();
+    }
+
+    public Usuario recuperaUsuarioPorId(Long id){
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.CLIENTE_NOEXISTE.getMsj(),
+                        ErrorMsj.CLIENTE_NOEXISTE.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
     }
 
 }

@@ -110,6 +110,7 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
   buscarNombreDeEstado(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.ESTADOS_OPERACION);
   }
+  
   buscarNombreDeTransferencia(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.TIPO_TRANSFERENCIAS);
   }

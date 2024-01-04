@@ -5,8 +5,12 @@ import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material/bottom-she
 import { OperacionService, PaginaOperacionResponse, OperacionResponse } from '../rest/operacion.service';
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'
+import * as Const from 'src/app/utils/constants.service'
 import {PageEvent} from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
+import { UsuariosService, UsuarioResponse, ClienteResponse } from '../rest/usuarios.service';
+import { CuentaBancariaResponse } from '../rest/bancos.service';
+import { DetallesComponent } from '../ui-utils/detalles/detalles.component';
 
 @Component({
   selector: 'app-operaciones',
@@ -16,15 +20,16 @@ import { MatPaginator } from '@angular/material/paginator';
 
 export class OperacionesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  operadores: UsuarioResponse[] = []
+  operadoresSelect: any[] = []
   estaCargando: boolean = false
   showFirstLastButtons = true;
   criterioForm: FormGroup;
   dataSource: OperacionResponse[] = [];
   displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','cliente','origen','destino','transferencia','operador','opciones'];
-  paginable: any
   filasInicial: number=5
   paginaInicial: number=0
-    paginaActual : PaginaOperacionResponse = {
+  paginaActual : PaginaOperacionResponse = {
     content: [],
     empty: true,
     first: true,
@@ -43,20 +48,22 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     private restOperacion:OperacionService,
     private notif: NotifierService,
     private formBuilder: FormBuilder,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private restUsuarios: UsuariosService
     ){
       this.criterioForm = this.formBuilder.group({
         inicio: ['', Validators.required],
         fin: ['', Validators.required],
         nombres: [''],
-        paterno: [''],
         nroDocumento: [''],
         ticket: [''],
+        operador: [0],
       });
     }
 
   ngOnInit(): void {
     this.recuperaInicial();
+    this.recuperaOperadores();
   }
 
   ngAfterViewInit() {
@@ -65,14 +72,29 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     });
   }
 
+  recuperaOperadores(){
+    this.restUsuarios.recuperaOperadores().subscribe({
+      next: (response:UsuarioResponse[]) => {
+        this.operadores = response
+        this.operadoresSelect.push({id: 0, usuario:'Todos'})
+        this.operadores.forEach((item)=>{
+          this.operadoresSelect.push({id:item.id, usuario: item.usuario})
+        })
+      },
+      error: (error:any) => {
+        this.notif.notify('error', error);
+      }
+    });
+  }
+
   resetForm(){
     this.criterioForm.setValue({
       inicio: this.fechaFormateada,
       fin: this.fechaFormateada,
       nombres:'',
-      paterno:'',
       nroDocumento:'',
-      ticket:''
+      ticket:'',
+      operador : 0
     });
   }
 
@@ -83,14 +105,14 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
       inicio: new Date(valoresFormulario.inicio).toISOString().split('T')[0],
       fin: new Date(valoresFormulario.fin).toISOString().split('T')[0],
       nombres: valoresFormulario.nombres,
-      paterno: valoresFormulario.paterno,
       nroDocumento: valoresFormulario.nroDocumento,
-      ticket: valoresFormulario.ticket
+      ticket: valoresFormulario.ticket,
+      operador: valoresFormulario.operador
     }
     this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({
       next: (response:PaginaOperacionResponse) => {
         this.dataSource = response.content
-        this.paginable = response
+        this.paginaActual = response
         this.estaCargando=false
       },
       error: (error:any) => {
@@ -100,6 +122,15 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     });
   }
 
+  abrirDetalles(opc:number, data: CuentaBancariaResponse|ClienteResponse): void {
+    const bottomSheetConfig = new MatBottomSheetConfig();
+    bottomSheetConfig.data = {
+      opc: opc,
+      datos: data
+    }
+    this.bottomSheet.open(DetallesComponent, bottomSheetConfig);
+  }
+
   recuperaInicial(){
     this.resetForm()
     this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
@@ -107,5 +138,15 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
 
   buscar():void{
     this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
+  }
+
+  buscarNombreDeEstado(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.ESTADOS_OPERACION);
+  }
+  buscarNombreDeTransferencia(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.TIPO_TRANSFERENCIAS);
+  }
+  buscarNombreDeMoneda(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.CUENTA_MONEDAS_CLIENTE);
   }
 }

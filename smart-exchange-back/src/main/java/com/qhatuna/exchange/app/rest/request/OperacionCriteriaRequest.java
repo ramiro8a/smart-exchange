@@ -8,5 +8,6 @@ public record OperacionCriteriaRequest(
         String nombres,
         String paterno,
         String nroDocumento,
-        String ticket
+        String ticket,
+        Long operador
 ) {}

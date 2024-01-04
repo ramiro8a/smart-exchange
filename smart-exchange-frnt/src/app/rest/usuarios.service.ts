@@ -16,7 +16,8 @@ export interface ClienteResponse{
   telefono:string,
   celular:string,
   estado:number,
-  validado:boolean
+  validado:boolean,
+  usuarioId: number
 }
 
 export interface UsuarioResponse{
@@ -47,6 +48,18 @@ export class UsuariosService {
   authPath:string = '/auth'
 
   constructor(private http: HttpClient) { }
+
+  recuperaOperadores(): Observable<UsuarioResponse[]> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/operadores`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaUsuarioPorId(id:number): Observable<UsuarioResponse> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/${id}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   recuperaUsuarios(): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}`).pipe(

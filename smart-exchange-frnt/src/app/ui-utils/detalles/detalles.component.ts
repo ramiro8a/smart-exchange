@@ -3,6 +3,8 @@ import {MatBottomSheet, MAT_BOTTOM_SHEET_DATA ,MatBottomSheetRef} from '@angular
 import { Inject } from '@angular/core';
 import { CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import * as Const from 'src/app/utils/constants.service'
+import { NotifierService } from 'angular-notifier';
+import { UsuariosService, UsuarioResponse } from 'src/app/rest/usuarios.service';
 
 @Component({
   selector: 'app-detalles',
@@ -15,6 +17,8 @@ export class DetallesComponent {
   datos:any
   constructor(
     private bottomSheetRef: MatBottomSheetRef<DetallesComponent>,
+    private notif: NotifierService,
+    private restUsuario: UsuariosService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any
   ){
     this.opc = data.opc
@@ -28,6 +32,10 @@ export class DetallesComponent {
         break;
       case 3:
         this.titulo ='Detalle cuenta transferencia'
+        break;
+      case 4:
+        this.titulo ='Detalle de cliente'
+        this.recuperaCorreo(this.datos.usuarioId)
         break;
       default:
         console.log('Opcion por defecto');
@@ -49,6 +57,30 @@ export class DetallesComponent {
   }
   buscarNombreTipoCuenta(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.TIPO_CUENTAS);
+  }
+
+  buscarNombreTipoDocumento(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.TIPO_DOCUMENTOS);
+  }
+
+  recuperaCorreo(usuarioId:number){
+    this.restUsuario.recuperaUsuarioPorId(usuarioId).subscribe({
+      next: (response:UsuarioResponse) => {
+        this.datos.correo=response.correo
+      },
+      error: (error:any) => {
+        
+      }
+  });
+  }
+
+  copiar(valor:any){
+    navigator.clipboard.writeText(valor).then(() => {
+      this.notif.notify('success','Copiado al portapapeles');
+      console.log('Texto copiado al portapapeles!');
+    }).catch(err => {
+      this.notif.notify('error','No hemos podido copiar el valor');
+    });
   }
 
 }

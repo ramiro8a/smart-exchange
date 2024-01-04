@@ -52,7 +52,8 @@ public class Cliente  extends BaseModel{
                 cliente.getTelefono(),
                 cliente.getCelular(),
                 cliente.getEstado(),
-                cliente.isValidado()
+                cliente.isValidado(),
+                cliente.getUsuarioId()
         );
     }
 }

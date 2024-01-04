@@ -49,7 +49,8 @@ public class OperacionService {
                     null,
                     null,
                     cliente.getNroDocumento(),
-                    request.ticket()
+                    request.ticket(),
+                    0L
             );
         }
         Specification<Operacion> especificacion = specificacionConCriterios(request);
@@ -171,6 +172,10 @@ public class OperacionService {
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("fechaCreacion"), inicio));
             LocalDateTime fin = criteria.fin().atTime(23, 59, 59);
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("fechaCreacion"), fin));
+
+            if (criteria.operador() != null && criteria.operador()>0) {
+                predicates.add(criteriaBuilder.equal((root.get("operador")).get("id"), criteria.operador()));
+            }
 
             if (criteria.ticket() != null && !criteria.ticket().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get("ticket"), criteria.ticket()));

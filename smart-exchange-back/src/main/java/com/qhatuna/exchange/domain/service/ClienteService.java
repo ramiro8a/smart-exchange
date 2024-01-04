@@ -19,9 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -125,6 +123,7 @@ public class ClienteService {
             EmpresaResponse empresa = apiPeruProvider.recuperaPorRUC(ruc);
             if(empresa!=null && empresa.data()!=null && empresa.data().estado().equalsIgnoreCase("ACTIVO")){
                 cliente.setNombres(empresa.data().razonSocial());
+                cliente.setNombreCompleto(empresa.data().razonSocial());
                 cliente.setValidado(true);
             }
         }catch (Exception ex){
