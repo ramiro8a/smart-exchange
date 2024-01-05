@@ -1,7 +1,9 @@
 package com.qhatuna.exchange.domain.service;
 
+import com.qhatuna.exchange.app.rest.request.ComprobanteRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionCriteriaRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionRequest;
+import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
@@ -35,6 +37,11 @@ public class OperacionService {
     private final TipoCambioService tipoCambioService;
     private final UsuarioService usuarioService;
     private final ClienteService clienteService;
+
+    public ComprobanteResponse recuperaComprobante(Long operacionId){
+        Operacion operacion = recuperaOperacionPorId(operacionId);
+        return new ComprobanteResponse(Util.convertirImageABase64(operacion.getComprobante()));
+    }
 
     public Page<OperacionResponse> operacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){
         if(request.inicio().isAfter(request.fin()))
@@ -97,6 +104,18 @@ public class OperacionService {
                     HttpStatus.BAD_REQUEST
                     );
         }
+    }
+
+    public void actualizaComprobante(Long id, ComprobanteRequest request){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Operacion operacion = recuperaOperacionPorId(id);
+        String path = Util.recuperaPathComprobantes();
+        String direccionComprobante = Util.guardaComprobante(request.comprobante(), path, operacion.getTicket());
+        operacion.setCodigoTransferencia(request.codigoTransferencia());
+        operacion.setComprobante(direccionComprobante);
+        operacion.setEstado(0);
+        operacion.setUsuarioActualizacion(usuario.getId());
+        operacionRepository.save(operacion);
     }
 
     public Operacion recuperaOperacionPorId(Long id){

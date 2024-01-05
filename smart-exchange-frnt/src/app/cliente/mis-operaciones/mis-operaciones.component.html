@@ -56,7 +56,7 @@
                 <th mat-header-cell *matHeaderCellDef> Cód. transferencia </th>
                 <td mat-cell *matCellDef="let item">
                     {{item.codigoTransferencia}}
-                    <div (click)="abrirDetalles(1, item.cuentaOrigen)" *ngIf="item.estado==6" matTooltip="Más detales" class="btn-personal">
+                    <div (click)="cargarComprobante(item.id)" *ngIf="item.estado==6" matTooltip="Más detales" class="btn-personal">
                         <mat-icon>launch</mat-icon>
                     </div>
                 </td>

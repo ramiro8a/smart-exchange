@@ -53,6 +53,11 @@ TOKEN:string = 'token'
     }
   }
 
+  public recuperaUsuario():string{
+    const decodedToken = this.decodeToken();
+    return decodedToken.sub?decodedToken.sub:''
+  }
+
   public expirado(): boolean {
     const decodedToken = this.decodeToken();
     const now = Date.now().valueOf() / 1000;

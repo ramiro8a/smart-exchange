@@ -9,6 +9,7 @@ import { DetallesComponent } from 'src/app/ui-utils/detalles/detalles.component'
 import { CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import {PageEvent} from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
+import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -59,6 +60,20 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe((pageEvent: PageEvent) => {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
     });
+  }
+
+  cargarComprobante(id:number){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      operacionId : id
+    } 
+    const dialogRef = this.dialog.open(CargaComprobanteComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+      }
+    })
   }
 
   abrirDetalles(opc:number, data: CuentaBancariaResponse): void {

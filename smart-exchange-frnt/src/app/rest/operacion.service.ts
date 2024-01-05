@@ -46,6 +46,7 @@ export class OperacionService {
   path:string = '/api/operacion'
 
   constructor(private http: HttpClient) { }
+
   recuperaOperacionesPaginado(pagina:number, tamano: number, criterios: any): Observable<PaginaOperacionResponse>{
     let params = new HttpParams();
     Object.keys(criterios).forEach(key => {
@@ -54,6 +55,18 @@ export class OperacionService {
         }
     });
     return this.http.get<any>(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`,{ params: params }).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaComprobante(operacionId: number): Observable<any>{
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/comprobante/${operacionId}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  actualizaComprobante(operacionId:number,data: any): Observable<number> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/${operacionId}`, data).pipe(
       catchError(this.errorHandler)
     )
   }

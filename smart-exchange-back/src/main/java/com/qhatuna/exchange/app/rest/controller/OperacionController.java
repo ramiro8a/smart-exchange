@@ -1,7 +1,9 @@
 package com.qhatuna.exchange.app.rest.controller;
 
+import com.qhatuna.exchange.app.rest.request.ComprobanteRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionCriteriaRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionRequest;
+import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
 import com.qhatuna.exchange.domain.service.OperacionService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,6 +46,16 @@ public class OperacionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> actualizaComprobante(
+            @PathVariable Long id,
+            @Parameter(description = "Comprobante en base64", required = true, content = @Content(schema = @Schema()))
+            @RequestBody ComprobanteRequest request
+    ) {
+        service.actualizaComprobante(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{page}/{size}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Page<OperacionResponse>> operacionPaginado(
             @PathVariable final Integer page,
@@ -51,5 +63,12 @@ public class OperacionController {
             @Valid @ParameterObject OperacionCriteriaRequest request
             ) {
         return new ResponseEntity<>(service.operacionPaginado(page, size,request),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/comprobante/{operacionId}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ComprobanteResponse> comprobantePorOperacionId(
+            @PathVariable final Long operacionId
+    ) {
+        return new ResponseEntity<>(service.recuperaComprobante(operacionId),HttpStatus.OK);
     }
 }

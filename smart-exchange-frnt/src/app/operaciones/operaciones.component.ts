@@ -11,6 +11,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { UsuariosService, UsuarioResponse, ClienteResponse } from '../rest/usuarios.service';
 import { CuentaBancariaResponse } from '../rest/bancos.service';
 import { DetallesComponent } from '../ui-utils/detalles/detalles.component';
+import { ImagenComponent } from '../ui-utils/imagen/imagen.component';
+import { CargaComprobanteComponent } from '../cliente/carga-comprobante/carga-comprobante.component';
+import { TokenService } from '../servicios/token.service';
 
 @Component({
   selector: 'app-operaciones',
@@ -49,7 +52,8 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     private notif: NotifierService,
     private formBuilder: FormBuilder,
     private bottomSheet: MatBottomSheet,
-    private restUsuarios: UsuariosService
+    private restUsuarios: UsuariosService,
+    private tokenService: TokenService
     ){
       this.criterioForm = this.formBuilder.group({
         inicio: ['', Validators.required],
@@ -70,6 +74,48 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe((pageEvent: PageEvent) => {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
     });
+  }
+
+  recuperaUsuarioToken():string{
+    return this.tokenService.recuperaUsuario()
+  }
+
+  recuperarComprobante(operacionId:number):void{
+    this.estaCargando = true
+    this.restOperacion.recuperaComprobante(operacionId).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          base64:response
+        } 
+        const dialogRef = this.dialog.open(ImagenComponent, dialogConfig)
+        dialogRef.disableClose = true;
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            ///this.recuperaCuentasBancarias()
+          }
+        })
+      },
+      error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+      }
+    });
+  }
+
+  cargarComprobante(id:number){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      operacionId : id
+    } 
+    const dialogRef = this.dialog.open(CargaComprobanteComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+      }
+    })
   }
 
   recuperaOperadores(){

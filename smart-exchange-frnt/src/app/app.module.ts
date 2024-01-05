@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core'
 import {MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 import { MaterialModule } from './material.modules';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -36,6 +37,8 @@ import { DetallesComponent } from './ui-utils/detalles/detalles.component';
 import { getSpanishPaginatorIntl } from './labels';
 import { CamaraComponent } from './ui-utils/camara/camara.component';
 import { WebcamModule } from 'ngx-webcam';
+import { ImagenComponent } from './ui-utils/imagen/imagen.component';
+import { CargaComprobanteComponent } from './cliente/carga-comprobante/carga-comprobante.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -101,6 +104,8 @@ const customNotifierOptions: NotifierOptions = {
     MisOperacionesComponent,
     DetallesComponent,
     CamaraComponent,
+    ImagenComponent,
+    CargaComprobanteComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,6 +117,7 @@ const customNotifierOptions: NotifierOptions = {
     ReactiveFormsModule,
     RecaptchaV3Module,
     WebcamModule,
+    NgxImageZoomModule,
     NotifierModule.withConfig(customNotifierOptions),
   ],
   providers: [

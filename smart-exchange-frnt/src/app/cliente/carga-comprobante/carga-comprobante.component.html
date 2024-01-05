@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Comprobante</mat-card-title>
+        <mat-card-subtitle>Carga una imagen del comprobante y nuestros operadores lo procesarán</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <br>
+        <form [formGroup]="finalizaForm" autocomplete="off">
+            <div class="area-notificaciones">
+                <mat-form-field appearance="outline">
+                    <mat-label>Código transferencia</mat-label>
+                    <input matInput type="text" formControlName="codigoTransferencia">
+                </mat-form-field><br>
+                <span>Suba una foto del comprobante, puede <i>TOMAR UNA FOTO</i> o <i>SUBIR UNA IMAGEN</i> existente</span><br>
+                <div class="carga-comprobante">
+                    <button (click)="abrirCamara()" mat-fab extended [color]="imagen.captura?'primary':'warn'" type="button">
+                        <mat-icon>photo_camera</mat-icon>
+                        Tomar foto
+                    </button>&nbsp;
+                    <input type="file" accept=".jpg" #fileInput style="display: none;" (change)="archivoSeleccionado($event)" />
+                    <button (click)="fileInput.click()" mat-fab extended [color]="imagen.carga?'primary':'warn'" type="button">
+                        <mat-icon>image</mat-icon>
+                        Subir una imagen
+                    </button>
+                </div>
+                <br>
+                <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <!-- <mat-slide-toggle formControlName="noTiene" color="primary">No lo tengo</mat-slide-toggle> <br> -->
+        <button (click)="enviarCoprobante()" mat-fab extended color="primary" [disabled]="estaCargando || !finalizaForm.valid">
+            Guardar
+        </button>&nbsp;
+        <button (click)="close(false)" mat-fab extended color="accent" [disabled]="estaCargando">
+            Cancelar
+        </button>
+    </mat-card-actions>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

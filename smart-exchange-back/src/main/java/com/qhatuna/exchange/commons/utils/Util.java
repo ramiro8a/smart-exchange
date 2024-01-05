@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -85,6 +86,16 @@ public class Util {
         String comprobantesDirPath = jarDir + File.separator + "comprobantes";
         String monthDirName = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
         return comprobantesDirPath + File.separator + monthDirName+File.separator;
+    }
+
+    public static String convertirImageABase64(String imagePath) {
+        try{
+            File file = new File(imagePath);
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            return Base64.getEncoder().encodeToString(fileContent);
+        }catch (Exception e){
+            throw new ProviderException(ErrorMsj.NOHAY_COMPROBANTE.getMsj(),ErrorMsj.NOHAY_COMPROBANTE.getCod());
+        }
     }
 
     public static String guardaComprobante(String base64, String path, String nombre){
