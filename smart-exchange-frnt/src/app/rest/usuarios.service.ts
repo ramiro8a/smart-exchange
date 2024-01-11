@@ -49,6 +49,12 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
+  cuentasClienteAux(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}${this.authPath}/cuentas-aux`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   recuperaCliente(): Observable<ClienteResponse> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}/cliente`).pipe(
       catchError(this.errorHandler)

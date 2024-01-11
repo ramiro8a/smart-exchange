@@ -26,33 +26,12 @@
                     </button>
                 </form>
                 <button routerLink="/registro" mat-button matTooltip="Regístrese para acceder al sistema" color="primary"><mat-icon>article</mat-icon>Regístrame</button>
-                <button (click)="panelManager('RESET')" mat-button matTooltip="Haga clic para recuperar su contraseña"  [color]="'primary'">
-                    <mat-icon>pan_tool</mat-icon> Olvidé mi contraseña
+                <button (click)="cuentasAux(1)" mat-button matTooltip="Haga clic para recuperar su contraseña"  [color]="'primary'">
+                    <mat-icon>lock</mat-icon> Olvidé mi contraseña
                 </button>
-                <button (click)="panelManager('CONFIRM')" mat-button matTooltip="Haga clic para recuperar su contraseña"  [color]="'primary'">
-                    <mat-icon>pan_tool</mat-icon> Confirmar mi correo
+                <button (click)="cuentasAux(2)" mat-button matTooltip="Haga clic para recuperar su contraseña"  [color]="'primary'">
+                    <mat-icon>outgoing_mail</mat-icon> Confirmar mi correo
                 </button>
-                <mat-accordion>
-                    <mat-expansion-panel [expanded]="panelOpen">
-                      <small>
-                        <p>Enviaremos un link a su correo para que pueda {{leyenda}}.</p>
-                      </small>
-                      <form [formGroup]="resetForm" (ngSubmit)="executeAction('RESCUE')" #formRes="ngForm" autocomplete="off">
-                        <table>
-                          <tr>
-                            <td>
-                              <mat-form-field appearance="outline"  matTooltip="Correo/Cédula de identidad">
-                                <mat-label>Correo/Cédula de identidad</mat-label>
-                                <input matInput type="text" formControlName="dato">
-                              </mat-form-field>
-                            </td>
-                            <td></td>
-                          </tr>
-                        </table>
-                        <button [disabled]="resetForm.invalid" mat-raised-button color="primary" matTooltip="Enciar dato">Enviar</button>&nbsp;
-                      </form>
-                    </mat-expansion-panel>
-                  </mat-accordion>
                 <mat-progress-bar *ngIf="estaCargando" mode="indeterminate" class="cargando"></mat-progress-bar>
             </div>
     </div>

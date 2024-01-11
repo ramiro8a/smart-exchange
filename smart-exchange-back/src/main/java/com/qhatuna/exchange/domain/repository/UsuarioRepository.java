@@ -21,6 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("select u from Usuario u where upper(u.usuario) = upper(?1) and u.estado != 1")
     Optional<Usuario> buscaPorUsuario(String usuario);
+
+    Optional<Usuario> findByCorreo(String correo);
     List<Usuario> findByRolesNombre(String nombreRol);
     @Query("select u from Usuario u join u.roles r where r.nombre =?1 and u.estado = 0")
     List<Usuario> buscaUsuarioPorNombreDeRol(String rol);

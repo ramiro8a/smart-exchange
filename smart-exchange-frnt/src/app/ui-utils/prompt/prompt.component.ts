@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 interface Contenido {
   texto: string;
   label: string;
+  tipoInput?: string;
 }
 
 @Component({
@@ -13,9 +14,10 @@ interface Contenido {
   templateUrl: './prompt.component.html',
   styleUrls: ['./prompt.component.sass']
 })
-export class PromptComponent {
+export class PromptComponent implements OnInit{
   contenido: Contenido
   form: FormGroup;
+  tipoInput:string = 'text'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,9 +26,19 @@ export class PromptComponent {
     @Inject(MAT_DIALOG_DATA) data:Contenido
   ){
     this.contenido = data
+    if(this.contenido.tipoInput){
+      this.tipoInput=this.contenido.tipoInput
+    }
     this.form = this.formBuilder.group({
       valor: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    if(this.tipoInput=='email'){
+      this.form.controls['valor'].setValidators([Validators.required, Validators.email]);
+      this.form.controls['valor'].updateValueAndValidity();
+    }
   }
 
   close(data:boolean){
@@ -37,7 +49,7 @@ export class PromptComponent {
     if(this.form.valid){
       this.dialogRef.close(this.form.controls['valor'].value);
     }else{
-      this.notif.notify('warning', 'Ingrese un valor por favor');
+      this.notif.notify('warning', 'Ingrese un valor válido por favor');
     }
   }
 }

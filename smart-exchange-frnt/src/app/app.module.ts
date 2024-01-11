@@ -41,6 +41,21 @@ import { ImagenComponent } from './ui-utils/imagen/imagen.component';
 import { CargaComprobanteComponent } from './cliente/carga-comprobante/carga-comprobante.component';
 import { PromptComponent } from './ui-utils/prompt/prompt.component';
 import { PrompSelecComponent } from './ui-utils/promp-selec/promp-selec.component';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, NgxUiLoaderHttpModule, SPINNER,POSITION,PB_DIRECTION,} from "ngx-ui-loader";
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  fgsColor: "#2d47af",
+  pbColor: "#2d47af",
+  bgsPosition: POSITION.bottomCenter,
+  overlayColor: "rgba(255,255,255,0.9)",
+  bgsType: SPINNER.rotatingPlane, // background spinner type
+  fgsType: SPINNER.rotatingPlane, // foldingCube,threeStrings
+  pbDirection: PB_DIRECTION.leftToRight, // progress bar direction
+  pbThickness: 5, // progress bar thickness
+  text: "Espere por favor..",
+  textColor: "#2d47af",
+  textPosition: "center-center",
+};
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -122,6 +137,7 @@ const customNotifierOptions: NotifierOptions = {
     RecaptchaV3Module,
     WebcamModule,
     NgxImageZoomModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NotifierModule.withConfig(customNotifierOptions),
   ],
   providers: [

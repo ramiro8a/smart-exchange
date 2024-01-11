@@ -9,7 +9,7 @@ server:
   port: 8050
 spring:
   application:
-    name: account-manager
+    name: smart-exchange
   datasource:
     url: jdbc:postgresql://localhost:5432/smart-exchange
     username: postgres

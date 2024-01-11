@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import {trigger, animate, style, group, animateChild, query, stagger, transition, state} from '@angular/animations';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 @Component({
   selector: 'app-root',
@@ -10,4 +12,19 @@ export class AppComponent {
   title = 'LC exchange';
   logo_principal='assets/img/lc_excahnge_temp.jpg'
   whatsapp_logo='assets/img/whatsapp_logo.png'
+
+  constructor(private router: Router, private ngxService: NgxUiLoaderService,) {
+    this.ngxService.start()
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationStart)
+    ).subscribe(() => {
+      this.ngxService.start();
+    });
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.ngxService.stop();
+    });
+  }
+
 }

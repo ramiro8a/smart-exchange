@@ -1,6 +1,7 @@
 package com.qhatuna.exchange.app.rest.controller;
 
 import com.qhatuna.exchange.app.rest.request.RegistroRequest;
+import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
 import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.domain.service.AutenticacionService;
@@ -37,6 +38,14 @@ public class AutenticacionController {
             @Parameter(description = "Datos de cliente a registrar", required = true, content = @Content(schema = @Schema(implementation = RegistroRequest.class)))
             @Valid @NotNull @RequestBody RegistroRequest request) {
         return new ResponseEntity<>(usuarioService.registraCliente(request), HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/cuentas-aux", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> cuentasAux(
+            @Parameter(description = "Datos de la accion a ejecutar", required = true, content = @Content(schema = @Schema(implementation = RegistroRequest.class)))
+            @Valid @NotNull @RequestBody UsuariosAuxRequest request) {
+        usuarioService.tareasMantenimientoUsuario(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = "/confirmer/{token}", produces = {MediaType.APPLICATION_JSON_VALUE })

@@ -1,10 +1,10 @@
 import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
 import { DatosCompartidosService, Notificacion } from '../servicios/datos-compartidos.service';
-import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog"
 import {MatBottomSheet, MatBottomSheetConfig} from '@angular/material/bottom-sheet';
 import { OperacionService, PaginaOperacionResponse, OperacionResponse } from '../rest/operacion.service';
 import { NotifierService } from 'angular-notifier';
-import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
 import {PageEvent} from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';

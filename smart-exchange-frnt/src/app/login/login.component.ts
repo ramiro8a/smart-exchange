@@ -5,8 +5,10 @@ import { UsuariosService } from '../rest/usuarios.service';
 import { ReCaptchaV3Service } from "ng-recaptcha";
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog"
 import { NotifierService } from 'angular-notifier';
 import { TokenService } from '../servicios/token.service';
+import { PromptComponent } from '../ui-utils/prompt/prompt.component';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +26,12 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private dialog: MatDialog,
     private restUsuarios: UsuariosService,
     private recaptchaV3Service: ReCaptchaV3Service,
     private notif: NotifierService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
     ){
       this.loginForm = this.formBuilder.group({
         username: ['', Validators.required],
@@ -84,28 +87,36 @@ export class LoginComponent {
     }
   }
 
-  panelManager(opc:string):void{
-    if(this.panelOpen && (this.opcion!=opc)){
-      if(opc=='RESET'){
-        this.leyenda='cambiar su contraseña'
-        this.opcion=opc
-      }
-      if(opc=='CONFIRM'){
-        this.leyenda='activar su cuenta.'
-        this.opcion=opc
-      }
-    }else{
-      if(opc=='RESET'){
-        this.panelOpen=!this.panelOpen
-        this.leyenda='cambiar su contraseña'
-        this.opcion=opc
-      }
-      if(opc=='CONFIRM'){
-        this.panelOpen=!this.panelOpen
-        this.leyenda='activar su cuenta'
-        this.opcion=opc
-      }
+  cuentasAux(opc:number):void{
+    const dialogConfig = new MatDialogConfig();
+    let texto = ''
+    if(opc==1){
+      texto = 'cambiar su contraseña'
     }
+    if(opc==2){
+      texto = 'confirmar su correo'
+    }
+    dialogConfig.data = {
+      texto: `Ingrese su correo, se le enviará un correo para ${texto}`,
+      label: 'Email',
+      tipoInput: 'email'
+    }
+    const dialogRef = this.dialog.open(PromptComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.estaCargando = true
+        this.restUsuarios.cuentasClienteAux({opc:opc, email:result}).subscribe({
+          next: (response:any) => {
+            this.estaCargando = false
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
+      }
+    })
   }
 
   executeAction(action: string): void {
