@@ -39,6 +39,8 @@ import { CamaraComponent } from './ui-utils/camara/camara.component';
 import { WebcamModule } from 'ngx-webcam';
 import { ImagenComponent } from './ui-utils/imagen/imagen.component';
 import { CargaComprobanteComponent } from './cliente/carga-comprobante/carga-comprobante.component';
+import { PromptComponent } from './ui-utils/prompt/prompt.component';
+import { PrompSelecComponent } from './ui-utils/promp-selec/promp-selec.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -106,6 +108,8 @@ const customNotifierOptions: NotifierOptions = {
     CamaraComponent,
     ImagenComponent,
     CargaComprobanteComponent,
+    PromptComponent,
+    PrompSelecComponent,
   ],
   imports: [
     BrowserModule,

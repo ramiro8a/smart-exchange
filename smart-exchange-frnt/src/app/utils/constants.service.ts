@@ -2,6 +2,12 @@ export const SOLES_ISO = 604
 export const USD_ISO = 840
 export const EURO_ISO = 978
 
+export const OP_ACTIVO = 0
+export const OP_EN_CURSO = 3
+export const OP_ANULADO = 5
+export const OP_PRELIMINAR = 6
+export const OP_FINALIZADO = 10
+
 export const ESTADOS_GENERICOS = [
     {codigo: 0, nombre: 'Activo'},
     {codigo: 1, nombre: 'Eliminado'},
@@ -35,14 +41,14 @@ export const TIPO_CAMBIOS = [
     {codigo: 2, nombre: 'Empresa'},
 ]
 export const ESTADOS_OPERACION = [
-    {codigo: 0, nombre: 'Activo'},
+    {codigo: OP_ACTIVO, nombre: 'Activo'},
     {codigo: 1, nombre: 'Eliminado'},
     {codigo: 2, nombre: 'Deshabilitado'},
-    {codigo: 3, nombre: 'En curso'},
+    {codigo: OP_EN_CURSO, nombre: 'En curso'},
     {codigo: 4, nombre: 'Rechazado'},
-    {codigo: 5, nombre: 'Anulado'},
-    {codigo: 6, nombre: 'Preliminar'},
-    {codigo: 10, nombre: 'Finalilzado'},
+    {codigo: OP_ANULADO, nombre: 'Anulado'},
+    {codigo: OP_PRELIMINAR, nombre: 'Preliminar'},
+    {codigo: OP_FINALIZADO, nombre: 'Finalilzado'},
 ]
 export const TIPO_TRANSFERENCIAS = [
     {codigo: 1, nombre: 'Normal'},

@@ -40,6 +40,8 @@ public class Operacion extends BaseModel{
     private TipoCambio tipoCambio;
     @Column(name = "codigo_transferencia")
     private String codigoTransferencia;
+    @Column(name = "codigo_transferencia_empresa")
+    private String codigoTransferenciaEmpresa;
     private String ticket;
     @ManyToOne
     @JoinColumn(name="operador_asignado_id",referencedColumnName="id")

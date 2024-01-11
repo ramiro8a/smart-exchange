@@ -49,6 +49,12 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
+  recuperaCliente(): Observable<ClienteResponse> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/cliente`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   recuperaOperadores(): Observable<UsuarioResponse[]> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}/operadores`).pipe(
       catchError(this.errorHandler)

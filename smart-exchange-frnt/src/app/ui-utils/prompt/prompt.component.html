@@ -1,0 +1,23 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{contenido.texto}}</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="form" (ngSubmit)="closeWithData()" autocomplete="off">
+        <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{contenido.label}}</mat-label>
+                    <input matInput type="text" formControlName="valor">
+                </mat-form-field>            
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-fab extended color="primary">
+                <mat-icon>done</mat-icon>
+                Aceptar
+            </button>&nbsp;
+            <button (click)="close(false)" type="button" mat-fab extended color="accent">
+                <mat-icon>block</mat-icon>
+                Cancelar
+            </button>
+        </mat-card-actions>
+    </form>
+</mat-card>

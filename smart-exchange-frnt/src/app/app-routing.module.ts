@@ -11,7 +11,7 @@ import { ConfirmaComponent } from './confirma/confirma.component';
 import { TipoCambioComponent } from './operaciones/tipo-cambio/tipo-cambio.component';
 import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancarias/lista-cuentas-bancarias.component';
 import { ClientesComponent } from './operaciones/clientes/clientes.component';
-import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard } from './utils/auht.guard';
+import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard, DefaultGuard } from './utils/auht.guard';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 
 const routes: Routes = [
@@ -32,8 +32,9 @@ const routes: Routes = [
       {path: 'clientes/:nroDocumento', component: ClientesComponent },
     ], canActivate:[OperadorGuard]},
     {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
-  ]
-  },
+    { path: '**', redirectTo: '/login' }
+  ], canActivate:[DefaultGuard]
+  },{ path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

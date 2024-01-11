@@ -33,7 +33,8 @@ public enum ErrorMsj {
     PATH_COMPROBANTE("ADV-0016", "Error al crear la carpeta para guardar el comprobante"),
     API_PERU_ERROR("ADV-0017", "Error en el servicio de verificacion"),
     API_PERU_DATA_ERROR("ADV-0018", "No existe datos con los criterios de búsqueda enviados"),
-    NOHAY_COMPROBANTE("ADV-0019", "No hemos podido encontrar el archivo"),;
+    NOHAY_COMPROBANTE("ADV-0019", "No hemos podido encontrar el archivo"),
+    CLIENTE_NO_VALIDADO("ADV-0020", "Sus datos personales aún no han sido validados");
     final String cod;
     final String msj;
     final String msjTec;

@@ -12,7 +12,7 @@
         <insert tableName="T_USUARIO">
             <column name="EST_REG" value="0"/>
             <column name="USUARIO" value="admin"/>
-            <column name="PASSWORD" value="$2a$10$T5z7OnTorZgJdA1MuLVVxeOqgtvem8H49qRRc.r171M09OJK7JVHu"/>
+            <column name="PASSWORD" value="$2a$10$vdyN1ur19.bokD3ZZ97jh.8uBYIMlOr.U8PKpKIJGyQUlvV1pct1O"/>
             <column name="CORREO" value="admin@admin.com"/>
             <column name="CORREO_VALIDADO" valueBoolean="false"/>
             <column name="BLOQUEADO" valueBoolean="false"/>

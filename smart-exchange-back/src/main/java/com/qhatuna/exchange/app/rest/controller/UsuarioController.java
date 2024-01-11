@@ -45,6 +45,11 @@ public class UsuarioController {
         return new ResponseEntity<>(service.recuperaUsuarioResponsePorId(id), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/cliente", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ClienteResponse> recuperaClientePorSesion() {
+        return new ResponseEntity<>(clienteService.recuperaClientePorSesion(), HttpStatus.OK);
+    }
+
     @GetMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<UsuarioResponse>> recuperaTodo() {
         return new ResponseEntity<>(service.recuperaTodo(), HttpStatus.OK);

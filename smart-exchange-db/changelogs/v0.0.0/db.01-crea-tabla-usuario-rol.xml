@@ -21,7 +21,7 @@
             <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
             
             <column name="USUARIO" type="VARCHAR(150)" remarks="nombre de ususario, para clientes siempre debe ser su correo electrónico"/>
-            <column name="PASSWORD" type="VARCHAR(255)" remarks="Correo electronico"/>
+            <column name="PASSWORD" type="VARCHAR(500)" remarks="Password"/>
             <column name="CORREO" type="VARCHAR(150)" remarks="Correo electronico"/>
             <column name="CORREO_VALIDADO" type="boolean" defaultValueBoolean="false" remarks="Si su correo electrónico ha sido verificado"/>
             <column name="CELULAR" type="VARCHAR(12)" remarks="Celular"/>

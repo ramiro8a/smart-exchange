@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, NgForm ,FormGroup, Validators,FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import { UsuariosService } from '../rest/usuarios.service';
 import { ReCaptchaV3Service } from "ng-recaptcha";
 import { catchError } from 'rxjs/operators';
@@ -31,12 +31,13 @@ export class LoginComponent {
     private tokenService: TokenService
     ){
       this.loginForm = this.formBuilder.group({
-        username: ['admin', Validators.required],
-        password: ['admin', Validators.required]
+        username: ['', Validators.required],
+        password: ['', Validators.required]
       });
       this.resetForm = this.formBuilder.group({
         dato: ['', Validators.required]
       });
+      this.tokenService.removeToken()
   }
 
   login():void {

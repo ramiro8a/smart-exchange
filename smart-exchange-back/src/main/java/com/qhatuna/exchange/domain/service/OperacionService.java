@@ -38,6 +38,36 @@ public class OperacionService {
     private final UsuarioService usuarioService;
     private final ClienteService clienteService;
 
+
+    public void reasignar(Long id, Long operadorId){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Operacion operacion = recuperaOperacionPorId(id);
+        operacion.setUsuarioActualizacion(usuario.getId());
+        operacion.setOperador(usuarioService.recuperaUsuarioPorId(operadorId));
+        operacionRepository.save(operacion);
+    }
+
+    public void finaliza(Long id, String codTransferencia){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Operacion operacion = recuperaOperacionPorId(id);
+        operacion.setEstado(10);
+        operacion.setCodigoTransferenciaEmpresa(codTransferencia);
+        operacion.setUsuarioActualizacion(usuario.getId());
+        operacionRepository.save(operacion);
+    }
+
+    public void accionesOperador(Long id, Integer estado){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Operacion operacion = recuperaOperacionPorId(id);
+        operacion.setEstado(estado);
+        if(estado.equals(0) && (operacion.getComprobante()==null)){
+                operacion.setEstado(6);
+
+        }
+        operacion.setUsuarioActualizacion(usuario.getId());
+        operacionRepository.save(operacion);
+    }
+
     public ComprobanteResponse recuperaComprobante(Long operacionId){
         Operacion operacion = recuperaOperacionPorId(operacionId);
         return new ComprobanteResponse(Util.convertirImageABase64(operacion.getComprobante()));
@@ -73,6 +103,13 @@ public class OperacionService {
         CuentaBancaria transferencia =  bancosService.recuperaCuentaBancariaPorId(request.cuentaTransferenciaId());
         TipoCambio tipoCambio =  tipoCambioService.recuperaTipoCambioPorId(request.tipoCambioId());
         Cliente cliente = clienteService.recuperaClientePorUsuarioId(usuario.getId());
+        if(!cliente.isValidado()){
+            throw new ProviderException(
+                    ErrorMsj.CLIENTE_NO_VALIDADO.getMsj(),
+                    ErrorMsj.CLIENTE_NO_VALIDADO.getCod(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
         Operacion operacion = Operacion.builder()
                 .tipoTransferencia(1)
                 .cuentaOrigen(origen)

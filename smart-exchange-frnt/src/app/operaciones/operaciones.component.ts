@@ -14,6 +14,9 @@ import { DetallesComponent } from '../ui-utils/detalles/detalles.component';
 import { ImagenComponent } from '../ui-utils/imagen/imagen.component';
 import { CargaComprobanteComponent } from '../cliente/carga-comprobante/carga-comprobante.component';
 import { TokenService } from '../servicios/token.service';
+import { ConfirmacionComponent } from '../ui-utils/confirmacion/confirmacion.component';
+import { PromptComponent } from '../ui-utils/prompt/prompt.component';
+import { PrompSelecComponent, Item } from '../ui-utils/promp-selec/promp-selec.component';
 
 @Component({
   selector: 'app-operaciones',
@@ -175,6 +178,109 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
       datos: data
     }
     this.bottomSheet.open(DetallesComponent, bottomSheetConfig);
+  }
+
+  abreReasignacion(id:number):void{
+    const dialogConfig = new MatDialogConfig();
+    let items: Item[] = []
+    this.operadores.forEach(item => {
+      items.push({codigo: item.id, nombre: item.usuario});
+    });
+    dialogConfig.data = {
+      texto: 'Seleccione un operador',
+      datos: items
+    }
+    const dialogRef = this.dialog.open(PrompSelecComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.estaCargando = true
+        this.restOperacion.reasignaOperador(id, result).subscribe({
+          next: (response:any) => {
+            this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+            this.estaCargando = false
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
+      }
+    })
+  }
+
+  finalizaOperacion(id:number):void{
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      texto: 'Ingrese el código de transferencia',
+      label: 'Cod. de transferencia'
+    }
+    const dialogRef = this.dialog.open(PromptComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      if(result){
+        this.estaCargando = true
+        this.restOperacion.finalizaOperacion(id, result).subscribe({
+          next: (response:any) => {
+            this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+            this.estaCargando = false
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
+      }
+    })
+  }
+
+  mostrarReasignar(estado:number):boolean{
+    return estado==Const.OP_ACTIVO || estado==Const.OP_EN_CURSO || estado==Const.OP_PRELIMINAR
+  }
+
+  mostrarEnCurso(estado:number):boolean{
+    return estado==Const.OP_ACTIVO
+  }
+
+  estaAsignadoATi(operador:string):boolean{
+    return this.recuperaUsuarioToken()==operador
+  }
+
+  mostrarAnular(estado:number){
+    return estado==Const.OP_ACTIVO || estado==Const.OP_PRELIMINAR || estado==Const.OP_EN_CURSO
+  }
+
+  mostrarFinalizar(estado:number){
+    return estado==Const.OP_EN_CURSO
+  }
+  mostrarReactivar(estado:number){
+    return estado==Const.OP_ANULADO
+  }
+
+  accionOperador(id:number, ticket:string, estado:number):void{
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titulo: 'CONFIRME',
+      descripcion:`Está seguro de cambiar el estado a ${this.buscarNombreDeEstado(estado)} a la operación ${ticket}`
+    } 
+    const dialogRef = this.dialog.open(ConfirmacionComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.estaCargando = true
+        this.restOperacion.accionesOperador(id, estado).subscribe({
+          next: (response:any) => {
+            this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+            this.estaCargando = false
+          },
+          error: (error:any) => {
+            this.notif.notify('error',error);
+            this.estaCargando = false
+          }
+        });
+      }
+    })
   }
 
   recuperaInicial(){

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,33 @@ public class OperacionController {
             @RequestBody ComprobanteRequest request
     ) {
         service.actualizaComprobante(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/acciones/{id}/{estado}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> accionesOperador(
+            @PathVariable Long id,
+            @PathVariable Integer estado
+    ) {
+        service.accionesOperador(id, estado);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/finaliza/{id}/{codTransferencia}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> finaliza(
+            @PathVariable @NotNull Long id,
+            @PathVariable @NotNull @NotEmpty String codTransferencia
+    ) {
+        service.finaliza(id, codTransferencia);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/reasigna/{id}/{operadorId}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> reasignar(
+            @PathVariable @NotNull Long id,
+            @PathVariable @NotNull Long operadorId
+    ) {
+        service.reasignar(id, operadorId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

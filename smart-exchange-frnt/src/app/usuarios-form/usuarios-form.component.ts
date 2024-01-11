@@ -27,8 +27,8 @@ export class UsuariosFormComponent implements OnInit{
   ){
     this.usuarioForm = this.formBuilder.group({
       usuario: ['', Validators.required],
-      correo: ['oaramiro@gmail.com', [Validators.required, Validators.email]],
-      password: ['AmanteDeLaComida', [Validators.required, Validators.minLength(8), Validators.maxLength(30)]],
+      correo: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(30)]],
       bloqueado: [false, Validators.required],
       inicio: ['', Validators.required],
       fin: ['', Validators.required],

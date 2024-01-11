@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../servicios/token.service';
 import { UtilsService } from '../rest/utils.service';
 import { DatosCompartidosService, Notificacion } from '../servicios/datos-compartidos.service';
-import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog"
 import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-personales.component';
 import { SocketService } from '../servicios/socket.service';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-principal',
@@ -70,7 +69,6 @@ export class PrincipalComponent implements OnInit{
   }
 
   validaDatosClienteMetodo(clientId:string){
-    console.error(`RAMIRO '${clientId}'`);
     //this.router.navigate([`/operaciones/clientes`, clientId])
     this.router.navigate([`/operaciones/clientes/${clientId}`])
 /*     const dialogConfig = new MatDialogConfig();
@@ -90,13 +88,19 @@ export class PrincipalComponent implements OnInit{
   }
 
   datosPersonales(){
-    const dialogRef = this.dialog.open(DatosPersonalesComponent)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {nuevo: true}
+    const dialogRef = this.dialog.open(DatosPersonalesComponent, dialogConfig)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.recuperaNotificaciones()
       }
     })
+  }
+
+  recuperaUsuario():string{
+    return this.tokenService.recuperaUsuario();
   }
 
   esCliente():boolean{

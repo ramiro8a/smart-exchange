@@ -193,6 +193,7 @@ export class OperacionComponent implements OnInit{
         codigoTransferencia: this.finalizaForm.controls['codigoTransferencia'].value,
         comprobante: this.finalizaForm.controls['comprobante'].value,
       }
+      this.estaCargando = true
       this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({next: (response:any) => {
           this.estaCargando = false
           this.close(true)

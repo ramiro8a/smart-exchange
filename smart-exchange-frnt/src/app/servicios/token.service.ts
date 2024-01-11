@@ -16,6 +16,10 @@ TOKEN:string = 'token'
   public getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN);
   }
+  
+  public removeToken(): void {
+    sessionStorage.removeItem(this.TOKEN);
+  }  
 
   public esCliente():boolean{
     const roles = this.getUserRoles()

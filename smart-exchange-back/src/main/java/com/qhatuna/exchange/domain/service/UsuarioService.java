@@ -8,7 +8,6 @@ import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.utils.Util;
-import com.qhatuna.exchange.domain.model.Cliente;
 import com.qhatuna.exchange.domain.model.Rol;
 import com.qhatuna.exchange.domain.model.Usuario;
 import com.qhatuna.exchange.domain.repository.RolRepository;

@@ -30,10 +30,10 @@ export class RegistrateComponent {
 /*         nombres: ['', Validators.required],
         apPaterno: ['', Validators.required],
         apMaterno: ['', Validators.required], */
-        correo: ['oaramiro@gmail.com', [Validators.required, Validators.email]],
-        password: ['AmanteDeLaComida', [Validators.required, Validators.minLength(8),
+        correo: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8),
         Validators.maxLength(30)]],
-        rePassword: ['AmanteDeLaComida', [Validators.required, Validators.minLength(8),
+        rePassword: ['', [Validators.required, Validators.minLength(8),
           Validators.maxLength(30)]],
       });
       this.registraForm.addValidators(ConfirmPasswordValidator('password', 'rePassword'))

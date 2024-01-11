@@ -65,8 +65,26 @@ export class OperacionService {
     )
   }
 
+  reasignaOperador(operacionId:number,operadorId: number): Observable<number> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/reasigna/${operacionId}/${operadorId}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  finalizaOperacion(operacionId:number,codTranferencia: any): Observable<number> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/finaliza/${operacionId}/${codTranferencia}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   actualizaComprobante(operacionId:number,data: any): Observable<number> {
     return this.http.patch<any>(`${environment.baseUrl}${this.path}/${operacionId}`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  accionesOperador(id:number,estado: number): Observable<number> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/acciones/${id}/${estado}`, {}).pipe(
       catchError(this.errorHandler)
     )
   }

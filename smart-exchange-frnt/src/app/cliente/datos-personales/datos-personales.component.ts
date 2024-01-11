@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
 import { NotifierService } from 'angular-notifier';
-import { UsuariosService } from 'src/app/rest/usuarios.service';
+import { UsuariosService, ClienteResponse } from 'src/app/rest/usuarios.service';
 
 @Component({
   selector: 'app-datos-personales',
@@ -12,6 +12,7 @@ import { UsuariosService } from 'src/app/rest/usuarios.service';
 })
 export class DatosPersonalesComponent implements OnInit{
   estaCargando: boolean = false
+  esNuevo:boolean = true
   personalForm: FormGroup;
   tipoDocumentos: any[] = Const.TIPO_DOCUMENTOS
 
@@ -34,6 +35,7 @@ export class DatosPersonalesComponent implements OnInit{
     }
   
   ngOnInit(): void {
+    this.recuperaDatosCliente()
     this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
       if(tipoDocumento===2){
         this.personalForm.controls['paterno'].setValidators([]);
@@ -41,6 +43,30 @@ export class DatosPersonalesComponent implements OnInit{
         this.personalForm.controls['paterno'].setValidators([Validators.required]);
       }
       this.personalForm.controls['paterno'].updateValueAndValidity();
+    });
+  }
+
+  recuperaDatosCliente(){
+    this.estaCargando = true
+    this.restUsuario.recuperaCliente().subscribe({
+      next: (response:ClienteResponse) => {
+        response.tipoDocumento
+        this.personalForm.setValue({
+          tipoDocumento: response.tipoDocumento,
+          nroDocumento: response.nroDocumento,
+          nombres: response.nombres,
+          paterno: response.paterno,
+          materno: response.materno,
+          celular: response.celular,
+          deAcuerdo: true,
+        })
+        this.estaCargando = false;
+        this.esNuevo = false
+        this.personalForm.disable();
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+      }
     });
   }
 

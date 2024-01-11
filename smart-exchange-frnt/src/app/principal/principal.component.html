@@ -16,15 +16,15 @@
         <button routerLink="/operaciones/clientes/todo" mat-button color="primary" class="elemento menu-texto"><b>Clientes</b></button>
     </span>
     <span class="toolbar-section right">
-        <small class="accent-color"><b>correo@gmail.com</b> </small>
+        <small class="accent-color"><b>{{recuperaUsuario()}}</b> </small>
         <button mat-mini-fab color="primary"  class="elemento" [matMenuTriggerFor]="menu">
             <mat-icon [matBadge]="notificaciones.length" *ngIf="notificaciones.length > 0" matBadgeColor="warn">account_circle</mat-icon>
             <mat-icon *ngIf="notificaciones.length === 0">account_circle</mat-icon>
         </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button (click)="datosPersonales()" mat-menu-item>
               <mat-icon>person</mat-icon>
-              <span>Actualizar mis datos</span>
+              <span>Mis datos personales</span>
             </button>
             <button mat-menu-item [matMenuTriggerFor]="notif" *ngIf="notificaciones.length>0">
               <mat-icon [matBadge]="notificaciones.length" matBadgeColor="warn">notifications_active</mat-icon>

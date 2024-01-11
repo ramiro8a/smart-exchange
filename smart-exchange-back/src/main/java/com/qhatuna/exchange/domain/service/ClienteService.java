@@ -29,6 +29,11 @@ public class ClienteService {
     private final NotificacionService notificacionService;
     private final ApiPeruProvider apiPeruProvider;
 
+    public ClienteResponse recuperaClientePorSesion(){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Cliente cliente = recuperaClientePorUsuarioId(usuario.getId());
+        return Cliente.aResponse(cliente);
+    }
     public ClienteResponse crea(ClienteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Cliente cliente = Cliente.builder()

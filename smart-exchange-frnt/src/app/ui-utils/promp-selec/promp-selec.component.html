@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{contenido.texto}}</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="form" (ngSubmit)="closeWithData()" autocomplete="off">
+        <mat-card-content> 
+            <mat-form-field appearance="outline">
+                <mat-label>Seleccione uno</mat-label>
+                <mat-select formControlName="valor">
+                    <mat-option *ngFor="let item of contenido.datos" [value]="item.codigo">
+                    {{item.nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>        
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-fab extended color="primary">
+                <mat-icon>done</mat-icon>
+                Aceptar
+            </button>&nbsp;
+            <button (click)="close(false)" type="button" mat-fab extended color="accent">
+                <mat-icon>block</mat-icon>
+                Cancelar
+            </button>
+        </mat-card-actions>
+    </form>
+</mat-card>
