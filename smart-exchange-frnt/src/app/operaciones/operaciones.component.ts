@@ -48,6 +48,7 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
   };
   hoy = new Date();
   fechaFormateada = this.hoy.toISOString().split('T')[0];
+  estados:any[]=[]
   constructor(
     private datosCompartidos: DatosCompartidosService,
     private dialog: MatDialog,
@@ -65,10 +66,12 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
         nroDocumento: [''],
         ticket: [''],
         operador: [0],
+        estado: [100],
       });
     }
 
   ngOnInit(): void {
+    this.llenaEstados()
     this.recuperaInicial();
     this.recuperaOperadores();
   }
@@ -77,6 +80,13 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe((pageEvent: PageEvent) => {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
     });
+  }
+  llenaEstados(){
+    this.estados=[]
+    this.estados.push({codigo: 100, nombre: 'Todos'})
+    Const.ESTADOS_OPERACION_RES.forEach((item)=>{
+      this.estados.push({codigo: item.codigo, nombre: item.nombre})
+    })
   }
 
   recuperaUsuarioToken():string{
@@ -143,7 +153,8 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
       nombres:'',
       nroDocumento:'',
       ticket:'',
-      operador : 0
+      operador : 0,
+      estado: 100
     });
   }
 
@@ -156,7 +167,8 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
       nombres: valoresFormulario.nombres,
       nroDocumento: valoresFormulario.nroDocumento,
       ticket: valoresFormulario.ticket,
-      operador: valoresFormulario.operador
+      operador: valoresFormulario.operador,
+      estado: valoresFormulario.estado
     }
     this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({
       next: (response:PaginaOperacionResponse) => {
@@ -300,5 +312,8 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
   }
   buscarNombreDeMoneda(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.CUENTA_MONEDAS_CLIENTE);
+  }
+  buscarClasePorCodigo(codigo:number):string{
+    return Const.buscarClassPorCodigo(codigo, Const.ESTADOS_OPERACION);
   }
 }

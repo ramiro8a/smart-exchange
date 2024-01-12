@@ -37,7 +37,9 @@
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef> Estado </th>
                 <td mat-cell *matCellDef="let item"> 
-                    {{buscarNombreDeEstado(item.estado)}}
+                    <div [class]="buscarClasePorCodigo(item.estado)">
+                        {{buscarNombreDeEstado(item.estado)}}
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="tipoTransferencia">

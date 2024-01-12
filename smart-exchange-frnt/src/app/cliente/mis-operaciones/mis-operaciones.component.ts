@@ -133,4 +133,8 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
     return Const.buscarNombrePorCodigo(codigo, Const.CUENTA_MONEDAS_CLIENTE);
   }
 
+  buscarClasePorCodigo(codigo:number):string{
+    return Const.buscarClassPorCodigo(codigo, Const.ESTADOS_OPERACION);
+  }
+
 }

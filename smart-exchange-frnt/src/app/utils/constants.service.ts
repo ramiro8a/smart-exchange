@@ -41,14 +41,21 @@ export const TIPO_CAMBIOS = [
     {codigo: 2, nombre: 'Empresa'},
 ]
 export const ESTADOS_OPERACION = [
-    {codigo: OP_ACTIVO, nombre: 'Activo'},
-    {codigo: 1, nombre: 'Eliminado'},
-    {codigo: 2, nombre: 'Deshabilitado'},
-    {codigo: OP_EN_CURSO, nombre: 'En curso'},
-    {codigo: 4, nombre: 'Rechazado'},
-    {codigo: OP_ANULADO, nombre: 'Anulado'},
-    {codigo: OP_PRELIMINAR, nombre: 'Preliminar'},
-    {codigo: OP_FINALIZADO, nombre: 'Finalilzado'},
+    {codigo: OP_ACTIVO, nombre: 'Activo', class:'op-est-activo'},
+    {codigo: 1, nombre: 'Eliminado', class:'op-est-eliminado'},
+    {codigo: 2, nombre: 'Deshabilitado', class:'op-est-deshabilitado'},
+    {codigo: OP_EN_CURSO, nombre: 'En curso', class:'op-est-en-curso'},
+    {codigo: 4, nombre: 'Rechazado', class:'op-est-rechazado'},
+    {codigo: OP_ANULADO, nombre: 'Anulado', class:'op-est-anulado'},
+    {codigo: OP_PRELIMINAR, nombre: 'Preliminar', class:'op-est-preliminar'},
+    {codigo: OP_FINALIZADO, nombre: 'Finalilzado', class:'op-est-finalizado'},
+]
+export const ESTADOS_OPERACION_RES = [
+    {codigo: OP_ACTIVO, nombre: 'Activo', class:'op-est-activo'},
+    {codigo: OP_EN_CURSO, nombre: 'En curso', class:'op-est-en-curso'},
+    {codigo: OP_ANULADO, nombre: 'Anulado', class:'op-est-anulado'},
+    {codigo: OP_PRELIMINAR, nombre: 'Preliminar', class:'op-est-preliminar'},
+    {codigo: OP_FINALIZADO, nombre: 'Finalilzado', class:'op-est-finalizado'},
 ]
 export const TIPO_TRANSFERENCIAS = [
     {codigo: 1, nombre: 'Normal'},
@@ -57,7 +64,10 @@ export const TIPO_TRANSFERENCIAS = [
 
 
 
-
+export function buscarClassPorCodigo(codigo: number, lista: {codigo: number, class: string}[]): string {
+    const itemEncontrado = lista.find(item => item.codigo === codigo);
+    return itemEncontrado ? itemEncontrado.class : '';
+}
 
 export function buscarNombrePorCodigo(codigo: number, lista: {codigo: number, nombre: string}[]): string {
     const itemEncontrado = lista.find(item => item.codigo === codigo);

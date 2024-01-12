@@ -87,7 +87,8 @@ public class OperacionService {
                     null,
                     cliente.getNroDocumento(),
                     request.ticket(),
-                    0L
+                    0L,
+                    100
             );
         }
         Specification<Operacion> especificacion = specificacionConCriterios(request);
@@ -231,6 +232,10 @@ public class OperacionService {
 
             if (criteria.operador() != null && criteria.operador()>0) {
                 predicates.add(criteriaBuilder.equal((root.get("operador")).get("id"), criteria.operador()));
+            }
+
+            if (criteria.estado() != null && criteria.estado()<10) {
+                predicates.add(criteriaBuilder.equal(root.get("estado"), criteria.estado()));
             }
 
             if (criteria.ticket() != null && !criteria.ticket().isEmpty()) {

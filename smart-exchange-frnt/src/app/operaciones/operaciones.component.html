@@ -33,6 +33,14 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="outline" class="select-cuenta">
+            <mat-label>Selec. estado</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option *ngFor="let item of estados" [value]="item.codigo">
+                    {{item.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
         <button mat-raised-button color="primary" [disabled]="estaCargando">
             Buscar
         </button>&nbsp;
@@ -52,7 +60,11 @@
           </ng-container>
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef> Estado </th>
-                <td mat-cell *matCellDef="let item"> {{buscarNombreDeEstado(item.estado)}} </td>
+                <td mat-cell *matCellDef="let item"> 
+                    <div [class]="buscarClasePorCodigo(item.estado)">
+                        {{buscarNombreDeEstado(item.estado)}}
+                    </div>
+                </td>
             </ng-container>
             <ng-container matColumnDef="tipoTransferencia">
                 <th mat-header-cell *matHeaderCellDef> Tipo transferencia </th>

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { puzzleAnimations } from '../dialog-animations';
+import { dialogAnimations } from '../dialog-animations';
 
 interface Contenido {
   texto: string;
@@ -14,9 +14,12 @@ interface Contenido {
   selector: 'app-prompt',
   templateUrl: './prompt.component.html',
   styleUrls: ['./prompt.component.sass'],
-  animations: [puzzleAnimations],
+  animations: [
+    dialogAnimations
+  ]
 })
 export class PromptComponent implements OnInit{
+  estado: boolean = true
   contenido: Contenido
   form: FormGroup;
   tipoInput:string = 'text'
@@ -44,6 +47,7 @@ export class PromptComponent implements OnInit{
   }
 
   close(data:boolean){
+    this.estado=false
     this.dialogRef.close(data);
   }
 
