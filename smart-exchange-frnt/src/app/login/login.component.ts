@@ -109,6 +109,7 @@ export class LoginComponent {
         this.restUsuarios.cuentasClienteAux({opc:opc, email:result}).subscribe({
           next: (response:any) => {
             this.estaCargando = false
+            this.notif.notify('success', `Le hemos enviado un link a su correo para ${texto}`);
           },
           error: (error:any) => {
             this.notif.notify('error',error);
@@ -137,7 +138,6 @@ export class LoginComponent {
             this.restUsuarios.login(values).subscribe({
               next: (response:any) => {
                 this.estaCargando = false;
-                
               },
               error: (error:any) => {
                 this.estaCargando = false;

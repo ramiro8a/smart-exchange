@@ -14,7 +14,6 @@ export class AppComponent {
   whatsapp_logo='assets/img/whatsapp_logo.png'
 
   constructor(private router: Router, private ngxService: NgxUiLoaderService,) {
-    this.ngxService.start()
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart)
     ).subscribe(() => {
@@ -23,7 +22,9 @@ export class AppComponent {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      this.ngxService.stop();
+      setTimeout(() => {
+        this.ngxService.stop();
+      }, 1000);  //500 1 seg
     });
   }
 
