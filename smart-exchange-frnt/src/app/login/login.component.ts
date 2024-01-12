@@ -13,7 +13,7 @@ import { PromptComponent } from '../ui-utils/prompt/prompt.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.sass']
+  styleUrls: ['./login.component.sass'],
 })
 export class LoginComponent {
   loginForm: FormGroup;

@@ -47,7 +47,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsColor: "#2d47af",
   pbColor: "#2d47af",
   bgsPosition: POSITION.bottomCenter,
-  overlayColor: "rgba(255,255,255,0.95)",
+  overlayColor: "rgba(255,255,255,0.97)",
   bgsType: SPINNER.rotatingPlane, // background spinner type
   fgsType: SPINNER.rotatingPlane, // foldingCube,threeStrings
   pbDirection: PB_DIRECTION.leftToRight, // progress bar direction

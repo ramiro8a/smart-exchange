@@ -24,7 +24,7 @@ export class AppComponent {
     ).subscribe(() => {
       setTimeout(() => {
         this.ngxService.stop();
-      }, 1000);  //500 1 seg
+      }, 500);  //1000 1 seg
     });
   }
 

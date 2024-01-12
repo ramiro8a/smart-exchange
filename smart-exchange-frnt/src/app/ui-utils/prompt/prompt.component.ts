@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { puzzleAnimations } from '../dialog-animations';
 
 interface Contenido {
   texto: string;
@@ -12,7 +13,8 @@ interface Contenido {
 @Component({
   selector: 'app-prompt',
   templateUrl: './prompt.component.html',
-  styleUrls: ['./prompt.component.sass']
+  styleUrls: ['./prompt.component.sass'],
+  animations: [puzzleAnimations],
 })
 export class PromptComponent implements OnInit{
   contenido: Contenido
