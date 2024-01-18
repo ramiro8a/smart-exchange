@@ -66,10 +66,10 @@
                     </div>
                 </td>
             </ng-container>
-            <ng-container matColumnDef="tipoTransferencia">
+<!--             <ng-container matColumnDef="tipoTransferencia">
                 <th mat-header-cell *matHeaderCellDef> Tipo transferencia </th>
                 <td mat-cell *matCellDef="let item"> {{buscarNombreDeTransferencia(item.tipoTransferencia)}} </td>
-            </ng-container>
+            </ng-container> -->
             <ng-container matColumnDef="monto">
               <th mat-header-cell *matHeaderCellDef> Monto </th>
               <td mat-cell *matCellDef="let item">{{item.monto | number:'1.2-2'}} {{buscarNombreDeMoneda(item.cuentaOrigen.moneda)}}</td>
@@ -82,12 +82,21 @@
                 <th mat-header-cell *matHeaderCellDef> Cód. transferencia </th>
                 <td mat-cell *matCellDef="let item">
                     {{item.codigoTransferencia}}
-                    <div (click)="recuperarComprobante(item.id)" *ngIf="item.estado!=6" matTooltip="Ver comprobante" class="btn-personal">
+                    <div (click)="recuperarComprobante(item.id, 1)" *ngIf="item.estado!=6" matTooltip="Ver comprobante" class="btn-personal">
                         <mat-icon>attachment</mat-icon>
                     </div>
 
                     <div (click)="cargarComprobante(item.id)" *ngIf="item.estado==6 && recuperaUsuarioToken()==item.operador.usuario" matTooltip="Más detales" class="btn-personal">
                         <mat-icon>launch</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="codigoTransferenciaEmpresa">
+                <th mat-header-cell *matHeaderCellDef> Cód. transferencia Emp.</th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.codigoTransferenciaEmpresa}}
+                    <div (click)="recuperarComprobante(item.id, 2)" *ngIf="item.codigoTransferenciaEmpresa" matTooltip="Ver comprobante" class="btn-personal">
+                        <mat-icon>attachment</mat-icon>
                     </div>
                 </td>
             </ng-container>

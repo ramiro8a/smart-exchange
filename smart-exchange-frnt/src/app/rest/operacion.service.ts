@@ -59,8 +59,8 @@ export class OperacionService {
     )
   }
 
-  recuperaComprobante(operacionId: number): Observable<any>{
-    return this.http.get<any>(`${environment.baseUrl}${this.path}/comprobante/${operacionId}`).pipe(
+  recuperaComprobante(operacionId: number, tipo:number): Observable<any>{
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/comprobante/${operacionId}/${tipo}`).pipe(
       catchError(this.errorHandler)
     )
   }
@@ -71,8 +71,8 @@ export class OperacionService {
     )
   }
 
-  finalizaOperacion(operacionId:number,codTranferencia: any): Observable<number> {
-    return this.http.patch<any>(`${environment.baseUrl}${this.path}/finaliza/${operacionId}/${codTranferencia}`, {}).pipe(
+  finalizaOperacion(operacionId:number,data: any): Observable<number> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/finaliza/${operacionId}`, data).pipe(
       catchError(this.errorHandler)
     )
   }

@@ -66,12 +66,13 @@ public class OperacionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/finaliza/{id}/{codTransferencia}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    @PatchMapping(path = "/finaliza/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Void> finaliza(
             @PathVariable @NotNull Long id,
-            @PathVariable @NotNull @NotEmpty String codTransferencia
+            @Parameter(description = "Comprobante en base64", required = true, content = @Content(schema = @Schema()))
+            @RequestBody ComprobanteRequest request
     ) {
-        service.finaliza(id, codTransferencia);
+        service.finaliza(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -93,10 +94,11 @@ public class OperacionController {
         return new ResponseEntity<>(service.operacionPaginado(page, size,request),HttpStatus.OK);
     }
 
-    @GetMapping(path = "/comprobante/{operacionId}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/comprobante/{operacionId}/{tipo}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<ComprobanteResponse> comprobantePorOperacionId(
-            @PathVariable final Long operacionId
+            @PathVariable final Long operacionId,
+            @PathVariable final Integer tipo
     ) {
-        return new ResponseEntity<>(service.recuperaComprobante(operacionId),HttpStatus.OK);
+        return new ResponseEntity<>(service.recuperaComprobante(operacionId, tipo),HttpStatus.OK);
     }
 }

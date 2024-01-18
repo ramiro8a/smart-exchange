@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.0.0-00-inserta-t-empresa" author="ramiro.ochoa">
+        <comment>
+			Inserta tabla T_EMPRESA
+		</comment>
+        <insert tableName="T_EMPRESA">
+            <column name="RAZON_SOCIAL" value="SERVICE CORPORATION LC S.A.C."/>
+            <column name="RUC" value="20611808098"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.0.0-00-inserta-t-dias-lunes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS LUNES</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="LUNES"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-martes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS MARTES</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="MARTES"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-miercoles" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS MIERCOLES</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="MIERCOLES"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-jueves" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS JUEVES</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="JUEVES"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-viernes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS VIERNES</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="VIERNES"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-sabado" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS SABADO</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="SABADO"/>
+            <column name="LABORAL" value="false"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-dias-domingo" author="ramiro.ochoa">
+        <comment>Inserta tabla T_DIAS DOMINGO</comment>
+        <insert tableName="T_DIAS">
+            <column name="NOMBRE" value="DOMINGO"/>
+            <column name="LABORAL" value="false"/>
+            <column name="EMPRESA_ID" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.0.0-00-inserta-t-horarios-lunes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS LUNES</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-horarios-martes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS MARTES</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="2"/>
+        </insert>
+    </changeSet>
+        <changeSet id="v0.0.0-00-inserta-t-horarios-miercoles" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS miercoles</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="3"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-horarios-jueves" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS jueves</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="4"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-horarios-viernes" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS viernes</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="5"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-horarios-sabado" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS sabado</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="6"/>
+        </insert>
+    </changeSet>
+    <changeSet id="v0.0.0-00-inserta-t-horarios-domingo" author="ramiro.ochoa">
+        <comment>Inserta tabla T_HORARIOS domingo</comment>
+        <insert tableName="T_HORARIOS">
+            <column name="DESDE" value="08:00:00"/>
+            <column name="HASTA" value="17:00:00"/>
+            <column name="DIA_ID" value="7"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

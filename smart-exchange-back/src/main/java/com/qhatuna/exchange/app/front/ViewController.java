@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
     @RequestMapping({
-            "/login","/confirma/{token}", "/registro",
+            "/login","/confirma/{token}","/password-reset/{token}", "/registro",
             "/cliente/nueva-operacion","/cliente/cuentas-bancarias","/cliente/operaciones",
             "/operaciones/principal","/operaciones/clientes/{clienteId}"
     })

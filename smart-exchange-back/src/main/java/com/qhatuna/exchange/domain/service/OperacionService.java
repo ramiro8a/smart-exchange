@@ -47,11 +47,14 @@ public class OperacionService {
         operacionRepository.save(operacion);
     }
 
-    public void finaliza(Long id, String codTransferencia){
+    public void finaliza(Long id, ComprobanteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Operacion operacion = recuperaOperacionPorId(id);
+        String path = Util.recuperaPathComprobantes();
+        String direccionComprobante = Util.guardaComprobante(request.comprobante(), path, operacion.getTicket()+"_emp");
+        operacion.setCodigoTransferenciaEmpresa(request.codigoTransferencia());
+        operacion.setComprobanteEmpresa(direccionComprobante);
         operacion.setEstado(10);
-        operacion.setCodigoTransferenciaEmpresa(codTransferencia);
         operacion.setUsuarioActualizacion(usuario.getId());
         operacionRepository.save(operacion);
     }
@@ -68,9 +71,9 @@ public class OperacionService {
         operacionRepository.save(operacion);
     }
 
-    public ComprobanteResponse recuperaComprobante(Long operacionId){
+    public ComprobanteResponse recuperaComprobante(Long operacionId, Integer tipo){
         Operacion operacion = recuperaOperacionPorId(operacionId);
-        return new ComprobanteResponse(Util.convertirImageABase64(operacion.getComprobante()));
+        return new ComprobanteResponse(Util.convertirImageABase64(tipo==2?operacion.getComprobanteEmpresa():operacion.getComprobante()));
     }
 
     public Page<OperacionResponse> operacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){

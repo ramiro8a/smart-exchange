@@ -1,6 +1,7 @@
 package com.qhatuna.exchange.domain.service;
 
 import com.qhatuna.exchange.app.rest.request.RegistroRequest;
+import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuarioRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
@@ -31,6 +32,28 @@ public class UsuarioService {
     private final HttpServletRequest servletRequest;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
+
+    public void resetPasswordClient(ResetPassRequest request){
+        try {
+            String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(request.token());
+            Optional<Usuario> usuarioOptional = usuarioRepository.buscaPorUsuario(nombreUsuario);
+            if(usuarioOptional.isPresent()){
+                Usuario usuario = usuarioOptional.get();
+                usuario.setPassword(passwordEncoder.encode(request.password().trim()));
+                usuario.setUsuarioActualizacion(usuario.getId());
+                usuarioRepository.save(usuario);
+            }else {
+                throw new ProviderException(ErrorMsj.USUARIO_VACIO.getMsj(),ErrorMsj.USUARIO_VACIO.getCod(), HttpStatus.FORBIDDEN);
+            }
+        }catch (Exception ex){
+            throw new ProviderException(
+                    Util.getExceptionMsg(ex),
+                    ErrorMsj.UNAUTHORIZED.getMsj(),
+                    ErrorMsj.UNAUTHORIZED.getCod(),
+                    HttpStatus.FORBIDDEN
+            );
+        }
+    }
 
     public void tareasMantenimientoUsuario(UsuariosAuxRequest request){
         Usuario usuario = recuperaPorCorreo(request.email().trim());

@@ -20,7 +20,6 @@ export class ConfirmaComponent implements OnInit {
   ngOnInit(): void {
     if(this.activatedRoute?.snapshot?.params['token']){
       let tokenConfirm = this.activatedRoute.snapshot.params['token']
-      console.warn(tokenConfirm)
       this.restUsuarios.confirmaCorreo(tokenConfirm).subscribe({
         next: (response:any) => {
           this.estaCargando = false;

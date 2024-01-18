@@ -50,6 +50,8 @@ public class Operacion extends BaseModel{
     @JoinColumn(name="cliente_id",referencedColumnName="id")
     private Cliente cliente;
     private String comprobante;
+    @Column(name = "comprobante_empresa")
+    private String comprobanteEmpresa;
 
 /*    @PrePersist
     public void prePersistTicket(){
@@ -71,6 +73,7 @@ public class Operacion extends BaseModel{
                 operacion.getMontoFinal(),
                 TipoCambio.aResponseList(operacion.getTipoCambio()),
                 operacion.getCodigoTransferencia(),
+                operacion.getCodigoTransferenciaEmpresa(),
                 Cliente.aResponse(operacion.getCliente()),
                 Usuario.aResponse(operacion.getOperador()),
                 operacion.getTicket()

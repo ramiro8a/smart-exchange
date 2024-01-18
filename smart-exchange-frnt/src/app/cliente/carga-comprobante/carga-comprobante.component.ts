@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
 })
 export class CargaComprobanteComponent {
   estaCargando: boolean = false
+  finaliza:boolean = false
   imagen={
     captura: false,
     carga:false
@@ -32,6 +33,9 @@ export class CargaComprobanteComponent {
     @Inject(MAT_DIALOG_DATA) data:any
   ){
     this.operacionId = data.operacionId
+    if(data.finaliza){
+      this.finaliza = data.finaliza
+    }
   }
 
 
@@ -64,16 +68,29 @@ export class CargaComprobanteComponent {
 
   enviarCoprobante(){
     this.estaCargando=true
-    this.restOperacion.actualizaComprobante(this.operacionId, this.finalizaForm.value).subscribe({
-      next: (response:any) => {
-        this.close(true)
-        this.estaCargando=false
-      },
-      error: (error:any) => {
-        this.notif.notify('error', error);
-        this.estaCargando=false
-      }
-    });
+    if(this.finaliza){
+      this.restOperacion.finalizaOperacion(this.operacionId, this.finalizaForm.value).subscribe({
+        next: (response:any) => {
+          this.close(true)
+          this.estaCargando = false
+        },
+        error: (error:any) => {
+          this.notif.notify('error',error);
+          this.estaCargando = false
+        }
+      });
+    }else{
+      this.restOperacion.actualizaComprobante(this.operacionId, this.finalizaForm.value).subscribe({
+        next: (response:any) => {
+          this.close(true)
+          this.estaCargando=false
+        },
+        error: (error:any) => {
+          this.notif.notify('error', error);
+          this.estaCargando=false
+        }
+      });
+    }
   }
 
   archivoSeleccionado(event: any):void{

@@ -16,6 +16,7 @@ public record OperacionResponse(
         BigDecimal montoFinal,
         TipoCambioResponse tipoCambio,
         String codigoTransferencia,
+        String codigoTransferenciaEmpresa,
         ClienteResponse cliente,
         UsuarioResponse operador,
         String ticket

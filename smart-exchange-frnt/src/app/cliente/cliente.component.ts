@@ -52,16 +52,29 @@ export class ClienteComponent implements OnInit{
   ngOnInit(): void {
     this.recuperaTC();
     this.operacionForm.get('envio')?.valueChanges.subscribe((valorEnvio) => {
-      let montoRecibe = 0
+      this.recalcula(valorEnvio)
+/*       let montoRecibe = 0
       if(this.envio.cod===Const.USD_ISO){
         montoRecibe = this.redondearHalfUp(valorEnvio*this.tipoCambio.compra, 2)
         this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.compra)-(valorEnvio*this.tipoCambio.compraOficial), 2)
       }else{
         montoRecibe = this.redondearHalfUp(valorEnvio/this.tipoCambio.venta, 2)
-        this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.ventaOficial)-(valorEnvio*this.tipoCambio.venta), 2)
+        this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.venta)-(valorEnvio*this.tipoCambio.ventaOficial), 2)
       }
-      this.operacionForm.controls['recibo'].setValue(montoRecibe);
+      this.operacionForm.controls['recibo'].setValue(montoRecibe); */
     });
+  }
+
+  recalcula(valorEnvio:number):void{
+    let montoRecibe = 0
+    if(this.envio.cod===Const.USD_ISO){
+      montoRecibe = this.redondearHalfUp(valorEnvio*this.tipoCambio.compra, 2)
+      this.ahorroImporte = this.redondearHalfUp((valorEnvio*this.tipoCambio.compra)-(valorEnvio*this.tipoCambio.compraOficial), 2)
+    }else{
+      montoRecibe = this.redondearHalfUp(valorEnvio/this.tipoCambio.venta, 2)
+      this.ahorroImporte = this.redondearHalfUp((valorEnvio/this.tipoCambio.venta)-(valorEnvio/this.tipoCambio.ventaOficial), 2)
+    }
+    this.operacionForm.controls['recibo'].setValue(montoRecibe);
   }
 
   iniciarOperacion():void{
@@ -114,7 +127,8 @@ export class ClienteComponent implements OnInit{
   }
 
   cambiaMoneda():void{
-    this.operacionForm.controls['envio'].setValue(10.00);
+    const valorEnvio:number=10.00
+    this.operacionForm.controls['envio'].setValue(valorEnvio);
     if(this.envio.cod===Const.SOLES_ISO){
       this.envio = this.usd
       this.envio.desc ='Envio Dólares'
@@ -126,6 +140,7 @@ export class ClienteComponent implements OnInit{
       this.recibo = this.usd
       this.recibo.desc ='Recibo Dólares'
     }
+    this.recalcula(valorEnvio)
   }
 
   redondearHalfUp(numero: number, decimales: number): number {

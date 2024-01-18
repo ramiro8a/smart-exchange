@@ -10,6 +10,7 @@ import { CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import {PageEvent} from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
+import { ImagenComponent } from 'src/app/ui-utils/imagen/imagen.component';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -22,7 +23,7 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
   showFirstLastButtons = true;
   criterioForm: FormGroup;
   dataSource: OperacionResponse[] = [];
-  displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','origen','destino','transferencia'];
+  displayColumns: string[] = ['fechaCreacion','ticket','estado','monto', 'montoFinal','codigoTransferencia','codigoTransferenciaEmpresa','origen','destino','transferencia'];
   filasInicial: number=5
   paginaInicial: number=0
   paginaActual : PaginaOperacionResponse = {
@@ -59,6 +60,30 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.paginator.page.subscribe((pageEvent: PageEvent) => {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
+    });
+  }
+
+  recuperarComprobante(operacionId:number, tipo:number):void{
+    this.estaCargando = true
+    this.restOperacion.recuperaComprobante(operacionId, tipo).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          base64:response
+        } 
+        const dialogRef = this.dialog.open(ImagenComponent, dialogConfig)
+        dialogRef.disableClose = true;
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            ///this.recuperaCuentasBancarias()
+          }
+        })
+      },
+      error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+      }
     });
   }
 

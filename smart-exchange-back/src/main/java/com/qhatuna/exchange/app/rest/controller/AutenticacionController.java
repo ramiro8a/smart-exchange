@@ -1,6 +1,7 @@
 package com.qhatuna.exchange.app.rest.controller;
 
 import com.qhatuna.exchange.app.rest.request.RegistroRequest;
+import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
 import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
@@ -53,4 +54,12 @@ public class AutenticacionController {
         usuarioService.confirmaUsuario(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PatchMapping(path = "/reset-pass", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> resetPass(
+            @Valid @NotNull @RequestBody ResetPassRequest request
+    ) {
+        usuarioService.resetPasswordClient(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

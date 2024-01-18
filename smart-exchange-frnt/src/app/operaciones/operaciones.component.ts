@@ -32,7 +32,7 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
   showFirstLastButtons = true;
   criterioForm: FormGroup;
   dataSource: OperacionResponse[] = [];
-  displayColumns: string[] = ['fechaCreacion','ticket','estado', 'tipoTransferencia','monto', 'montoFinal','codigoTransferencia','cliente','origen','destino','transferencia','operador','opciones'];
+  displayColumns: string[] = ['fechaCreacion','ticket','estado','monto', 'montoFinal','codigoTransferencia','codigoTransferenciaEmpresa','cliente','origen','destino','transferencia','operador','opciones'];
   filasInicial: number=5
   paginaInicial: number=0
   paginaActual : PaginaOperacionResponse = {
@@ -93,9 +93,9 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     return this.tokenService.recuperaUsuario()
   }
 
-  recuperarComprobante(operacionId:number):void{
+  recuperarComprobante(operacionId:number, tipo:number):void{
     this.estaCargando = true
-    this.restOperacion.recuperaComprobante(operacionId).subscribe({
+    this.restOperacion.recuperaComprobante(operacionId, tipo).subscribe({
       next: (response:any) => {
         this.estaCargando = false
         const dialogConfig = new MatDialogConfig();
@@ -224,16 +224,15 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
   finalizaOperacion(id:number):void{
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      texto: 'Ingrese el código de transferencia',
-      label: 'Cod. de transferencia'
-    }
-    const dialogRef = this.dialog.open(PromptComponent, dialogConfig)
+      operacionId : id,
+      finaliza: true
+    } 
+    const dialogRef = this.dialog.open(CargaComprobanteComponent, dialogConfig)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if(result){
-        this.estaCargando = true
-        this.restOperacion.finalizaOperacion(id, result).subscribe({
+        this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+/*         this.restOperacion.finalizaOperacion(id, result).subscribe({
           next: (response:any) => {
             this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
             this.estaCargando = false
@@ -242,7 +241,7 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
             this.notif.notify('error',error);
             this.estaCargando = false
           }
-        });
+        }); */
       }
     })
   }

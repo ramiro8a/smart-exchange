@@ -13,11 +13,13 @@ import { ListaCuentasBancariasComponent } from './cliente/lista-cuentas-bancaria
 import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard, DefaultGuard } from './utils/auht.guard';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
   {path: 'registro', component: RegistrateComponent },
   {path: 'confirma/:token', component: ConfirmaComponent },
+  {path: 'password-reset/:token', component: PasswordResetComponent },
   {path: '', component: PrincipalComponent, children: [
     {path: 'reportes', component: ReportesComponent, canActivate:[GerenteGuard] },
     {path: 'cliente', children:[

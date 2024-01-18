@@ -35,7 +35,9 @@ public enum ErrorMsj {
     API_PERU_DATA_ERROR("ADV-0018", "No existe datos con los criterios de búsqueda enviados"),
     NOHAY_COMPROBANTE("ADV-0019", "No hemos podido encontrar el archivo"),
     CLIENTE_NO_VALIDADO("ADV-0020", "Sus datos personales aún no han sido validados"),
-    CORREO_NO_EXISTE("ADV-0021", "El correo no existe"),;
+    CORREO_NO_EXISTE("ADV-0021", "El correo no existe"),
+    EMPRESA_NOEXISTE("ADV-0022", "La empresa no existe"),
+    DIA_NOEXISTE("ADV-0023", "El dia no existe"),;
     final String cod;
     final String msj;
     final String msjTec;

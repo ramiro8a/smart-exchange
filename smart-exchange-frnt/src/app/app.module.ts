@@ -42,6 +42,8 @@ import { CargaComprobanteComponent } from './cliente/carga-comprobante/carga-com
 import { PromptComponent } from './ui-utils/prompt/prompt.component';
 import { PrompSelecComponent } from './ui-utils/promp-selec/promp-selec.component';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, NgxUiLoaderHttpModule, SPINNER,POSITION,PB_DIRECTION,} from "ngx-ui-loader";
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empresa.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsColor: "#2d47af",
@@ -125,6 +127,8 @@ const customNotifierOptions: NotifierOptions = {
     CargaComprobanteComponent,
     PromptComponent,
     PrompSelecComponent,
+    PasswordResetComponent,
+    ConfigEmpresaComponent,
   ],
   imports: [
     BrowserModule,
