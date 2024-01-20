@@ -14,6 +14,7 @@ import { ClientesComponent } from './operaciones/clientes/clientes.component';
 import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard, DefaultGuard } from './utils/auht.guard';
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empresa.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
       {path: 'tipo-cambio', component: TipoCambioComponent },
       {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
       {path: 'clientes/:nroDocumento', component: ClientesComponent },
+      {path: 'empresa', component: ConfigEmpresaComponent },
     ], canActivate:[OperadorGuard]},
     {path: 'admin', component: UsusariosCrudComponent, canActivate:[AdminGuard] },
     { path: '**', redirectTo: '/login' }

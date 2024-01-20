@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-header>
+        <h3>{{contenido.titulo}}</h3>
+        <mat-card-subtitle *ngIf="contenido.subtitulo?true:false">{{contenido.subtitulo}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content  *ngIf="contenido.descripcion?true:false">
+        <div class="icono">
+            <mat-icon>warning</mat-icon>
+        </div>
+        <p>
+        {{contenido.descripcion}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="close(true)" mat-fab extended>
+            Entiendo
+        </button>
+    </mat-card-actions>
+</mat-card>

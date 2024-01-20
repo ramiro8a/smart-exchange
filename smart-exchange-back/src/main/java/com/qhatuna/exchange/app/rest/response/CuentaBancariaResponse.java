@@ -8,7 +8,6 @@ public record CuentaBancariaResponse(
         String bancoNombre,
         String numeroCuenta,
         String nombre,
-        Integer estado,
-        String ruc
+        Integer estado
 ) {
 }

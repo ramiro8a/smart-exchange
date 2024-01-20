@@ -34,7 +34,7 @@ export class ClienteComponent implements OnInit{
   bancos: any[]=[]
   operacionForm: FormGroup;
   monedas: any[] = Const.CUENTA_MONEDAS_CLIENTE
-  
+  estaCargando:boolean = false
 
   constructor(
     private dialog: MatDialog,
@@ -108,12 +108,15 @@ export class ClienteComponent implements OnInit{
   }
 
   recuperaTC():void{
+    this.estaCargando = true
     this.restTC.recuperaTCActual(Const.USD_ISO).subscribe({
       next: (response:any) => {
         this.tipoCambio = response
+        this.estaCargando = false
         this.operacionForm.controls['envio'].setValue(10.00);
       },
       error: (error:any) => {
+        this.estaCargando = false
       }
     });
   }

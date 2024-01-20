@@ -31,7 +31,7 @@ export class CuentasBancariasComponent implements OnInit{
       banco: ['', [Validators.required]],
       numeroCuenta: ['', Validators.required],
       nombre: ['', Validators.required],
-      ruc: [''],
+      //ruc: [''],
       deAcuerdo: [true, [Validators.required]]
     });
   }
@@ -42,8 +42,8 @@ export class CuentasBancariasComponent implements OnInit{
       this.cuentaBancariaForm.controls['deAcuerdo'].setValue(false);
     }
     if(this.esOperador()){
-      this.cuentaBancariaForm.controls['ruc'].setValidators([Validators.required]);
-      this.cuentaBancariaForm.controls['ruc'].updateValueAndValidity();
+/*       this.cuentaBancariaForm.controls['ruc'].setValidators([Validators.required]);
+      this.cuentaBancariaForm.controls['ruc'].updateValueAndValidity(); */
     }
   }
 

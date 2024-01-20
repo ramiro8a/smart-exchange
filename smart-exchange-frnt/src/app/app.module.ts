@@ -44,6 +44,7 @@ import { PrompSelecComponent } from './ui-utils/promp-selec/promp-selec.componen
 import { NgxUiLoaderModule, NgxUiLoaderConfig, NgxUiLoaderHttpModule, SPINNER,POSITION,PB_DIRECTION,} from "ngx-ui-loader";
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empresa.component';
+import { AdvertenciaComponent } from './ui-utils/advertencia/advertencia.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsColor: "#2d47af",
@@ -129,6 +130,7 @@ const customNotifierOptions: NotifierOptions = {
     PrompSelecComponent,
     PasswordResetComponent,
     ConfigEmpresaComponent,
+    AdvertenciaComponent,
   ],
   imports: [
     BrowserModule,

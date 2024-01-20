@@ -43,10 +43,10 @@
                 <mat-label>Ponle un nombre a tu cuenta</mat-label>
                 <input matInput type="text" formControlName="nombre">
             </mat-form-field>
-            <mat-form-field appearance="outline" *ngIf="esOperador()">
+<!--             <mat-form-field appearance="outline" *ngIf="esOperador()">
               <mat-label>RUC</mat-label>
               <input matInput type="text" formControlName="ruc">
-          </mat-form-field>
+          </mat-form-field> -->
             <mat-slide-toggle formControlName="deAcuerdo" color="primary" *ngIf="esCliente()">Declaro que ésta cuenta es mía y authorizo a LC Exchange a almacenar estos datos para mis transacciones</mat-slide-toggle>
         </mat-card-content>
         <mat-card-actions>

@@ -28,7 +28,7 @@ public class CuentaBancaria extends BaseModel{
     @Column(name = "usuario_id")
     private Long usuarioId;
     private String nombre;
-    private String ruc;
+    //private String ruc;
 
     public boolean esDolares(){
         return this.moneda.equals(ConstValues.USD_ISO);
@@ -46,8 +46,7 @@ public class CuentaBancaria extends BaseModel{
                 cuenta.getBanco().getNombre(),
                 cuenta.getNroCuenta(),
                 cuenta.getNombre(),
-                cuenta.getEstado(),
-                cuenta.getRuc()
+                cuenta.getEstado()
         );
     }
 }

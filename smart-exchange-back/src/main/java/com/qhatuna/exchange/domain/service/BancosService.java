@@ -97,7 +97,6 @@ public class BancosService {
                 .usuarioId(usuario.getId())
                 .usuarioCreacion(usuario.getId())
                 .banco(banco)
-                .ruc(request.ruc())
                 .build();
         if(!usuario.esCliente()){
             cuenta.setUsuarioId(0L);

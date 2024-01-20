@@ -24,9 +24,18 @@ public class EmpresaService {
         return empresaRepository.save(empresa);
     }
 
-    public Dia actualizaHorario(Long diaId, Dia request){
+    public Empresa actualizaHorario(Long diaId, Dia request){
         Dia dia = recuperaDiaPorId(diaId);
-        dia.getHorario()
+        Empresa empresa = dia.getEmpresa();
+        empresa.getDias().forEach(item->{
+            if(item.getId().equals(diaId)){
+                item.getHorario().setDesde(request.getHorario().getDesde());
+                item.getHorario().setHasta(request.getHorario().getHasta());
+                item.setLaboral(request.isLaboral());
+            }
+        });
+        dia.setLaboral(request.isLaboral());
+        return empresaRepository.save(empresa);
     }
 
     public Empresa recuperaEmpresa(){

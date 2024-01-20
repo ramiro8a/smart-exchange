@@ -20,6 +20,22 @@
             <dropTable tableName="T_EMPRESA"/>
         </rollback>
     </changeSet>
+    
+    <changeSet id="v0.0.0-00-crea-t-horarios" author="ramiro.ochoa">
+        <comment>
+			Create table T_HORARIOS
+		</comment>
+        <createTable tableName="T_HORARIOS">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DESDE" type="TIME" remarks="Inicio jornada laboral"/>
+            <column name="HASTA" type="TIME" remarks="Fin jornada laboral"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_HORARIOS"/>
+        </rollback>
+    </changeSet>
 
     <changeSet id="v0.0.0-00-crea-t-dias" author="ramiro.ochoa">
         <comment>
@@ -32,36 +48,21 @@
             <column name="NOMBRE" type="VARCHAR(50)" remarks="Nombre del dia, ejm. Lunes"/>
             <column name="LABORAL" type="BOOLEAN" defaultValueBoolean="true" remarks="Se utliza para marcar como feriado"/>
             <column name="EMPRESA_ID" type="BIGINT"/>
+            <column name="HORARIO_ID" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_dia_empresa"
             baseTableName="T_DIAS"
             baseColumnNames="EMPRESA_ID"
             referencedTableName="T_EMPRESA"
             referencedColumnNames="ID"/>
+        <addForeignKeyConstraint constraintName="fk_dia_horario"
+            baseTableName="T_DIAS"
+            baseColumnNames="HORARIO_ID"
+            referencedTableName="T_HORARIOS"
+            referencedColumnNames="ID"/>
         <rollback>
             <dropTable tableName="T_DIAS"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="v0.0.0-00-crea-t-horarios" author="ramiro.ochoa">
-        <comment>
-			Create table T_HORARIOS
-		</comment>
-        <createTable tableName="T_HORARIOS">
-            <column name="ID" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="DESDE" type="TIME" remarks="Inicio jornada laboral"/>
-            <column name="HASTA" type="TIME" remarks="Fin jornada laboral"/>
-            <column name="DIA_ID" type="BIGINT"/>
-        </createTable>
-        <addForeignKeyConstraint constraintName="fk_hora_dia"
-            baseTableName="T_HORARIOS"
-            baseColumnNames="DIA_ID"
-            referencedTableName="T_DIAS"
-            referencedColumnNames="ID"/>
-        <rollback>
-            <dropTable tableName="T_HORARIOS"/>
-        </rollback>
-    </changeSet>
 </databaseChangeLog>

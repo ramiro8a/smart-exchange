@@ -18,7 +18,7 @@ public enum ErrorMsj {
     PROCESSING_OBJECT("ERR-0012", "Error al mapear objetos"),
     GENERIC("ERR-9999", "Error interno del servidor"),
     CORREO_EXISTE("ADV-0001", "El correo ya existe"),
-    CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado"),
+    CORREO_NO_VALIDO("ADV-0002", "Su correo no fue confirmado, revise su correo por favor"),
     TIPO_CAMBIO("ADV-0003", "El tipo de cambio no está configurado"),
     BANCO_NO_EXISTE("ADV-0004", "El banco no existe"),
     MONEDA_NO_CONFIGURADA("ADV-0005", "Actualmente LC Exchange no trabaja con la moneda origen"),

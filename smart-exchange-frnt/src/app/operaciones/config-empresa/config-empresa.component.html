@@ -1,1 +1,108 @@
-<p>config-empresa works!</p>
+<br>
+<div class="contenido-config-empresa">
+    <mat-accordion>
+        <mat-expansion-panel #panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Datos generales
+            </mat-panel-title>
+            <mat-panel-description>
+                {{ panel.expanded ? 'Haga clic para ocultar' : 'Haga clic para ver más detalles' }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <form [formGroup]="empresaForm" (ngSubmit)="guardarEmpresa()" autocomplete="off">
+                    <mat-form-field appearance="outline" class="razon-social">
+                        <mat-label>Razón social</mat-label>
+                        <input matInput type="text" formControlName="razonSocial">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>RUC</mat-label>
+                        <input matInput type="text" formControlName="ruc">
+                    </mat-form-field>
+                <button (click)="editarEmpresa()" *ngIf="empresaForm.disabled" type="button" mat-raised-button color="primary">
+                    Editar
+                </button>&nbsp;
+                <button mat-raised-button *ngIf="!empresaForm.disabled" color="primary">
+                    Guardar
+                </button>&nbsp;
+                <button mat-raised-button type="button" color="accent" (click)="cancelarEmpresa()">
+                    Cancelar
+                </button>
+                <mat-progress-bar *ngIf="estaCargandoEmpresa" mode="indeterminate"></mat-progress-bar>
+        </form>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <br>
+          <table class="horario">
+            <tr>
+              <th></th>
+              <th *ngFor="let dia of empresa?.dias">{{ dia.nombre }}</th>
+            </tr>
+            <tr>
+              <th class="texto-vertical">Desde</th>
+              <td *ngFor="let dia of empresa?.dias">
+                <table>
+                    <tr><td>Hora</td><td>Minuto</td></tr>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="dia.horario.tDesde!.hora" (ngModelChange)="hayCambiosConfirma(dia)">
+                                    <mat-option *ngFor="let hora of horas" [value]="hora">{{ hora }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="dia.horario.tDesde!.minuto" (ngModelChange)="hayCambiosConfirma(dia)">
+                                    <mat-option *ngFor="let minuto of minutos" [value]="minuto">{{ minuto }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th class="texto-vertical">Hasta</th>
+              <td *ngFor="let dia of empresa?.dias" class="hora">
+                <table>
+                    <tr><td>Hora</td><td>Minuto</td></tr>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="dia.horario.tHasta!.hora" (ngModelChange)="hayCambiosConfirma(dia)">
+                                  <mat-option *ngFor="let hora of horas" [value]="hora">{{ hora }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="dia.horario.tHasta!.minuto" (ngModelChange)="hayCambiosConfirma(dia)">
+                                  <mat-option *ngFor="let minuto of minutos" [value]="minuto">{{ minuto }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+                <th class="texto-vertical">Dia laboral</th>
+                <td *ngFor="let dia of empresa?.dias">
+                    <mat-slide-toggle [(ngModel)]="dia.laboral" (ngModelChange)="hayCambiosConfirma(dia)" color="primary"><small>Se trabaja</small></mat-slide-toggle>
+                </td>
+            </tr>
+            <tr>
+                <th class="texto-vertical"></th>
+                <td *ngFor="let dia of empresa?.dias">
+                    <button mat-mini-fab (click)="actualizaDia(dia)" *ngIf="dia.hayCambio" [disabled]="estaCargandoDias" color="primary">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="resetDia(dia)" *ngIf="dia.hayCambio" [disabled]="estaCargandoDias">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </td>
+              </tr>
+          </table>
+        <mat-progress-bar *ngIf="estaCargandoDias" mode="indeterminate"></mat-progress-bar>
+</div>

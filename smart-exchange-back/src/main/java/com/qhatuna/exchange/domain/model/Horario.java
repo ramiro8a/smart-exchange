@@ -18,8 +18,4 @@ public class Horario {
     private Long id;
     private LocalTime desde;
     private LocalTime hasta;
-    @ManyToOne
-    @JoinColumn(name="dia_id",referencedColumnName="id")
-    private Dia dia;
-
 }

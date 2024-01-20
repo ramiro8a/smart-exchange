@@ -6,6 +6,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog"
 import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-personales.component';
 import { SocketService } from '../servicios/socket.service';
 import { Router } from '@angular/router';
+import { AdvertenciaComponent } from '../ui-utils/advertencia/advertencia.component';
 
 @Component({
   selector: 'app-principal',
@@ -51,6 +52,10 @@ export class PrincipalComponent implements OnInit{
         if(this.pedirDatospersonales()){
           this.datosPersonales()
         }
+        if(this.verificaOrarioAtencion()){
+          const notificac = this.recuperaOrarioAtencionLocal();
+          this.horarioAtencionCliente(notificac!.valor)
+        }
       },
       error: (error:any) => {
       }
@@ -60,12 +65,31 @@ export class PrincipalComponent implements OnInit{
   ejecutarMetodo(nombreMetodo: string, valor:string) {
     console.error(`método '${nombreMetodo}' valor '${valor}'`);
     const metodo = (this as any)[nombreMetodo];
+    if (nombreMetodo=='horarioAtencion') {
+      this.horarioAtencionCliente(valor)
+    }
     if (typeof metodo == 'function') {
       metodo.bind(this)();
     }
     if (nombreMetodo=='validaDatosCliente') {
       this.validaDatosClienteMetodo(valor)
     }
+  }
+
+  horarioAtencionCliente(mensaje:string){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titulo: 'Horario de atención',
+      descripcion: mensaje
+    }
+    dialogConfig.width='30em'
+    const dialogRef = this.dialog.open(AdvertenciaComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //
+      }
+    })
   }
 
   validaDatosClienteMetodo(clientId:string){
@@ -80,6 +104,15 @@ export class PrincipalComponent implements OnInit{
         this.recuperaNotificaciones()
       }
     }) */
+  }
+
+  verificaOrarioAtencion():boolean{
+    const item = this.notificaciones.find(elemento => elemento.metodo == 'horarioAtencion');
+    return item?true:false
+  }
+
+  recuperaOrarioAtencionLocal():Notificacion | undefined{
+    return this.notificaciones.find(elemento => elemento.metodo == 'horarioAtencion');
   }
 
   pedirDatospersonales():boolean{

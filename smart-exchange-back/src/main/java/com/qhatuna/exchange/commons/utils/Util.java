@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicLong;
@@ -70,6 +71,11 @@ public class Util {
         String timestamp = now.format(formatter);
         long count = counter.incrementAndGet();
         return timestamp + String.format("%04d", count);
+    }
+
+    public static String aHoraMinuto(LocalTime data) {
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm");
+        return data.format(formateador);
     }
 
     private static ObjectMapper createObjectMapper() {

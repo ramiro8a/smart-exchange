@@ -1,9 +1,8 @@
 package com.qhatuna.exchange.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Builder
 @Getter
@@ -20,7 +19,9 @@ public class Dia {
     private boolean laboral;
     @ManyToOne
     @JoinColumn(name="empresa_id",referencedColumnName="id")
+    @JsonBackReference
     private Empresa empresa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dia")
-    private List<Horario> horario;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="horario_id",referencedColumnName="id")
+    private Horario horario;
 }

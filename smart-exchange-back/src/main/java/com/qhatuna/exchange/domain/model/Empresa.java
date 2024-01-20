@@ -1,5 +1,6 @@
 package com.qhatuna.exchange.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class Empresa {
     @Column(name = "razon_social")
     private String razonSocial;
     private String ruc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
+    @OneToMany(mappedBy = "empresa")
+    @OrderBy("id ASC")
+    @JsonManagedReference
     private List<Dia> dias;
 }

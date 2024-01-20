@@ -1,6 +1,5 @@
 package com.qhatuna.exchange.app.rest.controller;
 
-import com.qhatuna.exchange.app.rest.request.ClienteRequest;
 import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
