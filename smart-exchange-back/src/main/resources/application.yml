@@ -24,9 +24,11 @@ spring:
 ---
 jwt:
   secret: secretsecretsecretsecretsecretsecretsecretsecret
-  expiration: 600 #60 1 hora
+  expiration: 240 #min 60 1 hora
   confirm:
-    expiration: 60
+    expiration: 120 #min
+  refresh:
+    expiration: 15 #min
 ---
 spring:
   mail:

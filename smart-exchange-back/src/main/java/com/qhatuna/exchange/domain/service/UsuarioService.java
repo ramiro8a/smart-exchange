@@ -1,9 +1,7 @@
 package com.qhatuna.exchange.domain.service;
 
-import com.qhatuna.exchange.app.rest.request.RegistroRequest;
-import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
-import com.qhatuna.exchange.app.rest.request.UsuarioRequest;
-import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
+import com.qhatuna.exchange.app.rest.request.*;
+import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.app.security.JwtProvider;
 import com.qhatuna.exchange.commons.constant.ConstValues;
@@ -32,7 +30,42 @@ public class UsuarioService {
     private final HttpServletRequest servletRequest;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
+    private final SessionInfoService sessionInfoService;
 
+    public UsuarioResponse edita(Long id, EditaUsuarioRequest request) {
+        Usuario usuarioActual = sessionInfoService.getSession().getUsusario();
+        Usuario usuario = recuperaUsuarioPorId(id);
+        usuario.setCorreo(request.correo().trim());
+        usuario.setInicio(request.inicio());
+        usuario.setFin(request.fin());
+        List<Rol> roles = rolRepository.findAllById(request.roles());
+        usuario.setRoles(new HashSet<>(roles));
+        usuario.setUsuarioActualizacion(usuarioActual.getId());
+        return Usuario.aResponse(usuarioRepository.save(usuario));
+    }
+
+    public void bloqueo(Long id, boolean bloqueado){
+        Usuario usuarioActual = sessionInfoService.getSession().getUsusario();
+        Usuario usuario = recuperaUsuarioPorId(id);
+        usuario.setBloqueado(bloqueado);
+        usuario.setUsuarioActualizacion(usuarioActual.getId());
+        usuarioRepository.save(usuario);
+    }
+
+    public void cambioPasswordUsuario(CambioPassword request) {
+        Usuario usuarioActual = sessionInfoService.getSession().getUsusario();
+        if(request.id().equals(0L)){
+            usuarioActual.setPassword(passwordEncoder.encode(request.password().trim()));
+            usuarioActual.setUsuarioActualizacion(usuarioActual.getId());
+            usuarioRepository.save(usuarioActual);
+        }else {
+            Usuario usuario = recuperaUsuarioPorId(request.id());
+            usuario.setPassword(passwordEncoder.encode(request.password().trim()));
+            usuario.setUsuarioActualizacion(usuarioActual.getId());
+            usuarioRepository.save(usuario);
+        }
+
+    }
     public void resetPasswordClient(ResetPassRequest request){
         try {
             String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(request.token());
@@ -183,8 +216,8 @@ public class UsuarioService {
     public Usuario recuperaUsuarioPorId(Long id){
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new ProviderException(
-                        ErrorMsj.CLIENTE_NOEXISTE.getMsj(),
-                        ErrorMsj.CLIENTE_NOEXISTE.getCod(),
+                        ErrorMsj.USUARIO_VACIO.getMsj(),
+                        ErrorMsj.USUARIO_VACIO.getCod(),
                         HttpStatus.BAD_REQUEST
                 ));
     }

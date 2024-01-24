@@ -15,6 +15,7 @@ export class UsuariosFormComponent implements OnInit{
   usuarioForm: FormGroup;
   hide1: boolean = true
   roles: any[] = [];
+  id: number = 0
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,10 +35,33 @@ export class UsuariosFormComponent implements OnInit{
       fin: ['', Validators.required],
       roles: [[], Validators.required]
     }); 
+    if(data?.id){
+      this.id=data.id
+      console.log(data)
+      this.usuarioForm.controls['correo'].setValue(data.correo);
+      this.usuarioForm.controls['inicio'].setValue(data.inicio);
+      this.usuarioForm.controls['fin'].setValue(data.fin);
+      let rolesIDs: number[] = []
+      data.roles.forEach((element:any) => {
+        rolesIDs.push(element.id)
+      });
+      console.log(rolesIDs)
+      this.usuarioForm.controls['roles'].setValue(rolesIDs);
+    }
   }
 
   ngOnInit(): void {
+    if(!this.esNuevo()){
+      this.usuarioForm.controls['usuario'].setValidators([]);
+      this.usuarioForm.controls['password'].setValidators([]);
+      this.usuarioForm.controls['bloqueado'].setValidators([]);
+      this.usuarioForm.updateValueAndValidity();
+    }
     this.recuperaRoles();
+  }
+
+  esNuevo(){
+    return this.id==0
   }
 
   recuperaRoles():void{
@@ -53,21 +77,44 @@ export class UsuariosFormComponent implements OnInit{
 
   registra():void{
     if(this.usuarioForm.valid){
-      this.estaCargando = true;
-      this.restUsuarios.creaUsuario(this.usuarioForm.value).subscribe({
-        next: (response:any) => {
-          this.estaCargando = false;
-          this.notif.notify('success', 'Registros guardados exitosamente');
-          this.dialogRef.close(true);
-        },
-        error: (error:any) => {
-          this.estaCargando = false;
-          this.notif.notify('error', error);
-        }
-      });
+      if(this.esNuevo()){
+        this.crearUsuario()
+      }else{
+        this.editaUsuario()
+      }
     }else{
       this.notif.notify('warning','Complete el formulario por favor');
     }
+  }
+
+  editaUsuario(){
+    this.estaCargando = true;
+    this.restUsuarios.editaUsuario(this.id, this.usuarioForm.value).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false;
+        this.notif.notify('success', 'Registros actulizados exitosamente');
+        this.dialogRef.close(true);
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+        this.notif.notify('error', error);
+      }
+    });
+  }
+
+  crearUsuario():void{
+    this.estaCargando = true;
+    this.restUsuarios.creaUsuario(this.usuarioForm.value).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false;
+        this.notif.notify('success', 'Registros guardados exitosamente');
+        this.dialogRef.close(true);
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+        this.notif.notify('error', error);
+      }
+    });
   }
 
   close(){

@@ -12,6 +12,7 @@
         <insert tableName="T_EMPRESA">
             <column name="RAZON_SOCIAL" value="SERVICE CORPORATION LC S.A.C."/>
             <column name="RUC" value="20611808098"/>
+            <column name="WHATSAPP" value="https://wa.me/5911233211321"/>
         </insert>
     </changeSet>
 

@@ -14,7 +14,7 @@
     <app-cacula-cambio class="calcula-cambio-home"></app-cacula-cambio> -->
     <router-outlet></router-outlet>
 </div>
-<a class="whatsapp-logo" href="https://wa.me/59173588999" target="_blank" matTooltip="Entra aquí">
+<a class="whatsapp-logo" [href]="url_watsapp" target="_blank" matTooltip="Entra aquí" *ngIf="url_watsapp">
     <img [src]="whatsapp_logo" alt="">
     <div class="color-primary">Chatea con nosotros</div>
 </a>

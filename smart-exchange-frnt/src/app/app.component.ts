@@ -1,19 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { Empresa } from './rest/empresa.service';
+import { UsuariosService } from './rest/usuarios.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'LC exchange';
   logo_principal='assets/img/lc_excahnge_temp.jpg'
   whatsapp_logo='assets/img/whatsapp_logo.png'
+  url_watsapp!:string
 
-  constructor(private router: Router, private ngxService: NgxUiLoaderService,) {
+  constructor(
+    private router: Router,
+    private ngxService: NgxUiLoaderService,
+    private restUsuario: UsuariosService
+    ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart)
     ).subscribe(() => {
@@ -25,6 +32,21 @@ export class AppComponent {
       setTimeout(() => {
         this.ngxService.stop();
       }, 500);  //1000 1 seg
+    });
+  }
+
+  ngOnInit(): void {
+    this.recuperaEmpresa()
+  }
+
+  recuperaEmpresa():void{
+     this.restUsuario.recuperaEmpresa().subscribe({
+      next: (response:Empresa) => {
+        this.url_watsapp = response.whatsapp;
+      },
+      error: (error:any) => {
+        console.error(error)
+      }
     });
   }
 

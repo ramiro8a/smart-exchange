@@ -8,7 +8,7 @@
     </mat-card-header>
     <form [formGroup]="usuarioForm" (ngSubmit)="registra()" autocomplete="off">
     <mat-card-content>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" *ngIf="esNuevo()">
                 <mat-label>Usuario</mat-label>
                 <input matInput type="text" formControlName="usuario">
             </mat-form-field>
@@ -16,12 +16,12 @@
                 <mat-label>Correo</mat-label>
                 <input matInput type="text" formControlName="correo">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" *ngIf="esNuevo()">
                 <mat-label>Contraseña</mat-label>
                 <input matInput [type]="hide1?'password':'text'" formControlName="password">
                 <mat-icon class="pointer" matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
-            <mat-slide-toggle formControlName="bloqueado" color="primary">Bloqueado</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="esNuevo()" formControlName="bloqueado" color="primary">Bloqueado</mat-slide-toggle>
             <mat-form-field appearance="outline"  matTooltip="Permiso desde fecha">
                 <mat-label>Fecha inicio día/mes/año</mat-label>
                 <input formControlName="inicio"  matInput [matDatepicker]="picker">

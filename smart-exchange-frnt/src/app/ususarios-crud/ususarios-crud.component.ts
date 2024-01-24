@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UsuariosFormComponent } from '../usuarios-form/usuarios-form.component';
 import { UsuariosService, UsuarioResponse } from '../rest/usuarios.service';
+import { NotifierService } from 'angular-notifier';
+import { CambioPasswordComponent } from '../ui-utils/cambio-password/cambio-password.component';
 
 @Component({
   selector: 'app-ususarios-crud',
@@ -16,6 +18,7 @@ export class UsusariosCrudComponent implements OnInit{
 
   constructor(
     private dialog: MatDialog,
+    private notif: NotifierService,
     private restUsuarios: UsuariosService
     ){}
 
@@ -32,7 +35,7 @@ export class UsusariosCrudComponent implements OnInit{
           if(result){
             this.recuperaUsuarios();
           }
-        })
+    })
   }
 
   recuperaUsuarios():void{
@@ -46,9 +49,43 @@ export class UsusariosCrudComponent implements OnInit{
   }
 
   cambioPassword(usuario:UsuarioResponse){
-
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data={
+      id: usuario.id
+    }
+    const dialogRef = this.dialog.open(CambioPasswordComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        
+      }
+    })
   }
-  editar(usuario:UsuarioResponse){
 
+  editar(usuario:UsuarioResponse){
+    const dialogConfig = new MatDialogConfig();
+        dialogConfig.data=usuario
+        const dialogRef = this.dialog.open(UsuariosFormComponent, dialogConfig)
+        dialogRef.disableClose = true;
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            this.recuperaUsuarios();
+          }
+    })
+  }
+
+  bloqueo(usuario:UsuarioResponse):void{
+    this.estaCargando = true
+    this.restUsuarios.bloqueoUsuario(usuario.id, usuario.bloqueado).subscribe({
+      next: (response:any) => {
+        this.recuperaUsuarios();
+        this.estaCargando = false
+      },
+      error: (error:any) => {
+        usuario.bloqueado = !usuario.bloqueado
+        this.notif.notify('error', error);
+        this.estaCargando = false
+      }
+    });
   }
 }

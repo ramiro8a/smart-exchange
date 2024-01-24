@@ -2,11 +2,9 @@ package com.qhatuna.exchange.app.security;
 
 import java.io.IOException;
 
-import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.domain.service.SessionInfoService;
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

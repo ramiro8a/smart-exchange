@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +48,18 @@ public class OperacionService {
         operacionRepository.save(operacion);
     }
 
+
     public void finaliza(Long id, ComprobanteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Operacion operacion = recuperaOperacionPorId(id);
         String path = Util.recuperaPathComprobantes();
+        CuentaBancaria cuentaFnal = bancosService.recuperaCuentaBancariaPorId(request.bancoTransFinal());
         String direccionComprobante = Util.guardaComprobante(request.comprobante(), path, operacion.getTicket()+"_emp");
         operacion.setCodigoTransferenciaEmpresa(request.codigoTransferencia());
         operacion.setComprobanteEmpresa(direccionComprobante);
         operacion.setEstado(10);
+        operacion.setCuentaTransferenciaFinal(cuentaFnal);
+        operacion.setFechaFinalizacion(LocalDate.now());
         operacion.setUsuarioActualizacion(usuario.getId());
         operacionRepository.save(operacion);
     }

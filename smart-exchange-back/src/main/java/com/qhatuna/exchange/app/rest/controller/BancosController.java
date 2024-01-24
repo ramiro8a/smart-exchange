@@ -26,6 +26,13 @@ public class BancosController {
     @Autowired
     private BancosService service;
 
+    @GetMapping(path = "/transf-final/{operacionId}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<CuentaBancariaResponse>> recuperaBancosTransferenciaFinal(
+            @PathVariable Long operacionId
+    ) {
+        return new ResponseEntity<>(service.recuperaBancosTransferenciaFinal(operacionId), HttpStatus.OK);
+    }
+
     @GetMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<BancoResponse>> recuperaBancosActivos() {
         return new ResponseEntity<>(service.recuperaActivos(), HttpStatus.OK);
@@ -59,5 +66,14 @@ public class BancosController {
             @PathVariable Integer monedaDestino
     ) {
         return new ResponseEntity<>(service.recuperaCuentasRegistradasCliente(monedaOrigen, monedaDestino), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/cuentas/{id}/{estado}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> habilitaDeshabilitaCuenta(
+            @PathVariable Long id,
+            @PathVariable boolean estado
+    ) {
+        service.habilitaDeshabilitaCuenta(id, estado);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

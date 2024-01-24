@@ -38,6 +38,9 @@ public class CuentaBancaria extends BaseModel{
     }
 
     public static CuentaBancariaResponse aResponse(CuentaBancaria cuenta){
+        if (cuenta == null) {
+        return null;
+        }
         return new CuentaBancariaResponse(
                 cuenta.getId(),
                 cuenta.getTipoCuenta(),
@@ -46,7 +49,24 @@ public class CuentaBancaria extends BaseModel{
                 cuenta.getBanco().getNombre(),
                 cuenta.getNroCuenta(),
                 cuenta.getNombre(),
-                cuenta.getEstado()
+                cuenta.getEstado(),
+                null,null
+        );
+    }
+
+    public static CuentaBancariaResponse aResponseTrasnsf(CuentaBancaria cuenta, String ruc, String razonSocial){
+
+        return new CuentaBancariaResponse(
+                cuenta.getId(),
+                cuenta.getTipoCuenta(),
+                cuenta.getMoneda(),
+                cuenta.getBanco().getId(),
+                cuenta.getBanco().getNombre(),
+                cuenta.getNroCuenta(),
+                cuenta.getNombre(),
+                cuenta.getEstado(),
+                ruc,
+                razonSocial
         );
     }
 }

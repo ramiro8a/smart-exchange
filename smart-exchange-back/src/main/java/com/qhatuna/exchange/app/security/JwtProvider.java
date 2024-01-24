@@ -2,7 +2,6 @@ package com.qhatuna.exchange.app.security;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 import java.util.function.Function;
 
 import io.jsonwebtoken.*;
@@ -24,6 +23,8 @@ public class JwtProvider {
 
     @Value("${jwt.expiration:30}")
     private int expirationMinute;
+    @Value("${jwt.refresh.expiration:45}")
+    private int refreshExpirationMinute;
     @Value("${jwt.confirm.expiration:60}")
     private int expirationConfirmMinute;
 
@@ -34,6 +35,16 @@ public class JwtProvider {
                 .claim("roles", usuarioPrincipal.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expirationMinute * 60 *1000L))
+                .signWith(getSecret(secret))
+                .compact();
+    }
+    public String generateRefreshToken(Authentication authentication) {
+        SessionInfo usuarioPrincipal = (SessionInfo) authentication.getPrincipal();
+        return Jwts.builder()
+                .setSubject(usuarioPrincipal.getUsername())
+                .claim("roles", usuarioPrincipal.getAuthorities())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + refreshExpirationMinute * 60 *1000L))
                 .signWith(getSecret(secret))
                 .compact();
     }
@@ -63,7 +74,7 @@ public class JwtProvider {
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
     }
 

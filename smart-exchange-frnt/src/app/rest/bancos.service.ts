@@ -14,6 +14,7 @@ export interface CuentaBancariaResponse{
   nombre: string;
   estado: number;
   ruc: string;
+  activo?: boolean;
 }
 
 @Injectable({
@@ -23,13 +24,25 @@ export class BancosService {
   path:string = '/api/bancos'
   constructor(private http: HttpClient) { }
 
+  habilitaDeshabilitaCuenta(cuentaId:number, estado: boolean): Observable<CuentaBancariaResponse[]> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/cuentas/${cuentaId}/${estado}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaBancosTransferenciaFinal(operacionId:number): Observable<CuentaBancariaResponse[]> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/transf-final/${operacionId}`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   recuperaCuentasRegistradas(monedaOrigen:number, monedaDestino:number): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}/cuentas-bancarias-registradas/${monedaOrigen}/${monedaDestino}`).pipe(
       catchError(this.errorHandler)
     )
   }
 
-  recuperaCuentasBancarias(): Observable<any> {
+  recuperaCuentasBancarias(): Observable<CuentaBancariaResponse[]> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}/cuenta-bancaria`).pipe(
       catchError(this.errorHandler)
     )

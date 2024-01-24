@@ -12,7 +12,6 @@ mat-toolbar
 .left
     justify-content: flex-start
     flex: 1
-
 .center
     justify-content: center
     flex: 1
@@ -22,3 +21,17 @@ mat-toolbar
     flex: 1
 .menu-texto
     font-size: 0.8em
+.phone-menu
+    display: none
+@media (max-width: 1000px)
+    .menu-desktop
+        display: none !important
+    .desktop-menu
+        display: none
+    .phone-menu
+        display: inline
+@media (max-width: 700px)
+    .left
+        width: 30%
+    .nombre-usuario
+        font-size: 0.7em

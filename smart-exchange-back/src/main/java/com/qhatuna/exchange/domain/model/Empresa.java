@@ -20,6 +20,7 @@ public class Empresa {
     @Column(name = "razon_social")
     private String razonSocial;
     private String ruc;
+    private String whatsapp;
     @OneToMany(mappedBy = "empresa")
     @OrderBy("id ASC")
     @JsonManagedReference

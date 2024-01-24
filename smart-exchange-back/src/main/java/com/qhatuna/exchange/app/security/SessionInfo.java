@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -40,12 +41,19 @@ public class SessionInfo implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        if(this.esCLiente() || this.ususario.getInicio()==null){
+            return true;
+        }else {
+            LocalDateTime inicio = this.ususario.getInicio();
+            LocalDateTime fin = this.ususario.getFin();
+            LocalDateTime ahora = LocalDateTime.now();
+            return ahora.isAfter(inicio) && ahora.isBefore(fin);
+        }
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !this.ususario.isBloqueado();
     }
 
     @Override

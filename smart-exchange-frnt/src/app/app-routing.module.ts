@@ -15,6 +15,9 @@ import { AdminGuard, ClienteGuard, GerenteGuard, OperadorGuard, DefaultGuard } f
 import { MisOperacionesComponent } from './cliente/mis-operaciones/mis-operaciones.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empresa.component';
+import { OpsClientesComponent } from './reportes/ops-clientes/ops-clientes.component';
+import { RegClientesComponent } from './reportes/reg-clientes/reg-clientes.component';
+import { RegOperadoresComponent } from './reportes/reg-operadores/reg-operadores.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
@@ -22,7 +25,12 @@ const routes: Routes = [
   {path: 'confirma/:token', component: ConfirmaComponent },
   {path: 'password-reset/:token', component: PasswordResetComponent },
   {path: '', component: PrincipalComponent, children: [
-    {path: 'reportes', component: ReportesComponent, canActivate:[GerenteGuard] },
+    {path: 'reportes', children:[
+      {path: 'operacion-empresa', component: ReportesComponent },
+      {path: 'operacion-cliente', component: OpsClientesComponent },
+      {path: 'registro-cliente', component: RegClientesComponent },
+      {path: 'registro-operador', component: RegOperadoresComponent },
+    ], canActivate:[GerenteGuard] },
     {path: 'cliente', children:[
       {path: 'nueva-operacion', component: ClienteComponent },
       {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },

@@ -333,7 +333,9 @@ export class OperacionComponent implements OnInit{
   }
 
   agregaCuentasBancarias(){
-    const dialogRef = this.dialog.open(CuentasBancariasComponent)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'operacion-dialog'
+    const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
       if(result){

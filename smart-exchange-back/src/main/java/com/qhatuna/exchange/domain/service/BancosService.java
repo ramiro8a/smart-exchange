@@ -4,34 +4,66 @@ import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
 import com.qhatuna.exchange.app.rest.response.CuentasRegistradasResponse;
+import com.qhatuna.exchange.commons.constant.Const;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
-import com.qhatuna.exchange.domain.model.Bancos;
-import com.qhatuna.exchange.domain.model.CuentaBancaria;
-import com.qhatuna.exchange.domain.model.Usuario;
+import com.qhatuna.exchange.domain.model.*;
 import com.qhatuna.exchange.domain.repository.BancosRepository;
 import com.qhatuna.exchange.domain.repository.CuentaBancariaRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@AllArgsConstructor
 @Service
 public class BancosService {
     private final BancosRepository bancosRepository;
     private final SessionInfoService sessionInfoService;
     private final CuentaBancariaRepository cuentaBancariaRepository;
+    private final EmpresaService empresaService;
+    private final OperacionService operacionService;
+    public BancosService(BancosRepository bancosRepository,
+                         SessionInfoService sessionInfoService,
+                         CuentaBancariaRepository cuentaBancariaRepository,
+                         EmpresaService empresaService,
+                         @Lazy OperacionService operacionService) {
+        this.bancosRepository = bancosRepository;
+        this.sessionInfoService = sessionInfoService;
+        this.cuentaBancariaRepository = cuentaBancariaRepository;
+        this.empresaService = empresaService;
+        this.operacionService = operacionService;
+    }
+
+    public void habilitaDeshabilitaCuenta(Long cuentaId, boolean estado){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        CuentaBancaria cuenta = recuperaCuentaBancariaPorId(cuentaId);
+        cuenta.setUsuarioActualizacion(usuario.getId());
+        cuenta.setEstado(estado? Const.EstadoRegistro.ACTIVO:Const.EstadoRegistro.DESHABILITADO);
+        cuentaBancariaRepository.save(cuenta);
+    }
+
+    public List<CuentaBancariaResponse> recuperaBancosTransferenciaFinal(Long operacionID){
+        Operacion operacion = operacionService.recuperaOperacionPorId(operacionID);
+        List<CuentaBancaria> cuentas = cuentaBancariaRepository.recuperaActivosEmpresa();
+        List<CuentaBancaria> resultado = new ArrayList<>();
+        cuentas.forEach(item->{
+            if (Objects.equals(operacion.getCuentaDestino().getMoneda(), item.getMoneda())){
+                resultado.add(item);
+            }
+        });
+        return resultado.stream().map(CuentaBancaria::aResponse).toList();
+    }
 
     public CuentaBancariaResponse recuperaDestinoTransferencia(Long bancoId, Integer moneda){
         List<CuentaBancaria> cuentasBancarias = cuentaBancariaRepository.recuperaCuentaTransferencia(bancoId, moneda);
+        Empresa empresa = empresaService.recuperaEmpresa();
         if (!cuentasBancarias.isEmpty()){
-            return CuentaBancaria.aResponse(cuentasBancarias.get(0));
+            return CuentaBancaria.aResponseTrasnsf(cuentasBancarias.get(0), empresa.getRuc(), empresa.getRazonSocial());
         }else{
             List<CuentaBancaria> cuentasBancariasDefault = cuentaBancariaRepository.recuperaCuentaTransferenciaDefault(moneda);
             if(!cuentasBancariasDefault.isEmpty()){
-                return CuentaBancaria.aResponse(cuentasBancariasDefault.get(0));
+                return CuentaBancaria.aResponseTrasnsf(cuentasBancariasDefault.get(0), empresa.getRuc(), empresa.getRazonSocial());
             }else {
                 throw new ProviderException(ErrorMsj.MONEDA_NO_CONFIGURADA.getMsj(), ErrorMsj.MONEDA_NO_CONFIGURADA.getCod());
             }

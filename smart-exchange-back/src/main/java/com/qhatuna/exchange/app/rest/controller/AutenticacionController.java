@@ -5,7 +5,9 @@ import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
 import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
+import com.qhatuna.exchange.domain.model.Empresa;
 import com.qhatuna.exchange.domain.service.AutenticacionService;
+import com.qhatuna.exchange.domain.service.EmpresaService;
 import com.qhatuna.exchange.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +29,8 @@ public class AutenticacionController {
     private AutenticacionService service;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private EmpresaService empresaService;
     @PostMapping(path = "/login", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<AutenticationResponse> autenticacion(
             @RequestHeader("Authorization") String basicAuth
@@ -62,4 +66,8 @@ public class AutenticacionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(path = "/empresa-public", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Empresa> recuperaEmpresa() {
+        return new ResponseEntity<>(empresaService.recuperaEmpresa(), HttpStatus.OK);
+    }
 }

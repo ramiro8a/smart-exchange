@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
+import { Empresa } from './empresa.service';
 
 export interface ClienteResponse{
   id:number,
@@ -48,6 +49,24 @@ export class UsuariosService {
   authPath:string = '/auth'
 
   constructor(private http: HttpClient) { }
+
+  recuperaEmpresa(): Observable<Empresa>{
+    return this.http.get<any>(`${environment.baseUrl}${this.authPath}/empresa-public`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  cambioPassworUsuario(data:any): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/cambio-password`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  bloqueoUsuario(id:number, bloqueado: boolean): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/bloqueo/${id}/${bloqueado}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   resetPasswordCliente(data:any): Observable<any> {
     return this.http.patch<any>(`${environment.baseUrl}${this.authPath}/reset-pass`, data).pipe(
@@ -113,6 +132,12 @@ export class UsuariosService {
     )
   }
 
+  editaUsuario(id:number, data: any): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/edita/${id}`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   creaUsuario(data: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}${this.path}`, data).pipe(
       catchError(this.errorHandler)
@@ -125,6 +150,15 @@ export class UsuariosService {
       'Authorization': `Basic ${credentials}`
     });
     return this.http.post<any>(`${environment.baseUrl}${this.authPath}/login`, null, { headers: headers }).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  refreshToken(token:string | null): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(`${environment.baseUrl}${this.path}/refresh-token`, null, { headers: headers }).pipe(
       catchError(this.errorHandler)
     )
   }

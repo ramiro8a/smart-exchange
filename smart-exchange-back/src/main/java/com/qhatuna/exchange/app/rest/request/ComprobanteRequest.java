@@ -6,5 +6,6 @@ public record ComprobanteRequest (
         @NotNull
         String codigoTransferencia,
         @NotNull
-        String comprobante
+        String comprobante,
+        Long bancoTransFinal
 ){}

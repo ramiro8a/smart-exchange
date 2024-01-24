@@ -4,7 +4,7 @@
         <mat-card-title>Usuarios</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <button (click)="abreFormulario()" mat-fab matTooltip="Agrega un nuevo usuario" color="primary">
+        <button (click)="abreFormulario()" mat-fab matTooltip="Agrega un nuevo usuario" color="primary" class="agregar-btn">
             <mat-icon>person_add</mat-icon>
         </button>
         <mat-divider></mat-divider>
@@ -28,7 +28,7 @@
             <ng-container matColumnDef="bloqueado">
               <th mat-header-cell *matHeaderCellDef> Bloqueado </th>
               <td mat-cell *matCellDef="let usuario">
-                <mat-slide-toggle [(ngModel)]="usuario.bloqueado">{{usuario.bloqueado?'SI':'NO'}}</mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="usuario.bloqueado" (ngModelChange)="bloqueo(usuario)" *ngIf="usuario.id!=1">{{usuario.bloqueado?'SI':'NO'}}</mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="inicio">
@@ -56,11 +56,11 @@
             <ng-container matColumnDef="opciones">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let usuario">
-                <button (click)="editar(usuario)" mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+                <button (click)="editar(usuario)" mat-icon-button color="accent"  matTooltip="Editar datos">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button (click)="cambioPassword(usuario)" mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
-                  <mat-icon>delete</mat-icon>
+                <button (click)="cambioPassword(usuario)" mat-icon-button color="warn" matTooltip="Cambiar contraseña" *ngIf="usuario.id!=1">
+                  <mat-icon>vpn_key</mat-icon>
                 </button>
               </td>
             </ng-container>

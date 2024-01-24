@@ -81,6 +81,7 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
     });
   }
+  
   llenaEstados(){
     this.estados=[]
     this.estados.push({codigo: 100, nombre: 'Todos'})

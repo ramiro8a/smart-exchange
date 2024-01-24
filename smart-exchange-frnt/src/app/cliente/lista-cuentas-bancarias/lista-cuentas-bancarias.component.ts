@@ -1,19 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { NotifierService } from 'angular-notifier';
-import { BancosService } from 'src/app/rest/bancos.service';
+import { BancosService, CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import * as Const from 'src/app/utils/constants.service'
 import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
-
-interface CuentaBancariaResponse{
-  id: number;
-  tipoCuenta: number;
-  moneda: number;
-  banco: number;
-  numeroCuenta: number;
-  nombre: string;
-  estado: number
-}
 
 @Component({
   selector: 'app-lista-cuentas-bancarias',
@@ -39,12 +29,34 @@ export class ListaCuentasBancariasComponent implements OnInit {
   }
 
   recuperaCuentasBancarias():void{
+    this.dataSource = []
+    this.estaCargando = true
     this.restBancos.recuperaCuentasBancarias().subscribe({
-      next: (response:any) => {
-        console.warn(response)
-        this.dataSource = response as CuentaBancariaResponse[]
+      next: (response:CuentaBancariaResponse[]) => {
+        response.forEach(element => {
+          element.activo = element.estado==0
+        });
+        this.dataSource = response
+        this.estaCargando = false
       },
       error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+      }
+    });
+  }
+
+  cambioEstado(cuenta: CuentaBancariaResponse):void {
+    let activo = cuenta.activo?true:false
+    this.estaCargando = true
+    this.restBancos.habilitaDeshabilitaCuenta(cuenta.id, activo).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false
+      },
+      error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+        cuenta.activo = !activo
       }
     });
   }
@@ -62,5 +74,9 @@ export class ListaCuentasBancariasComponent implements OnInit {
         this.recuperaCuentasBancarias()
       }
     })
+  }
+
+  buscarNombreDeTipoCuenta(codigo:number):string{
+    return Const.buscarNombrePorCodigo(codigo, Const.TIPO_CUENTAS);
   }
 }

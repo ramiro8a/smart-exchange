@@ -4,32 +4,68 @@
             <img src='assets/img/logo.png' alt="">
         </div>
     </span>
-    <span class="toolbar-section center" *ngIf="esCliente()">
+    <span class="toolbar-section center menu-desktop" *ngIf="esCliente()">
         <button routerLink="/cliente/nueva-operacion" mat-button color="primary" class="elemento menu-texto"><b>Nueva operación</b></button>
         <button routerLink="/cliente/operaciones"mat-button color="primary" class="elemento menu-texto"><b>Mis operaciones</b></button>
         <button routerLink="/cliente/cuentas-bancarias" mat-button color="primary" class="elemento menu-texto"><b>Cuentas bancarias</b></button>
     </span>
-        <span class="toolbar-section center" *ngIf="esOperador()">
+    <span class="toolbar-section center menu-desktop" *ngIf="esOperador()">
         <button routerLink="/operaciones/principal" mat-button color="primary" class="elemento menu-texto"><b>Operaciones</b></button>
         <button routerLink="/operaciones/tipo-cambio" mat-button color="primary" class="elemento menu-texto"><b>Tipos de cambio</b></button>
         <button routerLink="/operaciones/cuentas-bancarias" mat-button color="primary" class="elemento menu-texto"><b>Cuentas bancarias</b></button>
         <button routerLink="/operaciones/clientes/todo" mat-button color="primary" class="elemento menu-texto"><b>Clientes</b></button>
         <button routerLink="/operaciones/empresa" mat-button color="primary" class="elemento menu-texto"><b>Empresa</b></button>
     </span>
+    <span class="toolbar-section center menu-desktop" *ngIf="esGerente()">
+        <button routerLink="/reportes/operacion-empresa" mat-button color="primary" class="elemento menu-texto"><b>Operaciones empresa</b></button>
+        <button routerLink="/reportes/operacion-cliente" mat-button color="primary" class="elemento menu-texto"><b>Operaciones cliente</b></button>
+        <button routerLink="/reportes/registro-cliente" mat-button color="primary" class="elemento menu-texto"><b>Clientes</b></button>
+        <button routerLink="/reportes/registro-operador" mat-button color="primary" class="elemento menu-texto"><b>Operadores</b></button>
+    </span>
     <span class="toolbar-section right">
-        <small class="accent-color"><b>{{recuperaUsuario()}}</b> </small>
+        <small class="accent-color nombre-usuario"><b>{{recuperaUsuario()}}</b> </small>
         <button mat-mini-fab color="primary"  class="elemento" [matMenuTriggerFor]="menu">
-            <mat-icon [matBadge]="notificaciones.length" *ngIf="notificaciones.length > 0" matBadgeColor="warn">account_circle</mat-icon>
-            <mat-icon *ngIf="notificaciones.length === 0">account_circle</mat-icon>
+            <span class="desktop-menu">
+              <mat-icon [matBadge]="notificaciones.length" *ngIf="notificaciones.length > 0" matBadgeColor="warn">account_circle</mat-icon>
+              <mat-icon *ngIf="notificaciones.length === 0">account_circle</mat-icon>
+            </span>
+            <span class="phone-menu">
+              <mat-icon [matBadge]="notificaciones.length" *ngIf="notificaciones.length > 0" matBadgeColor="warn">menu</mat-icon>
+              <mat-icon *ngIf="notificaciones.length === 0">menu</mat-icon>
+            </span>
         </button>
           <mat-menu #menu="matMenu">
-            <button (click)="datosPersonales()" mat-menu-item>
-              <mat-icon>person</mat-icon>
-              <span>Mis datos personales</span>
-            </button>
             <button mat-menu-item [matMenuTriggerFor]="notif" *ngIf="notificaciones.length>0">
               <mat-icon [matBadge]="notificaciones.length" matBadgeColor="warn">notifications_active</mat-icon>
               <span>Notificaciones</span>
+            </button>
+            <span class="phone-menu">
+              <span *ngIf="esCliente()">
+                <button routerLink="/cliente/nueva-operacion" mat-menu-item><mat-icon>add_circle</mat-icon><span>Nueva operación</span></button>
+                <button routerLink="/cliente/operaciones"mat-menu-item><mat-icon>format_list_numbered</mat-icon><span>Mis operaciones</span></button>
+                <button routerLink="/cliente/cuentas-bancarias" mat-menu-item><mat-icon>account_balance</mat-icon><span>Cuentas bancarias</span></button>
+            </span>
+            <span *ngIf="esOperador()">
+                <button routerLink="/operaciones/principal" mat-menu-item><span>Operaciones</span></button>
+                <button routerLink="/operaciones/tipo-cambio" mat-menu-item><span>Tipos de cambio</span></button>
+                <button routerLink="/operaciones/cuentas-bancarias" mat-menu-item><span>Cuentas bancarias</span></button>
+                <button routerLink="/operaciones/clientes/todo" mat-menu-item><span>Clientes</span></button>
+                <button routerLink="/operaciones/empresa" mat-menu-item><span>Empresa</span></button>
+            </span>
+            <span *ngIf="esGerente()">
+                <button routerLink="/reportes/operacion-empresa" mat-menu-item><span>Operaciones empresa</span></button>
+                <button routerLink="/reportes/operacion-cliente" mat-menu-item><span>Operaciones cliente</span></button>
+                <button routerLink="/reportes/registro-cliente" mat-menu-item><span>Clientes</span></button>
+                <button routerLink="/reportes/registro-operador" mat-menu-item><span>Operadores</span></button>
+            </span>
+            </span>
+            <button (click)="datosPersonales()" mat-menu-item *ngIf="esCliente()">
+              <mat-icon>person</mat-icon>
+              <span>Mis datos personales</span>
+            </button>
+            <button (click)="cambioPassword()" mat-menu-item>
+              <mat-icon>vpn_key</mat-icon>
+              <span>Cambia password</span>
             </button>
             <button mat-menu-item routerLink="/login">
               <mat-icon>logout</mat-icon>

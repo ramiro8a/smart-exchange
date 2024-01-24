@@ -68,7 +68,7 @@
                                 <mat-icon>add_circle</mat-icon>
                             </button>
                         </mat-card-subtitle>
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" class="select-banco">
                             <mat-label>Banco</mat-label>
                             <mat-select formControlName="bancoOrigen">
                                 <mat-option *ngFor="let item of bancosOrigen" [value]="item.id">
@@ -92,7 +92,7 @@
                     <div>
                         <mat-card-subtitle>¿Dónde quieres recibir tu dinero {{descripcionDestinoMoneda()}}?
                         </mat-card-subtitle>
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" class="select-banco">
                             <mat-label>Banco</mat-label>
                             <mat-select formControlName="bancoDestino">
                                 <mat-option *ngFor="let item of bancosDestino" [value]="item.id">
@@ -143,7 +143,7 @@
                                     <td><mat-icon (click)="copiar(cuentaTransferencia?.ruc)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
                                 </tr>
                                 <tr>
-                                    <td>Titular de la cuenta</td><th>LC Exchange</th>
+                                    <td>Titular de la cuenta</td><th>{{cuentaTransferencia?.razonSocial}}</th>
                                 </tr>
                                 <tr>
                                     <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>

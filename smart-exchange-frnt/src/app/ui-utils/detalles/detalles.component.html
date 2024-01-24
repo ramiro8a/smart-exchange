@@ -32,21 +32,6 @@
         </li>
       </ol>
 
-      <ol  *ngIf="opc===1 || opc===2 || opc===3">
-        <li>
-            <small><strong>Banco</strong></small>
-            <p>{{datos.bancoNombre}}</p>
-        </li>
-        <li>
-            <small><strong>Número de cuenta</strong></small>
-            <p>{{datos.numeroCuenta}}<mat-icon (click)="copiar(datos.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></p>
-        </li>
-        <li>
-            <small><strong>Tipo de cuenta</strong></small>
-            <p>{{buscarNombreTipoCuenta(datos.tipoCuenta)}}</p>
-        </li>
-      </ol>
-
       <ol  *ngIf="opc===4"><!---CLIENTE-->
         <li>
             <small><strong>Nombres o RS</strong></small>

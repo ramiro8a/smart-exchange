@@ -91,7 +91,8 @@ export class ClienteComponent implements OnInit{
           destino: {
             moneda: this.recibo.cod
           }
-        } 
+        }
+        dialogConfig.panelClass = 'operacion-dialog'
         const dialogRef = this.dialog.open(OperacionComponent, dialogConfig)
         dialogRef.disableClose = true;
         dialogRef.afterClosed().subscribe(result => {

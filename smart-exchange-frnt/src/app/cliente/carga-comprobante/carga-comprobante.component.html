@@ -24,6 +24,14 @@
                     </button>
                 </div>
                 <br>
+                <mat-form-field appearance="outline" class="select-banco" *ngIf="finaliza">
+                    <mat-label>Banco</mat-label>
+                    <mat-select formControlName="bancoTransFinal">
+                        <mat-option *ngFor="let item of cuentasBancarias" [value]="item.id">
+                                {{item.bancoNombre}} {{item.numeroCuenta}} {{buscarNombreDeMoneda(item.moneda)}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <span  *ngIf="!finaliza">Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
             </div>
         </form>

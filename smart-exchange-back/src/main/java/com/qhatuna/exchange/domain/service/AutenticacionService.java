@@ -6,6 +6,8 @@ import com.qhatuna.exchange.app.security.SessionInfo;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.utils.Util;
+import com.qhatuna.exchange.domain.model.Usuario;
+import com.qhatuna.exchange.domain.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,6 +28,36 @@ import java.util.Base64;
 public class AutenticacionService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UsuarioRepository usuarioRepository;
+
+    public AutenticationResponse refreshToken(String bearerToken){
+        log.info("REFRESCANDO TOKEN");
+        String token = bearerToken.substring("Bearer".length()).trim();
+        if(jwtProvider.isTokenExpired(token)){
+            throw new ProviderException(
+                    ErrorMsj.UNAUTHORIZED.getMsj(),
+                    ErrorMsj.UNAUTHORIZED.getCod(),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+        String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
+        Optional<Usuario> usuarioOptional = usuarioRepository.buscaPorUsuario(nombreUsuario);
+        if(usuarioOptional.isEmpty()){
+            throw new ProviderException(
+                    ErrorMsj.UNAUTHORIZED.getMsj(),
+                    ErrorMsj.UNAUTHORIZED.getCod(),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+        Usuario usuario = usuarioOptional.get();
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getUsuario(), usuario.getPassword()));
+        return new AutenticationResponse(
+                "Bearer",
+                jwtProvider.generateToken(authentication),
+                jwtProvider.generateRefreshToken(authentication)
+        );
+    }
 
     public AutenticationResponse auth(String basicAuth){
         try {
@@ -45,7 +78,11 @@ public class AutenticacionService {
                         HttpStatus.BAD_REQUEST
                 );
             }
-            return new AutenticationResponse("Bearer", jwtProvider.generateToken(authentication));
+            return new AutenticationResponse(
+                    "Bearer",
+                    jwtProvider.generateToken(authentication),
+                    jwtProvider.generateRefreshToken(authentication)
+            );
         }catch (ProviderException ex){
             throw ex;
         }catch (Exception ex){

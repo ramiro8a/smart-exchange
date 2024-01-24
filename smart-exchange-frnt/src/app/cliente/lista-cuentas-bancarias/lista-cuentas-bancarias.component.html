@@ -1,11 +1,14 @@
 <br>
 <div class="contenido-general">
-    <button (click)="agregaCuentasBancarias()" mat-raised-button color="primary">Agregar cuentas</button>
+    <button (click)="agregaCuentasBancarias()" mat-fab extended color="primary" class="btn-agregar-cuentas">
+      <mat-icon>add</mat-icon>
+      Agregar cuentas
+    </button>
     <br>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="tipoCuenta">
           <th mat-header-cell *matHeaderCellDef> Tipo cuenta </th>
-          <td mat-cell *matCellDef="let item"> {{item.tipoCuenta}} </td>
+          <td mat-cell *matCellDef="let item"> {{buscarNombreDeTipoCuenta(item.tipoCuenta)}} </td>
         </ng-container>
         <ng-container matColumnDef="moneda">
             <th mat-header-cell *matHeaderCellDef> Moneda </th>
@@ -13,7 +16,7 @@
         </ng-container>
         <ng-container matColumnDef="banco">
             <th mat-header-cell *matHeaderCellDef> Banco </th>
-            <td mat-cell *matCellDef="let item"> {{item.banco}} </td>
+            <td mat-cell *matCellDef="let item"> {{item.bancoNombre}} </td>
         </ng-container>  
         <ng-container matColumnDef="numeroCuenta">
             <th mat-header-cell *matHeaderCellDef> Número cuenta </th>
@@ -25,7 +28,11 @@
           </ng-container>
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef> Estado </th>
-          <td mat-cell *matCellDef="let item"> {{item.estado==0?'Activo':'Deshabilitado'}} </td>
+          <td mat-cell *matCellDef="let item">
+            <mat-slide-toggle [(ngModel)]="item.activo" (ngModelChange)="cambioEstado(item)" color="primary">
+              <small>{{item.activo?'Activo':'Deshabilitado'}}</small>
+            </mat-slide-toggle>
+          </td>
         </ng-container>
         <ng-container matColumnDef="opciones">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -38,4 +45,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
 </div>

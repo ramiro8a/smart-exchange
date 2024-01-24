@@ -1,9 +1,13 @@
 package com.qhatuna.exchange.app.rest.controller;
 
+import com.qhatuna.exchange.app.rest.request.CambioPassword;
 import com.qhatuna.exchange.app.rest.request.ClienteRequest;
+import com.qhatuna.exchange.app.rest.request.EditaUsuarioRequest;
 import com.qhatuna.exchange.app.rest.request.UsuarioRequest;
+import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.ClienteResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
+import com.qhatuna.exchange.domain.service.AutenticacionService;
 import com.qhatuna.exchange.domain.service.ClienteService;
 import com.qhatuna.exchange.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,12 +34,28 @@ public class UsuarioController {
     private UsuarioService service;
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private AutenticacionService autenticacionService;
 
     @PostMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<UsuarioResponse> creaUsuario(
             @Parameter(description = "Datos de usuario a crear", required = true, content = @Content(schema = @Schema(implementation = UsuarioRequest.class)))
             @Valid @NotNull @RequestBody UsuarioRequest request) {
         return new ResponseEntity<>(service.crea(request), HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/refresh-token", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<AutenticationResponse> refreshToken(
+            @RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(autenticacionService.refreshToken(token), HttpStatus.CREATED);
+    }
+
+    @PatchMapping(path = "/edita/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<UsuarioResponse> editaUsuario(
+            @Parameter(description = "id del usuario a editar", required = true) @NotNull() @PathVariable final Long id,
+            @Parameter(description = "Datos de usuario a editar", required = true, content = @Content(schema = @Schema(implementation = UsuarioRequest.class)))
+            @Valid @NotNull @RequestBody EditaUsuarioRequest request) {
+        return new ResponseEntity<>(service.edita(id, request), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
@@ -111,6 +131,18 @@ public class UsuarioController {
     @PatchMapping(path = "/cliente/estado/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Void> cambiaEstado(@PathVariable final Long id) {
         clienteService.cambiaEstadoHabilitadoDeshabilitado(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/bloqueo/{id}/{bloqueado}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> cambiaEstado(@PathVariable final Long id, @PathVariable final boolean bloqueado) {
+        service.bloqueo(id,bloqueado);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/cambio-password", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> cambioPassword(@RequestBody CambioPassword request) {
+        service.cambioPasswordUsuario(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

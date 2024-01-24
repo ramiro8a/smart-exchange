@@ -8,6 +8,7 @@ export interface Empresa {
   id: number;
   razonSocial: string;
   ruc: string;
+  whatsapp: string;
   dias: Dia[];
 }
 
@@ -39,7 +40,7 @@ export class EmpresaService {
 
   constructor(private http: HttpClient) { }
 
-  recuperaEmpresa(): Observable<any>{
+  recuperaEmpresa(): Observable<Empresa>{
     return this.http.get<any>(`${environment.baseUrl}${this.path}`).pipe(
       catchError(this.errorHandler)
     )

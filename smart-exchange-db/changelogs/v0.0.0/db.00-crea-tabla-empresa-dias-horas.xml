@@ -15,12 +15,13 @@
             </column>            
             <column name="RAZON_SOCIAL" type="VARCHAR(500)" remarks="Nombre de la empresa"/>
             <column name="RUC" type="VARCHAR(500)" remarks="RUC"/>
+            <column name="WHATSAPP" type="VARCHAR(200)" remarks="Link para el los ménsajes con el numero de whatsapp"/>
         </createTable>
         <rollback>
             <dropTable tableName="T_EMPRESA"/>
         </rollback>
     </changeSet>
-    
+
     <changeSet id="v0.0.0-00-crea-t-horarios" author="ramiro.ochoa">
         <comment>
 			Create table T_HORARIOS

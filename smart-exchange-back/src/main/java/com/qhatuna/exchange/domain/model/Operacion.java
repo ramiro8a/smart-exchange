@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @SuperBuilder
 @Getter
@@ -32,6 +33,9 @@ public class Operacion extends BaseModel{
     @ManyToOne
     @JoinColumn(name="cuenta_transferencia_id",referencedColumnName="id")
     private CuentaBancaria cuentaTransferencia;
+    @ManyToOne
+    @JoinColumn(name="salida_transferencia_id",referencedColumnName="id")
+    private CuentaBancaria cuentaTransferenciaFinal;
     private BigDecimal monto;
     @Column(name = "monto_final")
     private BigDecimal montoFinal;
@@ -52,6 +56,8 @@ public class Operacion extends BaseModel{
     private String comprobante;
     @Column(name = "comprobante_empresa")
     private String comprobanteEmpresa;
+    @Column(name = "fecha_finalizacion")
+    private LocalDate fechaFinalizacion;
 
 /*    @PrePersist
     public void prePersistTicket(){
@@ -69,6 +75,7 @@ public class Operacion extends BaseModel{
                 CuentaBancaria.aResponse(operacion.getCuentaOrigen()),
                 CuentaBancaria.aResponse(operacion.getCuentaDestino()),
                 CuentaBancaria.aResponse(operacion.getCuentaTransferencia()),
+                CuentaBancaria.aResponse(operacion.getCuentaTransferenciaFinal()),
                 operacion.getMonto(),
                 operacion.getMontoFinal(),
                 TipoCambio.aResponseList(operacion.getTipoCambio()),
@@ -76,7 +83,8 @@ public class Operacion extends BaseModel{
                 operacion.getCodigoTransferenciaEmpresa(),
                 Cliente.aResponse(operacion.getCliente()),
                 Usuario.aResponse(operacion.getOperador()),
-                operacion.getTicket()
+                operacion.getTicket(),
+                operacion.getFechaFinalizacion()
         );
     }
 }

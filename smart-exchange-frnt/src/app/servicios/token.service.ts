@@ -6,19 +6,26 @@ import { jwtDecode } from "jwt-decode";
 })
 export class TokenService {
 TOKEN:string = 'token'
+REFRESH_TOKEN:string = 'refreshToken'
 
   constructor() { }
 
   public setToken(data:any):void{
     sessionStorage.setItem(this.TOKEN, data.token);
+    sessionStorage.setItem(this.REFRESH_TOKEN, data.refreshToken);
   }
 
   public getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN);
   }
+
+  public getRefreshToken(): string | null {
+    return sessionStorage.getItem(this.REFRESH_TOKEN);
+  }
   
   public removeToken(): void {
     sessionStorage.removeItem(this.TOKEN);
+    sessionStorage.removeItem(this.REFRESH_TOKEN);
   }  
 
   public esCliente():boolean{
@@ -58,7 +65,7 @@ TOKEN:string = 'token'
   }
 
   public recuperaUsuario():string{
-    const decodedToken = this.decodeToken();
+    const decodedToken = this.decodeRefrehToken();
     return decodedToken.sub?decodedToken.sub:''
   }
 
@@ -71,8 +78,17 @@ TOKEN:string = 'token'
     return true;
   }
 
+  public expiradoRefreshToken(): boolean {
+    const decodedToken = this.decodeRefrehToken();
+    const now = Date.now().valueOf() / 1000;
+    if (decodedToken && decodedToken.exp) {
+      return decodedToken.exp < now;
+    }
+    return true;
+  }
+
   private getUserRoles(): string[] | null {
-    const decodedToken = this.decodeToken();
+    const decodedToken = this.decodeRefrehToken();
     if (decodedToken && decodedToken.roles) {
       return decodedToken.roles.map((role: any) => role.authority);
     }
@@ -81,6 +97,14 @@ TOKEN:string = 'token'
 
   private decodeToken(): any {
     const token = this.getToken();
+    if (token) {
+      return jwtDecode(token);
+    }
+    return null;
+  }
+
+  private decodeRefrehToken(): any {
+    const token = this.getRefreshToken();
     if (token) {
       return jwtDecode(token);
     }

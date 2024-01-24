@@ -7,6 +7,7 @@ import { DatosPersonalesComponent } from '../cliente/datos-personales/datos-pers
 import { SocketService } from '../servicios/socket.service';
 import { Router } from '@angular/router';
 import { AdvertenciaComponent } from '../ui-utils/advertencia/advertencia.component';
+import { CambioPasswordComponent } from '../ui-utils/cambio-password/cambio-password.component';
 
 @Component({
   selector: 'app-principal',
@@ -92,6 +93,18 @@ export class PrincipalComponent implements OnInit{
     })
   }
 
+  cambioPassword(){
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(CambioPasswordComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        
+      }
+    })
+  }
+
+
   validaDatosClienteMetodo(clientId:string){
     //this.router.navigate([`/operaciones/clientes`, clientId])
     this.router.navigate([`/operaciones/clientes/${clientId}`])
@@ -123,6 +136,7 @@ export class PrincipalComponent implements OnInit{
   datosPersonales(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {nuevo: true}
+    dialogConfig.panelClass='datos-personales-dialog'
     const dialogRef = this.dialog.open(DatosPersonalesComponent, dialogConfig)
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {

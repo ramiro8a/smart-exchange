@@ -45,6 +45,10 @@ import { NgxUiLoaderModule, NgxUiLoaderConfig, NgxUiLoaderHttpModule, SPINNER,PO
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empresa.component';
 import { AdvertenciaComponent } from './ui-utils/advertencia/advertencia.component';
+import { OpsClientesComponent } from './reportes/ops-clientes/ops-clientes.component';
+import { RegClientesComponent } from './reportes/reg-clientes/reg-clientes.component';
+import { RegOperadoresComponent } from './reportes/reg-operadores/reg-operadores.component';
+import { CambioPasswordComponent } from './ui-utils/cambio-password/cambio-password.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsColor: "#2d47af",
@@ -131,6 +135,10 @@ const customNotifierOptions: NotifierOptions = {
     PasswordResetComponent,
     ConfigEmpresaComponent,
     AdvertenciaComponent,
+    OpsClientesComponent,
+    RegClientesComponent,
+    RegOperadoresComponent,
+    CambioPasswordComponent,
   ],
   imports: [
     BrowserModule,
