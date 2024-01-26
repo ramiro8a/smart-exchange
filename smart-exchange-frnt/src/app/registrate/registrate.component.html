@@ -1,24 +1,11 @@
-<div class="loging-wrapper">
-    <div class="loging-box">
-        <div class="loging-left-box">
-            <div class="loging-formulario">
-                <div class="logo-log-reg">
+<div class="loging-contenido3">
+        <div class="izquierdo3">
+            <div class="loging-for3">
+                <div class="primero logo-log-reg3">
                     <img src='assets/img/logo.png' alt="">
-                </div>
+                </div><br><br>
                 <h4 class="mat-primary">REGÍSTRATE Y OBTENER LOS MEJORES CAMBIOS</h4> 
                 <form [formGroup]="registraForm" (ngSubmit)="registra()" autocomplete="off">
-<!--                     <mat-form-field appearance="outline">
-                        <mat-label>Nombres</mat-label>
-                        <input matInput type="text" formControlName="nombres">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Apellido paterno</mat-label>
-                        <input matInput type="text" formControlName="apPaterno">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Apellido materno</mat-label>
-                        <input matInput type="text" formControlName="apMaterno">
-                    </mat-form-field> -->
                     <mat-form-field appearance="outline">
                         <mat-label>Correo</mat-label>
                         <input matInput type="text" formControlName="correo">
@@ -59,7 +46,7 @@
                          <mat-error *ngIf="registraForm.get('rePassword')?.hasError('confirmPasswordValidator')">
                             Los passwords <strong>deben ser iguales</strong>
                         </mat-error>
-                    </mat-form-field>
+                    </mat-form-field><br>
                     <button mat-fab extended color="primary" [disabled]="estaCargando">
                         <mat-icon>check</mat-icon>
                         Registrar
@@ -72,9 +59,19 @@
                 </form>
             </div>
     </div>
-    <div class="loging-right-box">
-      <p>Contenido</p>
-    </div>
+    <div class="derecho3">
+        <div class="contenido-der3">
+            <div class="logo-log-reg3">
+                <img src='assets/img/logofooter.png' alt="">
+            </div>
+            <br>
+            <div class="contenedor-carrusel">
+                <div class="lista-pasos">La mejor tasa de cambio, donde sea que estés en solo tres pasos: </div>
+                <div class="lista-pasos">1. Registrate en nuesto portal web o descarga nuestra app</div>
+                <div class="lista-pasos">2. Registra una operación de cambio con a la mejor tasa de cambio</div>
+                <div class="lista-pasos">3. Transfiere el monto del cambio a nuestras cuentas, recibe el cambio en tu cuenta</div>
+            </div>            
+        </div>
     </div>
 </div>
 
