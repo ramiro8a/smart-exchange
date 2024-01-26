@@ -69,6 +69,11 @@ REFRESH_TOKEN:string = 'refreshToken'
     return decodedToken.sub?decodedToken.sub:''
   }
 
+  public recuperaUsuarioId():number{
+    const decodedToken = this.decodeRefrehToken();
+    return decodedToken.id?decodedToken.id:0
+  }
+
   public expirado(): boolean {
     const decodedToken = this.decodeToken();
     const now = Date.now().valueOf() / 1000;

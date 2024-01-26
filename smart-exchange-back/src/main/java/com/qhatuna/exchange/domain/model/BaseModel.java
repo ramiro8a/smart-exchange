@@ -60,6 +60,10 @@ public abstract class BaseModel {
         );
     }
 
+    public boolean estaActivo(){
+        return this.estado.equals(Const.EstadoRegistro.ACTIVO);
+    }
+
     private String concatenaUsuarioFecha(LocalDateTime fecha, String usuario){
         String fechaString = fecha!=null? Util.dateTimeToString(fecha):"";
         String usuarioString = usuario!=null? usuario:"";

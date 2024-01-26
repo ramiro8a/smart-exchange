@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { NotifierService } from 'angular-notifier';
 import { BancosService, CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import * as Const from 'src/app/utils/constants.service'
 import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-lista-cuentas-bancarias',
@@ -13,7 +15,9 @@ import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancaria
 export class ListaCuentasBancariasComponent implements OnInit {
   monedas: any[]=Const.CUENTA_MONEDAS_CLIENTE
   estaCargando: boolean = false
-  dataSource: CuentaBancariaResponse[] = [];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  //dataSource: CuentaBancariaResponse[] = [];
+  dataSource = new MatTableDataSource<CuentaBancariaResponse>()
   bancos: any[] = [];
   displayedColumns: string[] = ['tipoCuenta', 'moneda','banco', 'numeroCuenta', 'nombre','estado','opciones'];
 
@@ -28,15 +32,19 @@ export class ListaCuentasBancariasComponent implements OnInit {
     this.recuperaCuentasBancarias();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   recuperaCuentasBancarias():void{
-    this.dataSource = []
     this.estaCargando = true
     this.restBancos.recuperaCuentasBancarias().subscribe({
       next: (response:CuentaBancariaResponse[]) => {
         response.forEach(element => {
           element.activo = element.estado==0
         });
-        this.dataSource = response
+        this.dataSource = new MatTableDataSource(response); 
+        this.dataSource.paginator = this.paginator;
         this.estaCargando = false
       },
       error: (error:any) => {
@@ -78,5 +86,17 @@ export class ListaCuentasBancariasComponent implements OnInit {
 
   buscarNombreDeTipoCuenta(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.TIPO_CUENTAS);
+  }
+
+  editar(cuenta: CuentaBancariaResponse){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = cuenta
+    const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaCuentasBancarias()
+      }
+    })
   }
 }

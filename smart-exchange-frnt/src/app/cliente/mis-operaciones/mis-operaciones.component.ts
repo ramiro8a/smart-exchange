@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit,ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogConfig,MatDialogRef } from "@angular/material/dialog"
 import { OperacionService, PaginaOperacionResponse, OperacionResponse } from 'src/app/rest/operacion.service';
 import { NotifierService } from 'angular-notifier';
@@ -11,6 +11,8 @@ import {PageEvent} from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
 import { ImagenComponent } from 'src/app/ui-utils/imagen/imagen.component';
+import { SocketService } from 'src/app/servicios/socket.service';
+import { TokenService } from 'src/app/servicios/token.service';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -44,17 +46,42 @@ export class MisOperacionesComponent implements OnInit, AfterViewInit {
     private restOperacion:OperacionService,
     private notif: NotifierService,
     private formBuilder: FormBuilder,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private socketService: SocketService,
+    private tokenServ: TokenService,
+    private cdRef: ChangeDetectorRef
     ){
       this.criterioForm = this.formBuilder.group({
         inicio: ['', Validators.required],
         fin: ['', Validators.required],
         ticket: [''],
       });
+
+      this.socketService.getOperationStatusSubject().subscribe(
+        (operacionResponse: OperacionResponse | null) => {
+          if (operacionResponse) {
+            this.actualizaOperaciones(operacionResponse);
+          }
+        }
+      );
     }
 
   ngOnInit(): void {
+    this.socketService.joinRoomCambioEstado(this.tokenServ.recuperaUsuarioId());
     this.recuperaInicial();
+  }
+
+  actualizaOperaciones(operacion: OperacionResponse): void {
+    const index = this.dataSource.findIndex(item => item.id === operacion.id);
+    console.warn(this.dataSource)
+    if (index !== -1) {
+      this.dataSource = [
+        ...this.dataSource.slice(0, index),
+        operacion,
+        ...this.dataSource.slice(index + 1)
+      ];
+      console.log(this.dataSource)
+    }
   }
 
   ngAfterViewInit() {

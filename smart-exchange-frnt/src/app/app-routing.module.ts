@@ -18,6 +18,7 @@ import { ConfigEmpresaComponent } from './operaciones/config-empresa/config-empr
 import { OpsClientesComponent } from './reportes/ops-clientes/ops-clientes.component';
 import { RegClientesComponent } from './reportes/reg-clientes/reg-clientes.component';
 import { RegOperadoresComponent } from './reportes/reg-operadores/reg-operadores.component';
+import { BancosComponent } from './operaciones/bancos/bancos.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
       {path: 'principal', component: OperacionesComponent },
       {path: 'tipo-cambio', component: TipoCambioComponent },
       {path: 'cuentas-bancarias', component: ListaCuentasBancariasComponent },
+      {path: 'bancos', component: BancosComponent },
       {path: 'clientes/:nroDocumento', component: ClientesComponent },
       {path: 'empresa', component: ConfigEmpresaComponent },
     ], canActivate:[OperadorGuard]},

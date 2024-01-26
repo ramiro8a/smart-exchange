@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from 'src/app/utils/constants.service'
 import { NotifierService } from 'angular-notifier';
-import { BancosService } from 'src/app/rest/bancos.service';
+import { BancosService, CuentaBancariaResponse } from 'src/app/rest/bancos.service';
 import { TokenService } from 'src/app/servicios/token.service';
 
 @Component({
@@ -17,14 +17,19 @@ export class CuentasBancariasComponent implements OnInit{
   bancos: any[] = []
   tipoCuentas: any[] = Const.TIPO_CUENTAS
   monedas: any[] = Const.CUENTA_MONEDAS_CLIENTE
+  cuentaBancaria!: CuentaBancariaResponse
 
   constructor(
     private dialogRef: MatDialogRef<CuentasBancariasComponent>,
     private formBuilder: FormBuilder,
     private notif: NotifierService,
     private restBancos: BancosService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    @Inject(MAT_DIALOG_DATA) data:CuentaBancariaResponse
   ){
+    if(data){
+      this.cuentaBancaria = data
+    }
     this.cuentaBancariaForm = this.formBuilder.group({
       tipoCuenta: ['', [Validators.required]],
       moneda: ['', [Validators.required]],
@@ -38,8 +43,20 @@ export class CuentasBancariasComponent implements OnInit{
 
   ngOnInit(): void {
     this.recupertaBancos();
+    if(this.cuentaBancaria){
+      this.cuentaBancariaForm.setValue({
+        tipoCuenta: this.cuentaBancaria.tipoCuenta,
+        moneda: this.cuentaBancaria.moneda,
+        banco: this.cuentaBancaria.banco,
+        numeroCuenta: this.cuentaBancaria.numeroCuenta,
+        nombre: this.cuentaBancaria.nombre,
+        deAcuerdo: true
+      })
+      this.cuentaBancariaForm.controls['moneda'].disable()
+      this.cuentaBancariaForm.controls['banco'].disable()
+    }
     if(this.esCliente()){
-      this.cuentaBancariaForm.controls['deAcuerdo'].setValue(false);
+      //this.cuentaBancariaForm.controls['deAcuerdo'].setValue(false);
     }
     if(this.esOperador()){
 /*       this.cuentaBancariaForm.controls['ruc'].setValidators([Validators.required]);
@@ -69,17 +86,31 @@ export class CuentasBancariasComponent implements OnInit{
   registra():void{
     if(this.cuentaBancariaForm.valid){
       this.estaCargando = true;
-      this.restBancos.creaCuentaBancaria(this.cuentaBancariaForm.value).subscribe({
-        next: (response:any) => {
-          this.estaCargando = false;
-          this.notif.notify('success', 'Datos registrados exitosamente');
-          this.close(true);
-        },
-        error: (error:any) => {
-          this.estaCargando = false;
-          this.notif.notify('error', error);
-        }
-      });
+      if(this.cuentaBancaria){
+        this.restBancos.editaCuentaBancaria(this.cuentaBancaria.id,this.cuentaBancariaForm.value).subscribe({
+          next: (response:any) => {
+            this.estaCargando = false;
+            this.notif.notify('success', 'Datos registrados exitosamente');
+            this.close(true);
+          },
+          error: (error:any) => {
+            this.estaCargando = false;
+            this.notif.notify('error', error);
+          }
+        });
+      }else{
+        this.restBancos.creaCuentaBancaria(this.cuentaBancariaForm.value).subscribe({
+          next: (response:any) => {
+            this.estaCargando = false;
+            this.notif.notify('success', 'Datos registrados exitosamente');
+            this.close(true);
+          },
+          error: (error:any) => {
+            this.estaCargando = false;
+            this.notif.notify('error', error);
+          }
+        });
+      }
     }else{
       this.notif.notify('warning','Complete el formulario por favor');
     }

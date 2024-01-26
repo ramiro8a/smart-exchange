@@ -4,6 +4,14 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 
+
+export interface Banco{
+  id: number;
+  nombre: string;
+  estado: number;
+  activo?: boolean;
+}
+
 export interface CuentaBancariaResponse{
   id: number;
   tipoCuenta: number;
@@ -23,6 +31,18 @@ export interface CuentaBancariaResponse{
 export class BancosService {
   path:string = '/api/bancos'
   constructor(private http: HttpClient) { }
+
+  creaBanco(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}${this.path}`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  habilitaDeshabilitaBanco(cuentaId:number, estado: boolean): Observable<CuentaBancariaResponse[]> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/${cuentaId}/${estado}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   habilitaDeshabilitaCuenta(cuentaId:number, estado: boolean): Observable<CuentaBancariaResponse[]> {
     return this.http.patch<any>(`${environment.baseUrl}${this.path}/cuentas/${cuentaId}/${estado}`, {}).pipe(
@@ -60,8 +80,20 @@ export class BancosService {
     )
   }
 
+  recuperaBancosTodos(): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/todos`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   creaCuentaBancaria(data: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}${this.path}/crea-cuenta-bancaria`, data).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  editaCuentaBancaria(id:number, data: CuentaBancariaResponse): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/edita-cuenta-bancaria/${id}`, data).pipe(
       catchError(this.errorHandler)
     )
   }

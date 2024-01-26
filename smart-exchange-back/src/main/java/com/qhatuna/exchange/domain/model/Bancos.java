@@ -22,7 +22,8 @@ public class Bancos  extends BaseModel{
         return new BancoResponse(
                 banco.getId(),
                 banco.getNombre(),
-                banco.getLogo()
+                banco.getLogo(),
+                banco.getEstado()
         );
     }
 

@@ -1,5 +1,6 @@
 package com.qhatuna.exchange.domain.service;
 
+import com.qhatuna.exchange.app.rest.request.BancoRequest;
 import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
@@ -7,6 +8,7 @@ import com.qhatuna.exchange.app.rest.response.CuentasRegistradasResponse;
 import com.qhatuna.exchange.commons.constant.Const;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
+import com.qhatuna.exchange.commons.utils.Util;
 import com.qhatuna.exchange.domain.model.*;
 import com.qhatuna.exchange.domain.repository.BancosRepository;
 import com.qhatuna.exchange.domain.repository.CuentaBancariaRepository;
@@ -33,6 +35,24 @@ public class BancosService {
         this.cuentaBancariaRepository = cuentaBancariaRepository;
         this.empresaService = empresaService;
         this.operacionService = operacionService;
+    }
+
+    public BancoResponse creaBanco(BancoRequest request){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Bancos banco = Bancos.builder()
+                .nombre(request.nombre())
+                .logo(Util.toCamelCase(request.nombre())+".png")
+                .build();
+        banco.setUsuarioActualizacion(usuario.getId());
+        return Bancos.aResponse(bancosRepository.save(banco));
+    }
+
+    public void habilitaDeshabilitaBanco(Long bancoId, boolean estado){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        Bancos banco = recuperaBancoPorId(bancoId);
+        banco.setUsuarioActualizacion(usuario.getId());
+        banco.setEstado(estado? Const.EstadoRegistro.ACTIVO:Const.EstadoRegistro.DESHABILITADO);
+        bancosRepository.save(banco);
     }
 
     public void habilitaDeshabilitaCuenta(Long cuentaId, boolean estado){
@@ -91,13 +111,15 @@ public class BancosService {
         List<CuentaBancariaResponse> cuentasOrigen = new ArrayList<>();
         List<CuentaBancariaResponse> cuentasDestino = new ArrayList<>();
         cuentasBacarias.forEach(item->{
-            if(monedaOrigen.equals(item.getMoneda())) {
-                bancosOrigen.add(Bancos.aResponse(item.getBanco()));
-                cuentasOrigen.add(CuentaBancaria.aResponse(item));
-            }
-            if(monedaDestino.equals(item.getMoneda())) {
-                bancosDestino.add(Bancos.aResponse(item.getBanco()));
-                cuentasDestino.add(CuentaBancaria.aResponse(item));
+            if(item.getBanco().estaActivo()){
+                if(monedaOrigen.equals(item.getMoneda())) {
+                    bancosOrigen.add(Bancos.aResponse(item.getBanco()));
+                    cuentasOrigen.add(CuentaBancaria.aResponse(item));
+                }
+                if(monedaDestino.equals(item.getMoneda())) {
+                    bancosDestino.add(Bancos.aResponse(item.getBanco()));
+                    cuentasDestino.add(CuentaBancaria.aResponse(item));
+                }
             }
         });
 /*        Set<BancoResponse> bancos = cuentasBacarias.stream()
@@ -113,14 +135,24 @@ public class BancosService {
         return bancos.stream().map(Bancos::aResponse).toList();
     }
 
+    public List<BancoResponse> recuperaTodos(){
+        List<Bancos> bancos = bancosRepository.recuperaTodos();
+        return bancos.stream().map(Bancos::aResponse).toList();
+    }
+
+    public CuentaBancariaResponse editaCuentaBancaria(Long id, CuentaBancariaRequest request){
+        Usuario usuario = sessionInfoService.getSession().getUsusario();
+        CuentaBancaria cuenta = recuperaCuentaBancariaPorId(id);
+        cuenta.setTipoCuenta(request.tipoCuenta());
+        cuenta.setNroCuenta(request.numeroCuenta());
+        cuenta.setNombre(request.nombre());
+        cuenta.setUsuarioActualizacion(usuario.getId());
+        return CuentaBancaria.aResponse(cuentaBancariaRepository.save(cuenta));
+    }
+
     public CuentaBancariaResponse creaCuentaBancaria(CuentaBancariaRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
-        Bancos banco = bancosRepository.findById(request.banco())
-                .orElseThrow(() -> new ProviderException(
-                        ErrorMsj.BANCO_NO_EXISTE.getMsj(),
-                        ErrorMsj.BANCO_NO_EXISTE.getCod(),
-                        HttpStatus.BAD_REQUEST
-                ));
+        Bancos banco =  recuperaBancoPorId(request.banco());
         CuentaBancaria cuenta = CuentaBancaria.builder()
                 .tipoCuenta(request.tipoCuenta())
                 .moneda(request.moneda())
@@ -141,6 +173,15 @@ public class BancosService {
                 .orElseThrow(() -> new ProviderException(
                         ErrorMsj.CUENTA_NO_EXISTE.getMsj(),
                         ErrorMsj.CUENTA_NO_EXISTE.getCod(),
+                        HttpStatus.BAD_REQUEST
+                ));
+    }
+
+    public Bancos recuperaBancoPorId(Long id){
+        return bancosRepository.findById(id)
+                .orElseThrow(() -> new ProviderException(
+                        ErrorMsj.BANCO_NO_EXISTE.getMsj(),
+                        ErrorMsj.BANCO_NO_EXISTE.getCod(),
                         HttpStatus.BAD_REQUEST
                 ));
     }

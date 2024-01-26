@@ -38,6 +38,7 @@ public class OperacionService {
     private final TipoCambioService tipoCambioService;
     private final UsuarioService usuarioService;
     private final ClienteService clienteService;
+    private final NotificacionService notificacionService;
 
 
     public void reasignar(Long id, Long operadorId){
@@ -61,7 +62,8 @@ public class OperacionService {
         operacion.setCuentaTransferenciaFinal(cuentaFnal);
         operacion.setFechaFinalizacion(LocalDate.now());
         operacion.setUsuarioActualizacion(usuario.getId());
-        operacionRepository.save(operacion);
+        operacion = operacionRepository.save(operacion);
+        notificacionService.cambioEstadoOperacion(Operacion.aResponse(operacion));
     }
 
     public void accionesOperador(Long id, Integer estado){
@@ -73,7 +75,8 @@ public class OperacionService {
 
         }
         operacion.setUsuarioActualizacion(usuario.getId());
-        operacionRepository.save(operacion);
+        operacion = operacionRepository.save(operacion);
+        notificacionService.cambioEstadoOperacion(Operacion.aResponse(operacion));
     }
 
     public ComprobanteResponse recuperaComprobante(Long operacionId, Integer tipo){
@@ -161,7 +164,8 @@ public class OperacionService {
         operacion.setComprobante(direccionComprobante);
         operacion.setEstado(0);
         operacion.setUsuarioActualizacion(usuario.getId());
-        operacionRepository.save(operacion);
+        operacion = operacionRepository.save(operacion);
+        notificacionService.cambioEstadoOperacion(Operacion.aResponse(operacion));
     }
 
     public Operacion recuperaOperacionPorId(Long id){

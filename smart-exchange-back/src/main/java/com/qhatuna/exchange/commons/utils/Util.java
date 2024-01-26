@@ -32,6 +32,19 @@ public class Util {
     private static final AtomicLong counter = new AtomicLong(0);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
 
+    public static String toCamelCase(String input){
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        String[] words = input.split("[\\s\\W]+");
+        StringBuilder camelCaseString = new StringBuilder(words[0].toLowerCase());
+        for (int i = 1; i < words.length; i++) {
+            camelCaseString.append(words[i].substring(0, 1).toUpperCase())
+                    .append(words[i].substring(1).toLowerCase());
+        }
+        return camelCaseString.toString();
+    }
+
     public static String objectToString(Object data, boolean pretty){
         try {
             ObjectWriter ow = objectMapper.writer();

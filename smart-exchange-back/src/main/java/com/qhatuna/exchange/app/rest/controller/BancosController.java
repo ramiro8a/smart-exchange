@@ -1,5 +1,6 @@
 package com.qhatuna.exchange.app.rest.controller;
 
+import com.qhatuna.exchange.app.rest.request.BancoRequest;
 import com.qhatuna.exchange.app.rest.request.CuentaBancariaRequest;
 import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
@@ -26,6 +27,14 @@ public class BancosController {
     @Autowired
     private BancosService service;
 
+    @PostMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<BancoResponse> creaCuentaBancaria(
+            @Parameter(description = "Datos de banco a crear", required = true, content = @Content(schema = @Schema(implementation = BancoRequest.class)))
+            @Valid @NotNull @RequestBody BancoRequest request
+    ) {
+        return new ResponseEntity<>(service.creaBanco(request), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/transf-final/{operacionId}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<CuentaBancariaResponse>> recuperaBancosTransferenciaFinal(
             @PathVariable Long operacionId
@@ -38,12 +47,26 @@ public class BancosController {
         return new ResponseEntity<>(service.recuperaActivos(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/todos", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<BancoResponse>> recuperaTodos() {
+        return new ResponseEntity<>(service.recuperaTodos(), HttpStatus.OK);
+    }
+
     @PostMapping(path = "/crea-cuenta-bancaria", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<CuentaBancariaResponse> creaCuentaBancaria(
             @Parameter(description = "Datos de cuenta bancaria a crear", required = true, content = @Content(schema = @Schema(implementation = CuentaBancariaRequest.class)))
             @Valid @NotNull @RequestBody CuentaBancariaRequest request
     ) {
         return new ResponseEntity<>(service.creaCuentaBancaria(request), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/edita-cuenta-bancaria/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<CuentaBancariaResponse> editaCuentaBancaria(
+            @PathVariable Long id,
+            @Parameter(description = "Datos de cuenta bancaria a crear", required = true, content = @Content(schema = @Schema(implementation = CuentaBancariaRequest.class)))
+            @Valid @NotNull @RequestBody CuentaBancariaRequest request
+    ) {
+        return new ResponseEntity<>(service.editaCuentaBancaria(id, request), HttpStatus.OK);
     }
 
     @GetMapping(path = "/cuenta-bancaria", produces = {MediaType.APPLICATION_JSON_VALUE })
@@ -74,6 +97,15 @@ public class BancosController {
             @PathVariable boolean estado
     ) {
         service.habilitaDeshabilitaCuenta(id, estado);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/{id}/{estado}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> habilitaDeshabilitaBanco(
+            @PathVariable Long id,
+            @PathVariable boolean estado
+    ) {
+        service.habilitaDeshabilitaBanco(id, estado);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
