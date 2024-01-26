@@ -1,10 +1,6 @@
-<div class="loging-wrapper">
-    <div class="loging-box">
-        <div class="loging-left-box">
-            <div class="loging-formulario">
-                <div class="logo-log-reg">
-                    <img src='assets/img/logo.png' alt="">
-                </div>
+<div class="loging-contenido3">
+        <div class="izquierdo3">
+            <div class="loging-for3">
                  <h4 class="mat-primary">INICIE SESIÓN</h4>
                 <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
                     <mat-form-field appearance="outline">
@@ -15,7 +11,7 @@
                         <mat-label>Contraseña</mat-label>
                         <input matInput [type]="hide?'password':'text'" formControlName="password">
                         <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </mat-form-field>
+                    </mat-form-field><br>
                     <button mat-fab extended color="primary" [disabled]="estaCargando">
                         <mat-icon>login</mat-icon>
                         Iniciar sesión
@@ -35,9 +31,17 @@
                 <mat-progress-bar *ngIf="estaCargando" mode="indeterminate" class="cargando"></mat-progress-bar>
             </div>
     </div>
-    <div class="loging-right-box">
-      <p>Contenido</p>
-    </div>
+    <div class="derecho3">
+        <div class="contenido-der3">
+            <div class="logo-log-reg3">
+                <img src='assets/img/logofooter.png' alt="">
+            </div>
+            <br>
+          <div class="lista-pasos">La mejor tasa de cambio, donde sea que estés en solo tres pasos: </div>
+          <div class="lista-pasos"><div class="numero">1. </div> <span>Registrate en nuesto portal web o descarga nuestra app</span></div>
+          <div class="lista-pasos"><div class="numero">2. </div> <span>Registra una operación de cambio con a la mejor tasa de cambio</span></div>
+          <div class="lista-pasos"><div class="numero">3. </div> <span>Transfiere el monto del cambio a nuestras cuentas, recibe el cambio en tu cuenta</span></div>
+        </div>
     </div>
 </div>
 
