@@ -1,13 +1,14 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>cliente</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cliente</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="page">
+  <app-explore-container></app-explore-container>
+  <div class="card">
+    <div class="tipo-cambio">
+      <div class="titulo">El mejor tipo de cambio <br>
+        <small>30e/nero/2025</small>
+      </div>
+      <div class="compra-venta" [ngClass]="true?'accent-background':'warn-background'">
+        <div class="compra"><small>S/ </small>100.2 <br><small>COMPRA</small></div>
+        <div class="venta"><small>S/ </small>88.77 <br><small>VENTA</small></div>
+      </div>
+    </div>
+  </div>
 </ion-content>

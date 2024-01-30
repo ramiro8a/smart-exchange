@@ -1,27 +1,17 @@
-#container {
+.container{
+  color: #ffffff;
+  width: 100%;
+}
+.info{
+  padding: 1em 0.5em;
+  width: 55%;
+  display: inline-block;
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  box-sizing: border-box;
 }
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.logo{
+  width: 22%;
+  display: inline-block;
+  padding: 0.5em;
+  box-sizing: border-box;
 }

@@ -1,0 +1,65 @@
+.page{
+    --background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    //#2d47af
+}
+.card {
+    background-color: rgb(245, 245, 245);
+    border-top-left-radius: 1.5em;
+    border-top-right-radius: 1.5em;
+    padding: 1em;
+    -webkit-box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+    box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+    width: 100%;
+    height: 80vh;
+    position: fixed;
+    bottom: 0;
+    box-sizing: border-box;
+  }
+
+  /////////////////TIPO DE CAMBIO
+.tipo-cambio{
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    background: white;
+    border-radius: 1.5em;
+    -webkit-box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+    box-shadow: 0px -5px 16px -9px rgba(0,0,0,0.75);
+}
+.titulo{
+    border-top-left-radius: 1.5em;
+    border-top-right-radius: 1.5em;
+    padding: 0.5em;
+    width: 100%;
+    //background: #47be11;
+    background: linear-gradient(63deg, rgb(6, 187, 233) 0%, rgba(32,181,152,1) 45%);
+    color: white;
+    font-weight: bold;
+}
+.compra-venta{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    font-weight: 800;
+}
+.compra-venta small{
+    //color: #2d47af;
+    color: #747373;
+    font-weight: 500;
+    font-size: 0.7em;
+}
+.compra, .venta{
+    width: 50%;
+    margin: 10px;
+    box-sizing: border-box;
+}
+    

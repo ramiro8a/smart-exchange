@@ -32,9 +32,16 @@
 /** Ionic CSS Variables **/
 .whatsapp{
     position: fixed;
-    bottom: 3em;
+    bottom: 4em;
     right: 1em;
+    z-index: 100;
 }
 .whatsapp ion-icon{
     font-size: 3em;
+}
+.badage{
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    z-index: 1000;
 }

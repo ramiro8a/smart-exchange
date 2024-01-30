@@ -1,5 +1,6 @@
 ion-content.background{
-    --background: url(../../assets/img/background-login.png) 0 0/100% 100% no-repeat;
+    //--background: url(../../assets/img/background-login.png) 0 0/100% 100% no-repeat;
+    --background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
 }
 .logo{
     padding: 1em 0em;
