@@ -1,0 +1,7 @@
+{
+  "name": "smart-exchange-movil",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

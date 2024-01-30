@@ -16,6 +16,6 @@ public record RegistroRequest(
         String password,
         @NotBlank
         String rePassword,
-        @NotBlank
+        //@NotBlank
         String token
 ) {}

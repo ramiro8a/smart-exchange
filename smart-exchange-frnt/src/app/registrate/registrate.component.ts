@@ -27,9 +27,6 @@ export class RegistrateComponent {
     private router: Router
     ){
       this.registraForm = this.formBuilder.group({
-/*         nombres: ['', Validators.required],
-        apPaterno: ['', Validators.required],
-        apMaterno: ['', Validators.required], */
         correo: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8),
         Validators.maxLength(30)]],

@@ -1,0 +1,37 @@
+<ion-content [fullscreen]="true" class="background">
+  <div class="logo">
+    <img src='assets/img/logofooter.png' alt="">
+  </div>
+  <div class="formulario">
+    <h4 class="titulo">INICIE SESIÓN</h4> 
+    <form  [formGroup]="loginForm" (ngSubmit)="login()">
+      <ion-list>
+        <ion-item>
+          <ion-input formControlName="username" labelPlacement="floating">
+            <div slot="label">Correo/Usuario<ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="password" labelPlacement="floating" [type]="hide?'password':'text'">
+            <div slot="label">Contraseña <ion-text color="danger">*</ion-text></div>
+            <ion-icon item-end slot="end" name="{{hide ?'eye-off-outline':'eye-outline'}}" (click)="hide=!hide"></ion-icon>
+          </ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button type="submit" expand="Block" shape="round">Iniciar sesión</ion-button>
+      <ion-button type="reset" expand="Block" shape="round" color="secondary">Cancelar</ion-button>
+      <div class="registrate">¿Aún no tienes cuenta?</div>
+      <ion-button href="/registrate" type="button" expand="Block" shape="round">Regístrate</ion-button>
+    </form>
+  </div><br>
+  <div class="aux-buttons">
+    <div class="aux">
+      <ion-icon name="key"></ion-icon><br>
+      <small>OLVIDÉ MI CONTRASEÑA</small>
+    </div>
+    <div class="aux">
+      <ion-icon name="mail-unread"></ion-icon><br>
+      <small>CONFIRMAR MI CORREO</small>
+    </div>
+  </div>
+</ion-content>

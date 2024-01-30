@@ -1,0 +1,60 @@
+ion-content.background{
+    --background: url(../../assets/img/background-login.png) 0 0/100% 100% no-repeat;
+}
+.logo{
+    padding: 1em 0em;
+    width: 40%;
+    margin: auto;
+}
+.formulario{
+    background: #ffffff;
+    border-radius: 1.5em;
+    padding: 1em;
+    width: 80%;
+    margin: auto;
+}
+ion-input{
+    --background: #ffffff;
+}
+ion-button{
+    width: 100%;
+}
+.aux-buttons{
+    width: 95%;
+    margin: auto;
+    text-align: center;
+}
+.aux-buttons .aux{
+    color: #838384;
+    font-weight: 300;
+    padding: 5px;
+    display: inline-block;
+    font-size: 0.8em;
+    //background: #ffffff;
+    border-radius: 1em;
+    margin: 3px;
+}
+
+.aux-buttons .aux ion-icon{
+    font-size: 1.5em;
+}
+
+.whatsapp{
+    position: fixed;
+    bottom: 5em;
+    left: 0.2em;
+}
+.registrate{
+    margin-top: 0.8em;
+    border-top: dashed 1px #838384;
+    color: #838384;
+    padding: 5px;
+    width: 100%;
+    font-size: 0.7em;
+}
+
+.titulo{
+    color: #838384;
+    font-size: 0.7em;
+    text-align: center;
+}

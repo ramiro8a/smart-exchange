@@ -1,18 +1,18 @@
-server:
-  port: 443
-  ssl:
-    key-store-type: PKCS12
-    key-store: classpath:keystore.p12
-    key-store-password: h4ckm3
-    key-alias: exchange
 #server:
-#  port: 8050
+#  port: 443
+#  ssl:
+#    key-store-type: PKCS12
+#    key-store: classpath:keystore.p12
+#    key-store-password: h4ckm3
+#    key-alias: exchange
+server:
+  port: 8050
 spring:
   application:
     name: smart-exchange
   datasource:
-    url: jdbc:postgresql://localhost:5432/smart_exchange
-    username: ramiro
+    url: jdbc:postgresql://localhost:5432/smart-exchange
+    username: postgres
     password: h4ckm3
   jpa:
     properties:
