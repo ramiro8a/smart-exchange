@@ -1,18 +1,27 @@
 ion-content.background{
     //--background: url(../../assets/img/background-login.png) 0 0/100% 100% no-repeat;
-    --background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
+    //--background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
+    --background: white;
 }
 .logo{
     padding: 1em 0em;
     width: 40%;
     margin: auto;
 }
+.logo img{
+    width: 100%;
+}
 .formulario{
-    background: #ffffff;
-    border-radius: 1.5em;
     padding: 1em;
-    width: 80%;
+    width: 100%;
     margin: auto;
+    padding: 2em;
+    box-sizing: border-box;
+}
+.form-contenido{
+    background: #ffffff;
+    padding: 1em;
+    border-radius: 1em;
 }
 ion-input{
     --background: #ffffff;
@@ -21,12 +30,12 @@ ion-button{
     width: 100%;
 }
 .aux-buttons{
-    width: 95%;
+    width: 100%;
     margin: auto;
     text-align: center;
 }
 .aux-buttons .aux{
-    color: #838384;
+    color: #6d6d6d;
     font-weight: 300;
     padding: 5px;
     display: inline-block;
@@ -37,7 +46,7 @@ ion-button{
 }
 
 .aux-buttons .aux ion-icon{
-    font-size: 1.5em;
+    font-size: 1.8em;
 }
 
 .whatsapp{
@@ -48,14 +57,19 @@ ion-button{
 .registrate{
     margin-top: 0.8em;
     border-top: dashed 1px #838384;
-    color: #838384;
+    color: #6d6d6d;
     padding: 5px;
     width: 100%;
     font-size: 0.7em;
 }
 
 .titulo{
-    color: #838384;
+    color: #6d6d6d;
     font-size: 0.7em;
     text-align: center;
+    font-weight: 700;
+}
+ion-item{
+    border: 1px solid #2d47af;
+    border-radius: 0.5em;
 }

@@ -1,14 +1,17 @@
 <ion-content [fullscreen]="true" class="page">
   <app-explore-container></app-explore-container>
   <div class="card">
-    <div class="tipo-cambio">
-      <div class="titulo">El mejor tipo de cambio <br>
-        <small>30e/nero/2025</small>
-      </div>
-      <div class="compra-venta" [ngClass]="true?'accent-background':'warn-background'">
-        <div class="compra"><small>S/ </small>100.2 <br><small>COMPRA</small></div>
-        <div class="venta"><small>S/ </small>88.77 <br><small>VENTA</small></div>
-      </div>
-    </div>
+    <form [formGroup]="operacionForm" (ngSubmit)="iniciarOperacion()" autocomplete="off">
+      <div class="tipo-cambio" *ngIf="tipoCambio">
+        <div class="titulo">El mejor tipo de cambio <br>
+          <small>{{fechaActual}}</small>
+        </div>
+        <div class="compra-venta" [ngClass]="true?'accent-background':'warn-background'">
+          <div class="compra"><small>S/ </small>{{tipoCambio?.compra}}<br><small>COMPRA</small></div>
+          <div class="venta"><small>S/ </small>{{tipoCambio?.venta}}<br><small>VENTA</small></div>
+        </div>
+      </div><br>
+      
+    </form>
   </div>
 </ion-content>

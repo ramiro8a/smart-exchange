@@ -16,7 +16,6 @@ import { CambioPasswordComponent } from '../ui-utils/cambio-password/cambio-pass
 })
 export class PrincipalComponent implements OnInit{
   notificaciones: Notificacion[] = []
-  private stompClient: any;
   constructor(
     private tokenService: TokenService,
     private restUtils: UtilsService,
