@@ -1,11 +1,52 @@
 <ion-content [fullscreen]="true" class="background">
   <div class="logo">
-    <img src='assets/img/logofooter.png' alt="">
+    <img src='assets/img/logo3.png' alt="">
   </div>
   <div class="formulario">
     <h4 class="titulo">REGÍSTRATE Y OBTIENE LOS MEJORES CAMBIOS</h4> 
     <form [formGroup]="registraForm" (ngSubmit)="registra()" autocomplete="off">
-      <ion-list>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput type="text" formControlName="correo">
+        <mat-error *ngIf="registraForm.get('correo')?.hasError('required')">
+            El correo es <strong>obligatorio</strong>
+        </mat-error>
+        <mat-error *ngIf="registraForm.get('correo')?.hasError('email')">
+            Debe ser un correo <strong>válido</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide1?'password':'text'" formControlName="password">
+        <mat-icon class="pointer" matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="registraForm.get('password')?.hasError('required')">
+            El password es <strong>obligatorio</strong>
+        </mat-error>
+        <mat-error *ngIf="registraForm.get('password')?.hasError('minlength')">
+            Mínimo <strong>8 caracteres</strong>
+        </mat-error>
+        <mat-error *ngIf="registraForm.get('password')?.hasError('maxlength')">
+            Máximo <strong>30 caracteres</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Confirmar contraseña</mat-label>
+        <input matInput [type]="hide2?'password':'text'" formControlName="rePassword">
+        <mat-icon class="pointer" matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="registraForm.get('rePassword')?.hasError('required')">
+            El password es <strong>obligatorio</strong>
+        </mat-error>
+        <mat-error *ngIf="registraForm.get('rePassword')?.hasError('minlength')">
+            Mínimo <strong>8 caracteres</strong>
+        </mat-error>
+        <mat-error *ngIf="registraForm.get('rePassword')?.hasError('maxlength')">
+            Máximo <strong>30 caracteres</strong>
+        </mat-error>
+         <mat-error *ngIf="registraForm.get('rePassword')?.hasError('confirmPasswordValidator')">
+            Los passwords <strong>deben ser iguales</strong>
+        </mat-error>
+      </mat-form-field><br>
+<!--       <ion-list>
         <ion-item>
           <ion-input formControlName="correo" labelPlacement="floating">
             <div slot="label">Correo electrónico<ion-text color="danger">*</ion-text></div>
@@ -23,7 +64,7 @@
             <ion-icon item-end slot="end" name="{{hide2 ?'eye-off-outline':'eye-outline'}}" (click)="hide2=!hide2"></ion-icon>
           </ion-input>
         </ion-item>
-      </ion-list>
+      </ion-list> -->
       <ion-button type="submit" expand="Block" shape="round">Registrar</ion-button>
       <ion-button href="/login" type="button" expand="Block" shape="round" color="secondary">Cancelar</ion-button>
     </form>

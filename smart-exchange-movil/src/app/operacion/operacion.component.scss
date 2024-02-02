@@ -1,0 +1,27 @@
+.descripcion-cambio{
+    border-radius: 0.4em;
+    font-size: 0.6em;
+    padding: 2px;
+}
+.titulo-banco{
+    font-size: 0.6em;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 1em;
+    text-align: center;
+}
+.titulo-banco-btn{
+    position: absolute;
+    top: 11.6em;
+    right: -1.8em !important;
+}
+.datos-stepper mat-form-field{
+    width: 100%;
+}
+::ng-deep .mat-step-header[aria-selected="true"]{
+    background: rgba(45, 71, 175, 0.1);
+    background: rgba(71, 190, 17, 0.1);
+}
+.datos-stepper img{
+    width: 2em;
+}

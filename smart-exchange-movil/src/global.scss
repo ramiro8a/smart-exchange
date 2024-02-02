@@ -45,3 +45,15 @@
     right: 0.5em;
     z-index: 1000;
 }
+.accent-background{
+    background: var(--ion-color-secondary);
+    color: white;
+}
+.option-banco-logo {
+    display: flex;
+    align-items: center;
+}
+.option-banco-logo img {
+    width: 2em;
+    padding-right: 5px;
+}

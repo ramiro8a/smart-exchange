@@ -8,6 +8,8 @@ import { TipoCambioService } from '../services/tipo-cambio.service';
 import { BancosService } from '../services/bancos.service';
 import { ImporteValidator } from '../utils/validators.validator';
 import { UtilsService } from '../utils/utilitarios.util';
+import { ModalController } from '@ionic/angular';
+import { OperacionComponent } from '../operacion/operacion.component';
 
 @Component({
   selector: 'app-cliente',
@@ -43,7 +45,8 @@ export class ClientePage implements OnInit {
     private formBuilder: FormBuilder,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private modalCtrl: ModalController
   ) { 
     moment.locale('es');
     this.operacionForm = this.formBuilder.group({
@@ -61,9 +64,32 @@ export class ClientePage implements OnInit {
     });
   }
 
-  iniciarOperacion():void{
+  async iniciarOperacion(){
     if(this.operacionForm.valid){
       if(this.validarImporte()){
+          const modal = await this.modalCtrl.create({
+            component: OperacionComponent,
+            componentProps:{
+              cambio: {
+                tipoCambioId: this.tipoCambio.id,
+                monto: this.operacionForm.get('envio')?.value,
+                cambiado: this.operacionForm.get('recibo')?.value,
+                origen: {
+                  moneda: this.envio.cod
+                },
+                destino: {
+                  moneda: this.recibo.cod
+                }
+              }
+            }
+          });
+          modal.present();
+      
+          const { data, role } = await modal.onWillDismiss();
+      
+          if (role === 'confirm') {
+            console.log(`Hello, ${data}!`)
+          }
 /*         const dialogConfig = new MatDialogConfig();
         dialogConfig.data = {
           tipoCambioId: this.tipoCambio.id,
@@ -133,6 +159,26 @@ export class ClientePage implements OnInit {
   redondearHalfUp(numero: number, decimales: number): number {
     const factor = Math.pow(10, decimales);
     return Math.round(numero * factor) / factor;
+  }
+
+  cambiaMoneda():void{
+    const elemento = document.querySelector('.icon-cambio');
+    const valorEnvio:number=10.00
+    this.operacionForm.controls['envio'].setValue(valorEnvio);
+    if(this.envio.cod===Const.SOLES_ISO){
+      elemento?.classList.remove('girado');
+      this.envio = this.usd
+      this.envio.desc ='Envio Dólares'
+      this.recibo = this.soles
+      this.recibo.desc ='Recibo Soles'
+    }else{
+      elemento?.classList.add('girado');
+      this.envio = this.soles
+      this.envio.desc ='Envio Soles'
+      this.recibo = this.usd
+      this.recibo.desc ='Recibo Dólares'
+    }
+    this.recalcula(valorEnvio)
   }
 
 }

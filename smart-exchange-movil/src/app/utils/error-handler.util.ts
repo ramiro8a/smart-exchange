@@ -8,7 +8,7 @@ export function errorHandler(error: any) {
     errorMensaje = error.error.message;
   } else {
     console.log('RAM2')
-    console.error(`${error.error?.codigo}: ${error.error?.mensajeTec}`);
+    console.error(`${error.error?.codigo}: ${error.error?.mensaje}`);
     errorMensaje = error.error?.mensaje;
   }
   if (error.status == 403 || error.status == 401) {

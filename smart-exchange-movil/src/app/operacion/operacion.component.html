@@ -1,0 +1,141 @@
+<ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <div>Nueva operación <small class="descripcion-cambio accent-background"> {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></div>
+  
+  <!--   <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+  <ion-content>
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
+      <!-- CUENTAS -->
+      <mat-step [stepControl]="cuentasFormGroup" [editable]="isEditable" [state]="pasoIds.cuentas" >
+        <form [formGroup]="cuentasFormGroup">
+          <ng-template matStepLabel>Origen cuenta y destino</ng-template>
+          <div class="datos-stepper">
+              <div class="titulo-banco">¿De dónde nos envías tu dinero {{descripcionOrigenMoneda()}}?
+                  <button  (click)="agregaCuentasBancarias()" class="agrega-cuenta" type="button" mat-mini-fab color="primary" matTooltip="Agregás cuentas bancarias" class="titulo-banco-btn">
+                      <mat-icon>add_circle</mat-icon>
+                  </button>
+              </div>
+              <mat-form-field appearance="outline" class="select-banco">
+                  <mat-label>Banco</mat-label>
+                  <mat-select formControlName="bancoOrigen">
+                      <mat-option *ngFor="let item of bancosOrigen" [value]="item.id">
+                          <span class="option-banco-logo" style="display: flex; align-items: center;">
+                              <img [src]="'assets/bancos/'+item.logo" class="option-banco-logo">
+                              {{item.nombre}}
+                          </span>
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="select-cuenta">
+                  <mat-label>Cuenta</mat-label>
+                  <mat-select formControlName="cuentaOrigen">
+                      <mat-option *ngFor="let item of cuentasOrigenActual" [value]="item.id">
+                      {{item.nombre}} {{item.numeroCuenta}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div  class="datos-stepper">
+              <div class="titulo-banco">¿Dónde quieres recibir tu dinero {{descripcionDestinoMoneda()}}?</div>
+              <mat-form-field appearance="outline" class="select-banco">
+                  <mat-label>Banco</mat-label>
+                  <mat-select formControlName="bancoDestino">
+                      <mat-option *ngFor="let item of bancosDestino" [value]="item.id">
+                          <span class="option-banco-logo" style="display: flex; align-items: center;">
+                              <img [src]="'assets/bancos/'+item.logo" class="option-banco-logo">
+                              {{item.nombre}}
+                          </span>
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="select-cuenta">
+                  <mat-label>Cuenta</mat-label>
+                  <mat-select formControlName="cuentaDestino">
+                      <mat-option *ngFor="let item of cuentasDestinoActual" [value]="item.id">
+                          {{item.nombre}} {{item.numeroCuenta}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="botones-operacion">
+              <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando" *ngIf="pedirDatospersonales()">
+                  Atrás
+              </button>&nbsp;
+              <button mat-fab extended color="primary" (click)="recuperaCuentaLCExchange(stepper)" [disabled]="estaCargando">
+                  Siguiente
+              </button>
+          </div>
+        </form>
+      </mat-step>
+  
+      <!-- TRANSFIERE A LC EXCHANGE -->
+      <mat-step [stepControl]="transferenciaForm" [editable]="isEditable" [state]="pasoIds.transferencia" >
+        <br>
+        <form [formGroup]="transferenciaForm" autocomplete="off">
+            <ng-template matStepLabel>Transfiere a LC Exchange</ng-template>
+            <div class="area-notificaciones">
+                    <span>1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</span> <br>
+                <table>
+                    <tr>
+                        <td>Banco</td><th>{{cuentaTransferencia?.bancoNombre}}</th><td></td>
+                    </tr>
+                    <tr>
+                        <td>Número cuenta</td><th>{{cuentaTransferencia?.numeroCuenta}}</th>
+                        <td><mat-icon (click)="copiar(cuentaTransferencia?.numeroCuenta)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                    </tr>
+                    <tr>
+                        <td>RUC</td><th>{{cuentaTransferencia?.ruc}}</th>
+                        <td><mat-icon (click)="copiar(cuentaTransferencia?.ruc)" matTooltip="Copiar" fontIcon="content_copy" class="copiar"></mat-icon></td>
+                    </tr>
+                    <tr>
+                        <td>Titular de la cuenta</td><th>{{cuentaTransferencia?.razonSocial}}</th>
+                    </tr>
+                    <tr>
+                        <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>
+                        <td></td>
+                    </tr>
+                </table>
+                <span>2. Guarda el código de tu transferencia para el siguiente paso</span> <br>
+                <div class="letra-pequena"><small><i>LC Exchange NO realiza débito automático de ninguna cuenta.</i></small></div>
+            </div>
+            <div class="botones-operacion">
+                <mat-slide-toggle formControlName="transferido" color="primary">Ya hice la transferencia</mat-slide-toggle> <br>
+                <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
+                    Atrás
+                </button>&nbsp;
+                <button mat-fab extended color="primary" (click)="guardaTransferencia(stepper)" [disabled]="estaCargando || !transfirio()">
+                    Siguiente
+                </button>
+            </div>
+        </form>
+    </mat-step>
+  
+  
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Fill out your address</ng-template>
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+                   required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </ion-content>

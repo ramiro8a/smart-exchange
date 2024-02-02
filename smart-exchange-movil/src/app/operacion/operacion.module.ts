@@ -3,21 +3,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
-import { LoginPageRoutingModule } from './login-routing.module';
-
-import { LoginPage } from './login.page';
+import { OperacionComponent } from './operacion.component';
 import { MaterialModule } from '../material.modules';
+import { ModalController } from '@ionic/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
     MaterialModule,
-    LoginPageRoutingModule
+    ReactiveFormsModule
   ],
-  declarations: [LoginPage]
+  declarations: [OperacionComponent],
+  exports: [OperacionComponent]
 })
-export class LoginPageModule {}
+export class OperacionComponentModule {
+  constructor(private modalCtrl: ModalController) {}
+
+}

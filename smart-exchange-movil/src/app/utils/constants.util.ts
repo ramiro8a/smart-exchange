@@ -14,3 +14,14 @@ export const CUENTA_MONEDAS_CLIENTE = [
     {codigo: SOLES_ISO, nombre: 'Soles'},
     {codigo: USD_ISO, nombre: 'Dólares'},
 ]
+export const TIPO_CUENTAS = [
+    {codigo: 1, nombre: 'Ahorro'},
+    {codigo: 2, nombre: 'Corriente'},
+]
+
+export const TIPO_DOCUMENTOS = [
+    {codigo: 1, nombre: 'DNI', abrev:'DNI'},
+    {codigo: 2, nombre: 'RUC', abrev:'RUC'},
+    {codigo: 3, nombre: 'Carnet extranjero', abrev:'CE'},
+    {codigo: 4, nombre: 'Pasaporte', abrev:'P'},
+]

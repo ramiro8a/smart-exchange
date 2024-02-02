@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { NgZone } from '@angular/core';
 import { Network } from '@capacitor/network';
+import {  Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import * as Const from './constants.util';
+import { environment } from './../../environments/environment';
+import { errorHandler } from './error-handler.util';
 
 @Injectable({
     providedIn: 'root'
@@ -10,10 +15,12 @@ import * as Const from './constants.util';
 
 export class UtilsService {
     isOnline: boolean = false;
+    path:string = '/api/utils'
 
     constructor(
       private toastController: ToastController,
       private zone: NgZone,
+      private http: HttpClient
     ) {
       Network.getStatus().then((status) => {
         this.isOnline = status.connected;
@@ -44,5 +51,11 @@ export class UtilsService {
     existsVariable(variable:any):boolean{
       return !(Object.keys(variable).length === 0)
     }
-  
+
+  recuperaNotificaciones(): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/notificaciones`).pipe(
+      catchError(errorHandler)
+    )
   }
+  
+}
