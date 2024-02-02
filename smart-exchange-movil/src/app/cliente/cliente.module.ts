@@ -7,6 +7,7 @@ import { ClientePageRoutingModule } from './cliente-routing.module';
 import { ClientePage } from './cliente.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { OperacionComponentModule } from '../operacion/operacion.module';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -19,6 +20,12 @@ import { OperacionComponentModule } from '../operacion/operacion.module';
     MaterialModule,
     ClientePageRoutingModule
   ],
-  declarations: [ClientePage]
+  declarations: [ClientePage],
+  providers: [
+    {
+      provide: MatDialogRef,
+      useValue: {}
+    }
+ ]
 })
 export class ClientePageModule {}

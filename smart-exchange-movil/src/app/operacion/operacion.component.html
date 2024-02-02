@@ -78,8 +78,9 @@
         <br>
         <form [formGroup]="transferenciaForm" autocomplete="off">
             <ng-template matStepLabel>Transfiere a LC Exchange</ng-template>
-            <div class="area-notificaciones">
-                    <span>1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</span> <br>
+            <div class="paso-transferencia">
+                <div class="txt-pasos">1. Transfiere {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a nuestra cuenta</div> <br>
+                <div class="tabla">
                 <table>
                     <tr>
                         <td>Banco</td><th>{{cuentaTransferencia?.bancoNombre}}</th><td></td>
@@ -94,13 +95,15 @@
                     </tr>
                     <tr>
                         <td>Titular de la cuenta</td><th>{{cuentaTransferencia?.razonSocial}}</th>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Tipo cuenta</td><th>{{recuperaNombreTipoCuentas(cuentaTransferencia?.tipoCuenta)}} en {{recuperaNombre(cuentaTransferencia?.moneda)}}</th>
                         <td></td>
                     </tr>
                 </table>
-                <span>2. Guarda el código de tu transferencia para el siguiente paso</span> <br>
+                </div><br>
+                <div class="txt-pasos">2. Guarda el código de tu transferencia para el siguiente paso</div> <br>
                 <div class="letra-pequena"><small><i>LC Exchange NO realiza débito automático de ninguna cuenta.</i></small></div>
             </div>
             <div class="botones-operacion">

@@ -57,3 +57,10 @@
     width: 2em;
     padding-right: 5px;
 }
+.mat-mdc-fab.mat-primary, .mat-mdc-mini-fab.mat-primary, .mat-mdc-raised-button.mat-primary, .mat-step-icon {
+    --mdc-fab-icon-color: #ffffff;
+    --mat-mdc-fab-color: #ffffff;
+    --mat-mdc-raised-color: #ffffff;
+    --mdc-protected-button-label-text-color: #ffffff;
+    color: #ffffff !important;
+}

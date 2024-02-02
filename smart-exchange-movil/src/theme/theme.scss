@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@import "@angular/material/theming";
+//@import "@angular/material/theming";
 @include mat.core();
 
 /* For use in src/lib/core/theming/_palette.scss */
@@ -23,16 +23,16 @@ $lc-exchange-primary: (
         100 : #000000,
         200 : #000000,
         300 : #000000,
-        400 : #000000,
-        500 : #000000,
-        600 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
         700 : #ffffff,
         800 : #ffffff,
         900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
     )
 );
 

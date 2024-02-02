@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { OperacionComponent } from './operacion.component';
 import { MaterialModule } from '../material.modules';
 import { ModalController } from '@ionic/angular';
+import { CuentasBancariasComponentModule } from '../cuentas-bancarias/cuentas-bancarias.module';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { ModalController } from '@ionic/angular';
     FormsModule,
     IonicModule,
     MaterialModule,
+    CuentasBancariasComponentModule,
     ReactiveFormsModule
   ],
   declarations: [OperacionComponent],

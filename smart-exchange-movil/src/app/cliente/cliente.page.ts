@@ -84,32 +84,10 @@ export class ClientePage implements OnInit {
             }
           });
           modal.present();
-      
           const { data, role } = await modal.onWillDismiss();
-      
           if (role === 'confirm') {
             console.log(`Hello, ${data}!`)
           }
-/*         const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          tipoCambioId: this.tipoCambio.id,
-          monto: this.operacionForm.get('envio')?.value,
-          cambiado: this.operacionForm.get('recibo')?.value,
-          origen: {
-            moneda: this.envio.cod
-          },
-          destino: {
-            moneda: this.recibo.cod
-          }
-        }
-        dialogConfig.panelClass = 'operacion-dialog'
-        const dialogRef = this.dialog.open(OperacionComponent, dialogConfig)
-        dialogRef.disableClose = true;
-        dialogRef.afterClosed().subscribe(result => {
-          if(result){
-            
-          }
-        }) */
       }else{
         this.utils.showMessage('Atención','La operacion mínima es de 1 dólar o su equivalente en soles');
       }

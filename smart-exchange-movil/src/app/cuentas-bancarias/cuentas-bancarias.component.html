@@ -1,0 +1,62 @@
+<mat-card class="cuentas-bancarias-card">
+    <mat-card-header>
+      <mat-card-subtitle>Administración de</mat-card-subtitle>
+      <mat-card-title>CUENTAS BANCARIAS</mat-card-title>
+    </mat-card-header>
+    <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
+    <form [formGroup]="cuentaBancariaForm" (ngSubmit)="registra()" autocomplete="off">
+      <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
+      
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Banco</mat-label>
+            <mat-select formControlName="banco">
+              <mat-option *ngFor="let item of bancos" [value]="item.id">
+                <span class="option-banco-logo" style="display: flex; align-items: center;">
+                  <img [src]="'assets/bancos/'+item.logo" class="option-banco-logo">
+                  {{item.nombre}}
+                </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo cuenta</mat-label>
+                <mat-select formControlName="tipoCuenta">
+                  <mat-option *ngFor="let item of tipoCuentas" [value]="item.codigo">
+                    {{item.nombre}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Moneda</mat-label>
+                <mat-select formControlName="moneda">
+                  <mat-option *ngFor="let item of monedas" [value]="item.codigo">
+                    {{item.nombre}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Número de cuenta</mat-label>
+              <input matInput type="text" formControlName="numeroCuenta">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Ponle un nombre a tu cuenta</mat-label>
+                <input matInput type="text" formControlName="nombre">
+            </mat-form-field>
+            <mat-slide-toggle formControlName="deAcuerdo" color="primary">Declaro que ésta cuenta es mía y authorizo a LC Exchange a almacenar estos datos para mis transacciones</mat-slide-toggle>
+            <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
+        </mat-card-content>
+        <mat-card-actions>
+        <button mat-fab extended color="primary" [disabled]="!estaDeAcuerdo()">
+            <mat-icon>check</mat-icon>
+            Registrar
+        </button>&nbsp;
+        <button (click)="close(false)" type="button" mat-fab extended color="accent">
+            <mat-icon>block</mat-icon>
+            Cancelar
+        </button>
+        </mat-card-actions>
+    </form>
+    <mat-card-footer>
+    </mat-card-footer>
+  </mat-card>

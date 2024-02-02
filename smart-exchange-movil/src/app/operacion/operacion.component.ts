@@ -7,6 +7,8 @@ import { DatosCompartidosService, Notificacion } from '../services/datos-compart
 import { UtilsService } from '../utils/utilitarios.util';
 import { BancosService } from '../services/bancos.service';
 import { OperacionService } from '../services/operacion.service';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogConfig} from "@angular/material/dialog";
+import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
 
 interface Cambio {
     monto: number;
@@ -92,6 +94,8 @@ export class OperacionComponent implements OnInit{
       isLinear = false;
     ///BORRAR
       constructor(
+        private dialog: MatDialog,
+        private dialogRef: MatDialogRef<CuentasBancariasComponent>,
         private alertController: AlertController,
         private loadingController: LoadingController,
         private formBuilder: FormBuilder,
@@ -229,8 +233,18 @@ export class OperacionComponent implements OnInit{
         });
       }
 
-    agregaCuentasBancarias(){
-/*         const dialogConfig = new MatDialogConfig();
+  async agregaCuentasBancarias(){
+/*       const modal = await this.modalCtrl.create({
+        component: CuentasBancariasComponent,
+        componentProps:{
+        }
+      });
+      modal.present();
+      const { data, role } = await modal.onWillDismiss();
+      if (role === 'confirm') {
+        console.log(`Hello, ${data}!`)
+      } */
+        const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = 'operacion-dialog'
         const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
         dialogRef.disableClose = true;
@@ -238,7 +252,7 @@ export class OperacionComponent implements OnInit{
             if(result){
             this.recuperaCuentasRegistradas()
             }
-        }) */
+        }) 
     }
 
     recuperaCuentaLCExchange(stepper:any):void{

@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
 
   async login() {
     if(this.loginForm.valid){
-      let loading = await this.loadingController.create({spinner: 'bubbles',message: 'Espere por favor'});
+      let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
       await loading.present();
       this.restUsuarios.login(this.loginForm.value).subscribe({
         next: async(response:any) => {
