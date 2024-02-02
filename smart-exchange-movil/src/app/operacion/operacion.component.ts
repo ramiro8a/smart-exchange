@@ -234,7 +234,7 @@ export class OperacionComponent implements OnInit{
       }
 
   async agregaCuentasBancarias(){
-/*       const modal = await this.modalCtrl.create({
+      const modal = await this.modalCtrl.create({
         component: CuentasBancariasComponent,
         componentProps:{
         }
@@ -243,8 +243,8 @@ export class OperacionComponent implements OnInit{
       const { data, role } = await modal.onWillDismiss();
       if (role === 'confirm') {
         console.log(`Hello, ${data}!`)
-      } */
-        const dialogConfig = new MatDialogConfig();
+      }
+/*         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = 'operacion-dialog'
         const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
         dialogRef.disableClose = true;
@@ -252,7 +252,7 @@ export class OperacionComponent implements OnInit{
             if(result){
             this.recuperaCuentasRegistradas()
             }
-        }) 
+        })  */
     }
 
     recuperaCuentaLCExchange(stepper:any):void{

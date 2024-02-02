@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from './../utils/constants.util'
 import { UtilsService } from '../utils/utilitarios.util';
@@ -7,6 +6,7 @@ import { BancosService } from '../services/bancos.service';
 import { CuentaBancariaResponse } from '../services/bancos.service';
 import { TokenService } from '../services/token.service';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cuentas-bancarias',
@@ -22,22 +22,21 @@ export class CuentasBancariasComponent implements OnInit{
   cuentaBancaria!: CuentaBancariaResponse
 
   constructor(
-    private dialogRef: MatDialogRef<CuentasBancariasComponent>,
     private formBuilder: FormBuilder,
     private restBancos: BancosService,
     private tokenService: TokenService,
     private alertController: AlertController,
+    private modalCtrl: ModalController,
     private utils: UtilsService,
     private loadingController: LoadingController,
-    @Inject(MAT_DIALOG_DATA) data:CuentaBancariaResponse
   ){
-    if(data){
+/*     if(data){
       this.cuentaBancaria = data
       this.esNuevo = false
       console.warn('es edicion')
     }else{
       console.warn('es NUEVO')
-    }
+    } */
     this.cuentaBancariaForm = this.formBuilder.group({
       tipoCuenta: ['', [Validators.required]],
       moneda: ['', [Validators.required]],
@@ -109,7 +108,10 @@ if(!this.esNuevo){
   }
 
   close(data:boolean){
-    this.dialogRef.close(data);
+    //this.dialogRef.close(data);
+  }
+  cancel() {
+    return this.modalCtrl.dismiss(null, 'cancel');
   }
 
   estaDeAcuerdo():boolean{

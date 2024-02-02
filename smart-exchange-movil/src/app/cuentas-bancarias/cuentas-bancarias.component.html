@@ -1,13 +1,10 @@
-<mat-card class="cuentas-bancarias-card">
-    <mat-card-header>
-      <mat-card-subtitle>Administración de</mat-card-subtitle>
-      <mat-card-title>CUENTAS BANCARIAS</mat-card-title>
-    </mat-card-header>
-    <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+  </ion-buttons>
+  <div>Administración de cuentas</div>
+</ion-toolbar>
     <form [formGroup]="cuentaBancariaForm" (ngSubmit)="registra()" autocomplete="off">
-      <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
-      
-        <mat-card-content>
           <mat-form-field appearance="outline">
             <mat-label>Banco</mat-label>
             <mat-select formControlName="banco">
@@ -44,9 +41,6 @@
                 <input matInput type="text" formControlName="nombre">
             </mat-form-field>
             <mat-slide-toggle formControlName="deAcuerdo" color="primary">Declaro que ésta cuenta es mía y authorizo a LC Exchange a almacenar estos datos para mis transacciones</mat-slide-toggle>
-            <ion-input label="Input with placeholder" placeholder="Enter company name"></ion-input>
-        </mat-card-content>
-        <mat-card-actions>
         <button mat-fab extended color="primary" [disabled]="!estaDeAcuerdo()">
             <mat-icon>check</mat-icon>
             Registrar
@@ -55,8 +49,4 @@
             <mat-icon>block</mat-icon>
             Cancelar
         </button>
-        </mat-card-actions>
     </form>
-    <mat-card-footer>
-    </mat-card-footer>
-  </mat-card>
