@@ -116,29 +116,41 @@
                 </button>
             </div>
         </form>
-    </mat-step>
-  
-  
-      <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
-          <ng-template matStepLabel>Fill out your address</ng-template>
-          <mat-form-field>
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                   required>
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-        </div>
-      </mat-step>
+        </mat-step>
+
+        <mat-step [stepControl]="finalizaForm" [editable]="isEditable" [state]="pasoIds.finalizar" >
+            <br>
+            <form [formGroup]="finalizaForm" autocomplete="off">
+              <ng-template matStepLabel>Finalizando</ng-template>
+              <div class="area-notificaciones">
+                  <mat-form-field appearance="outline">
+                      <mat-label>Código transferencia</mat-label>
+                      <input matInput type="text" formControlName="codigoTransferencia">
+                  </mat-form-field><br>
+                  <span>Suba una foto del comprobante, puede <i>TOMAR UNA FOTO</i> o <i>SUBIR UNA IMAGEN</i> existente</span><br>
+                  <div class="carga-comprobante">
+                      <button (click)="abrirCamara()" mat-fab extended [color]="imagen.captura?'primary':'warn'" type="button">
+                          <mat-icon>photo_camera</mat-icon>
+                          Tomar foto
+                      </button>&nbsp;
+                      <button (click)="cargaFoto()" mat-fab extended [color]="imagen.carga?'primary':'warn'" type="button">
+                          <mat-icon>image</mat-icon>
+                          Subir una imagen
+                      </button>
+                  </div>
+                  <br>
+                  <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
+              </div>
+                <div class="botones-operacion">
+                      <!-- <mat-slide-toggle formControlName="noTiene" color="primary">No lo tengo</mat-slide-toggle> <br> -->
+                      <button  matStepperPrevious mat-fab extended color="accent" [disabled]="estaCargando">
+                          Atrás
+                      </button>&nbsp;
+                      <button mat-fab extended color="primary" (click)="guardarFinalizar()" [disabled]="estaCargando || !finalizaForm.valid">
+                          Guardar y finalizar
+                      </button>
+                </div>
+            </form>
+          </mat-step>
     </mat-stepper>
   </ion-content>

@@ -9,6 +9,7 @@ import { BancosService } from '../services/bancos.service';
 import { OperacionService } from '../services/operacion.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogConfig} from "@angular/material/dialog";
 import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface Cambio {
     monto: number;
@@ -109,6 +110,7 @@ export class OperacionComponent implements OnInit{
             
         }
     ngOnInit(): void {
+      Camera.requestPermissions();
     this.recuperaCuentasRegistradas();
     this.recuperaNotificaciones()
     this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
@@ -326,5 +328,49 @@ export class OperacionComponent implements OnInit{
       
         await alert.present();
       }
+
+      async abrirCamara(){
+        const image = await Camera.getPhoto({
+          quality: 80,
+          allowEditing: false,
+          resultType: CameraResultType.Base64,
+          source: CameraSource.Camera
+        });
+        var imageUrl = image.webPath;
+        //imageElement.src = imageUrl;
+    }
+  
+    async cargaFoto(){
+      const image = await Camera.getPhoto({
+        quality: 80,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Photos
+      });
+      var imageUrl = image.webPath;
+      //imageElement.src = imageUrl;
+    }
+
+
+    guardarFinalizar():void{
+      if(this.finalizaForm.valid){
+/*         let datos ={
+          codigoTransferencia: this.finalizaForm.controls['codigoTransferencia'].value,
+          comprobante: this.finalizaForm.controls['comprobante'].value,
+        }
+        this.estaCargando = true
+        this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({next: (response:any) => {
+            this.estaCargando = false
+            
+          },
+          error: (error:any) => {
+            this.utils.showMessage('Error', error);
+            this.estaCargando = false
+          }
+        }); */
+      }else{
+        this.utils.showMessage('Atención!', 'Complete el formulario por favor');
+      }
+    }
       
 }

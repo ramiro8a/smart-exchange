@@ -35,7 +35,7 @@ public class AutenticacionController {
     public ResponseEntity<AutenticationResponse> autenticacion(
             @RequestHeader("Authorization") String basicAuth
     ) {
-        return new ResponseEntity<>(service.auth(basicAuth), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.auth(basicAuth), HttpStatus.OK);
     }
 
     @PostMapping(path = "/registro", produces = {MediaType.APPLICATION_JSON_VALUE })
