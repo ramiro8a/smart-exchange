@@ -11,7 +11,7 @@ import { ModalController } from '@ionic/angular';
 @Component({
   selector: 'app-cuentas-bancarias',
   templateUrl: './cuentas-bancarias.component.html',
-  styleUrls: ['./cuentas-bancarias.component.sass']
+  styleUrls: ['./cuentas-bancarias.component.scss']
 })
 export class CuentasBancariasComponent implements OnInit{
   esNuevo: boolean = true
@@ -43,7 +43,7 @@ export class CuentasBancariasComponent implements OnInit{
       banco: ['', [Validators.required]],
       numeroCuenta: ['', Validators.required],
       nombre: ['', Validators.required],
-      deAcuerdo: [true, [Validators.required]]
+      deAcuerdo: [false, [Validators.required]]
     });
   }
 
@@ -83,22 +83,26 @@ if(!this.esNuevo){
       await loading.present();
       if(this.cuentaBancaria){
         this.restBancos.editaCuentaBancaria(this.cuentaBancaria.id,this.cuentaBancariaForm.value).subscribe({
-          next: (response:any) => {
+          next: async(response:any) => {
             this.utils.showMessage('Genial!', 'Datos registrados exitosamente');
-            this.close(true);
+            await loading.dismiss();
+            this.confirm();
           },
-          error: (error:any) => {
+          error: async(error:any) => {
             this.utils.showMessage('Error',error);
+            await loading.dismiss();
           }
         });
       }else{
         this.restBancos.creaCuentaBancaria(this.cuentaBancariaForm.value).subscribe({
-          next: (response:any) => {
+          next: async(response:any) => {
             this.utils.showMessage('Genial!', 'Datos registrados exitosamente');
-            this.close(true);
+            await loading.dismiss();
+            this.confirm();
           },
-          error: (error:any) => {
+          error: async(error:any) => {
             this.utils.showMessage('Error',error);
+            await loading.dismiss();
           }
         });
       }
@@ -107,8 +111,8 @@ if(!this.esNuevo){
     }
   }
 
-  close(data:boolean){
-    //this.dialogRef.close(data);
+  confirm(){
+    return this.modalCtrl.dismiss(true, 'confirm');
   }
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');

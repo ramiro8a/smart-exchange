@@ -18,6 +18,9 @@
 .datos-stepper mat-form-field{
     width: 100%;
 }
+.botones-operacion {
+    padding: 5px 0px;
+}
 ::ng-deep .mat-step-header[aria-selected="true"]{
     background: rgba(45, 71, 175, 0.1);
     //background: rgba(71, 190, 17, 0.1);

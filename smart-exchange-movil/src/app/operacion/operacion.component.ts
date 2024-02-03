@@ -242,7 +242,10 @@ export class OperacionComponent implements OnInit{
       modal.present();
       const { data, role } = await modal.onWillDismiss();
       if (role === 'confirm') {
-        console.log(`Hello, ${data}!`)
+        this.recuperaCuentasRegistradas()
+        console.log(`HAY QUE RECUPERAR LOS DATOS`)
+      }else{
+        console.log(`HA SIDO CONCELADO`)
       }
 /*         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = 'operacion-dialog'
