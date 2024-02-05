@@ -18,7 +18,6 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.warn(request)
     if (ROUTES_WITHOUT_AUTH.some(route => request.url.includes(route))) {
       return next.handle(request);
     }
@@ -28,8 +27,16 @@ export class AuthInterceptor implements HttpInterceptor {
         if (!expirado) {
           return from(this.tokenService.getToken()).pipe(
             switchMap(token => {
-              console.log('AQUI EL TOKEN '+token)
-              request = request.clone({ setHeaders: { Authorization: `Bearer ${token}` }});
+              request = request.clone({ 
+                setHeaders: { 
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Headers': 'Content-Type',
+                  'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,PATCH',
+                  'ngrok-skip-browser-warning': 'valor',
+                  'Authorization': `Bearer ${token}` 
+                }});
               return next.handle(request);
             })
           );

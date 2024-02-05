@@ -85,15 +85,6 @@ export class OperacionComponent implements OnInit{
       isEditable = true;
     @Input() cambio!: Cambio;
 
-    ///BORRAR
-    firstFormGroup = this.formBuilder.group({
-        firstCtrl: ['', Validators.required],
-      });
-      secondFormGroup = this.formBuilder.group({
-        secondCtrl: ['', Validators.required],
-      });
-      isLinear = false;
-    ///BORRAR
       constructor(
         private dialog: MatDialog,
         private dialogRef: MatDialogRef<CuentasBancariasComponent>,
@@ -166,8 +157,9 @@ export class OperacionComponent implements OnInit{
             this.cuentasDestino = response.cuentasDestino
             this.estaCargando = false
           },
-          error: (error:any) => {
+          error: (error:Error) => {
             this.estaCargando = false
+            this.utils.showMessage('Error', error.message);
           }
         });
     }
@@ -179,9 +171,9 @@ export class OperacionComponent implements OnInit{
             this.estaCargando = false
             this.datosCompartidos.actualizarNotificaciones(response as Notificacion[]);
             },
-            error: (error:any) => {
+            error: (error:Error) => {
             this.estaCargando = false
-            //this.notif.notify('error',error);
+            this.utils.showMessage('Error', error.message);
             }
         });
     }
@@ -273,8 +265,8 @@ export class OperacionComponent implements OnInit{
                 this.cuentaTransferencia = response
                 this.stepper.next()
                 },
-                error: (error:any) => {
-                this.utils.showMessage('Error', error);
+                error: (error:Error) => {
+                this.utils.showMessage('Error', error.message);
                 this.estaCargando = false
                 }
             });
@@ -316,8 +308,8 @@ export class OperacionComponent implements OnInit{
                     this.operacionId = response;
                     this.stepper.next();
                   },
-                  error: (error: any) => {
-                    this.utils.showMessage('Error', error);
+                  error: (error: Error) => {
+                    this.utils.showMessage('Error', error.message);
                     this.estaCargando = false;
                   }
                 });

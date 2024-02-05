@@ -2,8 +2,8 @@
 #  port: 443
 #  ssl:
 #    key-store-type: PKCS12
-#    key-store: classpath:keystore.p12
-#    key-store-password: h4ckm3
+#    key-store: classpath:certificado_smartExchange.p12
+#    key-store-password: hackme
 #    key-alias: exchange
 server:
   port: 8050

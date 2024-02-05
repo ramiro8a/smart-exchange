@@ -71,8 +71,8 @@ if(!this.esNuevo){
       next: (response:any) => {
         this.bancos = response
       },
-      error: (error:any) => {
-        this.utils.showMessage('Error', error);
+      error: (error:Error) => {
+        this.utils.showMessage('Error', error.message);
       }
     });
   }
@@ -88,8 +88,8 @@ if(!this.esNuevo){
             await loading.dismiss();
             this.confirm();
           },
-          error: async(error:any) => {
-            this.utils.showMessage('Error',error);
+          error: async(error:Error) => {
+            this.utils.showMessage('Error',error.message);
             await loading.dismiss();
           }
         });
@@ -100,8 +100,8 @@ if(!this.esNuevo){
             await loading.dismiss();
             this.confirm();
           },
-          error: async(error:any) => {
-            this.utils.showMessage('Error',error);
+          error: async(error:Error) => {
+            this.utils.showMessage('Error',error.message);
             await loading.dismiss();
           }
         });
