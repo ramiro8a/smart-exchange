@@ -128,8 +128,9 @@ export class ClientePage implements OnInit {
         this.estaCargando = false
         this.operacionForm.controls['envio'].setValue(10.00);
       },
-      error: (error:any) => {
+      error: (error:Error) => {
         this.estaCargando = false
+        this.utils.showMessage('Error',error.message);
       }
     });
   }

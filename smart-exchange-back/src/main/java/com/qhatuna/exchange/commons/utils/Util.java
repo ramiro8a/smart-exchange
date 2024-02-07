@@ -126,11 +126,14 @@ public class Util {
             }
         }
         String[] partes = base64.split(",");
+        if(partes.length !=2){
+            throw new ProviderException(ErrorMsj.FORMATO_IMG.getMsj(),ErrorMsj.FORMATO_IMG.getCod());
+        }
         String imageString = partes[1];
         String extension = switch (partes[0]) {
             case "data:image/jpeg;base64" -> "jpeg";
             case "data:image/png;base64" -> "png";
-            default -> "jpg";
+            default -> throw new ProviderException(ErrorMsj.FORMATO_IMG.getMsj(),ErrorMsj.FORMATO_IMG.getCod());
         };
         byte[] imagenBytes = Base64.getDecoder().decode(imageString);
 

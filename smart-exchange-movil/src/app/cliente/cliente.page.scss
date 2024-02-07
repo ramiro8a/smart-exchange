@@ -1,6 +1,6 @@
 .page{
     //--background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
-    --background: #2d47af;
+    --background: var(--ion-color-secondary);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -18,7 +18,7 @@
     position: fixed;
     bottom: 0;
     box-sizing: border-box;
-  }
+}
 
   /////////////////TIPO DE CAMBIO
 .tipo-cambio{

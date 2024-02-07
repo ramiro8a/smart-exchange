@@ -1,8 +1,10 @@
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-button color="medium" (click)="cancel()">Cancelar</ion-button>
+    <ion-button (click)="cancel()" color="medium">
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-button>
   </ion-buttons>
-  <div><small>ADMINISTRADOR DE CUENTAS BANCARIAS</small></div>
+  <div class="titulo"><small>ADMINISTRADOR DE CUENTAS BANCARIAS</small></div>
 </ion-toolbar>
 <ion-content>
   <div class="contenido">

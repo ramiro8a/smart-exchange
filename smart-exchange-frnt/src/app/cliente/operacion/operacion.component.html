@@ -61,7 +61,7 @@
                 <!-- CUENTAS -->
                 <mat-step [stepControl]="cuentasFormGroup" [editable]="isEditable" [state]="pasoIds.cuentas" >
                   <form [formGroup]="cuentasFormGroup">
-                    <ng-template matStepLabel>Origen cuenta y destino</ng-template>
+                    <ng-template matStepLabel>Origen y destino de cuentas</ng-template>
                     <div>
                         <mat-card-subtitle>¿De dónde nos envías tu dinero {{descripcionOrigenMoneda()}}?
                             <button  (click)="agregaCuentasBancarias()" class="agrega-cuenta" type="button" mat-mini-fab color="primary" matTooltip="Agregás cuentas bancarias">

@@ -43,7 +43,17 @@ export class UtilsService {
         icon: 'information-circle',
         position: 'top',
         message: message,
-        duration: Const.TOAST_TIME
+        duration: Const.TOAST_TIME,
+        buttons: [
+          {
+            side: 'end',
+            icon: 'close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Close clicked');
+            }
+          }
+        ]
       });
       toast.present();
     }

@@ -37,7 +37,8 @@ public enum ErrorMsj {
     CLIENTE_NO_VALIDADO("ADV-0020", "Sus datos personales aún no han sido validados"),
     CORREO_NO_EXISTE("ADV-0021", "El correo no existe"),
     EMPRESA_NOEXISTE("ADV-0022", "La empresa no existe"),
-    DIA_NOEXISTE("ADV-0023", "El dia no existe"),;
+    DIA_NOEXISTE("ADV-0023", "El dia no existe"),
+    FORMATO_IMG("ADV-0024", "El formato de la imagen debe ser jpg o png"),;
     final String cod;
     final String msj;
     final String msjTec;

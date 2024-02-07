@@ -1,3 +1,6 @@
+.titulo-principal {
+    text-align: center;
+}
 .descripcion-cambio{
     border-radius: 0.4em;
     font-size: 0.6em;
@@ -57,4 +60,17 @@
 // }
 tr:nth-child(even) {
     background: rgba(45, 71, 175, 0.1);
+}
+
+////CARGA COMPROBANTE
+.area-comprobante span{
+    font-style: italic;
+    text-align: justify;
+    padding: 5px 0px;
+    font-size: 0.7em;
+}
+
+.carga-comprobante ion-button{
+    width: 100%;
+    margin-top: 0.3em;
 }

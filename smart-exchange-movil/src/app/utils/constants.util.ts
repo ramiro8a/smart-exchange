@@ -1,4 +1,4 @@
-export const TOAST_TIME = 5000
+export const TOAST_TIME = 6000
 
 export const SOLES_ISO = 604
 export const USD_ISO = 840

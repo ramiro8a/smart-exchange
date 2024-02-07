@@ -8,16 +8,16 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'mis-operaciones',
+        loadChildren: () => import('../mis-operaciones/mis-operaciones.module').then(m => m.MisOperacionesPageModule)
+      },
+      {
         path: 'cliente',
         loadChildren: () => import('../cliente/cliente.module').then(m => m.ClientePageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
-      },
-      {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+        path: 'lista-cuentas',
+        loadChildren: () => import('../lista-cuentas-bancarias/lista-cuentas-bancarias.module').then(m => m.ListaCuentasBancariasPageModule)
       },
       {
         path: '',

@@ -69,8 +69,20 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       }),
       catchError(error => {
-        console.log(error)
-        return throwError(() => new Error('Error en el interceptor'));
+        let errorMensaje = '';
+        if (error.error instanceof ErrorEvent) {
+          console.log('INTCTR1')
+          errorMensaje = error.error.message;
+        } else {
+          console.log('INTCTR2')
+          console.error(`${error.error?.codigo}: ${error.error?.mensaje}`);
+          errorMensaje = error.error?.mensaje;
+        }
+        if (error.status == 403 || error.status == 401) {
+          console.log('INTCTR3')
+          errorMensaje = 'Acceso restringido';
+        }
+        return throwError(() => new Error(errorMensaje));
       })
     );
   }

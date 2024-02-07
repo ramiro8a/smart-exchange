@@ -1,8 +1,10 @@
 <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button (click)="cancel()" color="medium">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <div>Nueva operación <small class="descripcion-cambio accent-background"> {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></div>
+    <div class="titulo-principal">Nueva operación <small class="descripcion-cambio accent-background"> {{cambio.monto}} {{recuperaNombre(cambio.origen.moneda)}} a {{cambio.cambiado}} {{recuperaNombre(cambio.destino.moneda)}}</small></div>
   
   <!--   <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
@@ -13,7 +15,7 @@
       <!-- CUENTAS -->
       <mat-step [stepControl]="cuentasFormGroup" [editable]="isEditable" [state]="pasoIds.cuentas" >
         <form [formGroup]="cuentasFormGroup">
-          <ng-template matStepLabel>Origen cuenta y destino</ng-template>
+          <ng-template matStepLabel>Origen y destino de cuentas</ng-template>
           <div class="datos-stepper">
               <div class="titulo-banco">¿De dónde nos envías tu dinero {{descripcionOrigenMoneda()}}?
                   <button  (click)="agregaCuentasBancarias()" class="agrega-cuenta" type="button" mat-mini-fab color="primary" matTooltip="Agregás cuentas bancarias" class="titulo-banco-btn">
@@ -122,21 +124,21 @@
             <br>
             <form [formGroup]="finalizaForm" autocomplete="off">
               <ng-template matStepLabel>Finalizando</ng-template>
-              <div class="area-notificaciones">
+              <div class="area-comprobante">
                   <mat-form-field appearance="outline">
                       <mat-label>Código transferencia</mat-label>
                       <input matInput type="text" formControlName="codigoTransferencia">
                   </mat-form-field><br>
                   <span>Suba una foto del comprobante, puede <i>TOMAR UNA FOTO</i> o <i>SUBIR UNA IMAGEN</i> existente</span><br>
                   <div class="carga-comprobante">
-                      <button (click)="abrirCamara()" mat-fab extended [color]="imagen.captura?'primary':'warn'" type="button">
-                          <mat-icon>photo_camera</mat-icon>
-                          Tomar foto
-                      </button>&nbsp;
-                      <button (click)="cargaFoto()" mat-fab extended [color]="imagen.carga?'primary':'warn'" type="button">
-                          <mat-icon>image</mat-icon>
-                          Subir una imagen
-                      </button>
+                        <ion-button (click)="abrirCamara()" type="button" expand="Block" shape="round" [color]="this.imagen.captura?'primary':'danger'">
+                            <ion-icon name="camera"></ion-icon>
+                            Tomar foto
+                        </ion-button>
+                        <ion-button (click)="cargaFoto()" type="button" expand="Block" shape="round" [color]="this.imagen.carga?'primary':'danger'">
+                            <ion-icon name="image"></ion-icon>
+                            Subir una imagen
+                        </ion-button>
                   </div>
                   <br>
                   <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>

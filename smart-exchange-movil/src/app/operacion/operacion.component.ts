@@ -147,19 +147,23 @@ export class OperacionComponent implements OnInit{
     });
     }
 
-    recuperaCuentasRegistradas():void{
+    async recuperaCuentasRegistradas(){
         this.estaCargando = true
+        let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+        await loading.present();
         this.restBancos.recuperaCuentasRegistradas(this.cambio.origen.moneda, this.cambio.destino.moneda).subscribe({
-          next: (response:any) => {
+          next: async(response:any) => {
             this.bancosOrigen = response.bancosOrigen
             this.bancosDestino = response.bancosDestino
             this.cuentasOrigen = response.cuentasOrigen
             this.cuentasDestino = response.cuentasDestino
             this.estaCargando = false
+            await loading.dismiss();
           },
-          error: (error:Error) => {
+          error: async(error:Error) => {
             this.estaCargando = false
             this.utils.showMessage('Error', error.message);
+            await loading.dismiss();
           }
         });
     }
@@ -182,7 +186,7 @@ export class OperacionComponent implements OnInit{
       }
     
       confirm() {
-        return this.modalCtrl.dismiss('RAMIRO', 'confirm');
+        return this.modalCtrl.dismiss('ok', 'confirm');
       }
       descripcionOrigenMoneda():string{
         return this.cambio.origen.moneda===Const.USD_ISO?'en dólares':'en soles';
@@ -252,22 +256,26 @@ export class OperacionComponent implements OnInit{
         })  */
     }
 
-    recuperaCuentaLCExchange(stepper:any):void{
+    async recuperaCuentaLCExchange(stepper:any){
         this.stepper = stepper
         if(!this.cuentaTransferencia){
             if(this.cuentasFormGroup.valid){
             this.estaCargando = true
+            let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+            await loading.present();
             this.restBancos.recuperaDestinoTransferencia(
                 this.cambio.origen.bancoId,
                 this.cambio.origen.moneda
-            ).subscribe({next: (response:any) => {
+            ).subscribe({next: async(response:any) => {
                 this.estaCargando = false
+                await loading.dismiss();
                 this.cuentaTransferencia = response
                 this.stepper.next()
                 },
-                error: (error:Error) => {
+                error: async(error:Error) => {
                 this.utils.showMessage('Error', error.message);
                 this.estaCargando = false
+                await loading.dismiss();
                 }
             });
             }else{
@@ -293,7 +301,9 @@ export class OperacionComponent implements OnInit{
             },
             {
               text: 'Confirmar',
-              handler: () => {
+              handler: async() => {
+                let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+                await loading.present();
                 this.estaCargando = true;
                 let datos = {
                   monto: this.cambio.monto,
@@ -303,12 +313,14 @@ export class OperacionComponent implements OnInit{
                   tipoCambioId: this.cambio.tipoCambioId
                 };
                 this.restOperacion.creaOperacion(datos).subscribe({
-                  next: (response: number) => {
+                  next: async(response: number) => {
+                    await loading.dismiss();
                     this.estaCargando = false;
                     this.operacionId = response;
                     this.stepper.next();
                   },
-                  error: (error: Error) => {
+                  error: async(error: Error) => {
+                    await loading.dismiss();
                     this.utils.showMessage('Error', error.message);
                     this.estaCargando = false;
                   }
@@ -328,8 +340,30 @@ export class OperacionComponent implements OnInit{
           resultType: CameraResultType.Base64,
           source: CameraSource.Camera
         });
-        var imageUrl = image.webPath;
+        if(image.base64String){
+          this.asignaComprobante(image.base64String, image.format)
+          this.imagen = {
+            captura: true,
+            carga: false
+          }
+        }else{
+          this.utils.showMessage('Error', 'No hemos podido recuperar los datos de la imagen');
+        }
+        //var imageUrl = image.webPath;
         //imageElement.src = imageUrl;
+    }
+
+    asignaComprobante(base64: string, formato: string):void{
+      if(formato === "jpeg" || formato === "png"){
+        let formt:string = "data:image/jpeg;base64";
+        if(formato === "png"){
+          formt = "data:image/png;base64"
+        }
+        this.finalizaForm.controls['comprobante'].setValue(formt+','+base64);
+      }else{
+        this.utils.showMessage('Error', 'formatos permitidos solo jpg y png');
+      }
+      
     }
   
     async cargaFoto(){
@@ -339,27 +373,45 @@ export class OperacionComponent implements OnInit{
         resultType: CameraResultType.Base64,
         source: CameraSource.Photos
       });
-      var imageUrl = image.webPath;
+      console.error(image)
+      if(image.base64String){
+        console.warn(image)
+        this.asignaComprobante(image.base64String, image.format)
+        this.imagen = {
+          captura: false,
+          carga: true
+        }
+      }else{
+        this.utils.showMessage('Error', 'No hemos podido recuperar los datos de la imagen');
+      }
+      //var imageUrl = image.webPath;
       //imageElement.src = imageUrl;
     }
 
 
-    guardarFinalizar():void{
+    async guardarFinalizar(){
       if(this.finalizaForm.valid){
-/*         let datos ={
+        let datos ={
           codigoTransferencia: this.finalizaForm.controls['codigoTransferencia'].value,
           comprobante: this.finalizaForm.controls['comprobante'].value,
         }
         this.estaCargando = true
-        this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({next: (response:any) => {
+        let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+        await loading.present();
+        this.restOperacion.actualizaOperacion(this.operacionId, 2 ,datos).subscribe({
+          next: async(response:any) => {
             this.estaCargando = false
-            
+            console.log(response)
+            this.utils.showMessage('Genial', `Se registró con éxito la operación, lo procesaremos lo más antes posible ticket: ${this.operacionId.toString().padStart(8, '0')}`);
+            await loading.dismiss();
+            this.confirm()
           },
-          error: (error:any) => {
-            this.utils.showMessage('Error', error);
+          error: async(error:Error) => {
+            this.utils.showMessage('Error', error.message);
             this.estaCargando = false
+            await loading.dismiss();
           }
-        }); */
+        });
       }else{
         this.utils.showMessage('Atención!', 'Complete el formulario por favor');
       }
