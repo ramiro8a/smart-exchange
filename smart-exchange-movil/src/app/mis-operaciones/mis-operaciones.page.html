@@ -1,11 +1,18 @@
 <ion-content [fullscreen]="true" class="page">
   <app-explore-container></app-explore-container>
   <div class="card">
-<!--     <button (click)="agregaCuentasBancarias()" mat-fab extended color="primary" class="btn-agregar-cuentas">
-      <mat-icon>add</mat-icon>
-      Agregar cuentas
-    </button>
- -->
-
+    <div #scrolInfinito class="scrol-infinito" (scroll)="onScroll($event)">
+      <ion-card *ngFor="let item of dataSource; let index" [class]="buscarClasePorCodigo(item.estado)">
+        <ion-card-header>
+          <ion-card-title><small>Ticket: </small> <b><small>{{item.ticket}}</small></b>
+            <div class="estado">{{buscarNombreDeEstado(item.estado)}}</div>
+          </ion-card-title>
+          <ion-card-subtitle>{{item.fechaCreacion | date: 'dd/MM/yyyy HH:mm'}} .::. {{item.monto | number:'1.2-2'}} {{buscarAbrevDeMoneda(item.cuentaOrigen.moneda)}} a {{item.montoFinal | number:'1.2-2'}} {{buscarAbrevDeMoneda(item.cuentaDestino.moneda)}}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      <div class="spinner" *ngIf="estaCargando">
+        <ion-progress-bar type="indeterminate"></ion-progress-bar>
+      </div>
+    </div>
   </div>
 </ion-content>

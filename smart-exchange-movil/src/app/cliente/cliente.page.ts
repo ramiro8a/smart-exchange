@@ -10,13 +10,14 @@ import { ImporteValidator } from '../utils/validators.validator';
 import { UtilsService } from '../utils/utilitarios.util';
 import { ModalController } from '@ionic/angular';
 import { OperacionComponent } from '../operacion/operacion.component';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.page.html',
   styleUrls: ['./cliente.page.scss'],
 })
-export class ClientePage implements OnInit {
+export class ClientePage implements OnInit, ViewWillEnter {
   notificaciones:number = 0
   soles = {
     desc: 'Recibo Soles',
@@ -58,10 +59,14 @@ export class ClientePage implements OnInit {
   }
 
   ngOnInit() {
-    this.recuperaTC();
+    //
     this.operacionForm.get('envio')?.valueChanges.subscribe((valorEnvio) => {
       this.recalcula(valorEnvio)
     });
+  }
+
+  ionViewWillEnter() {
+    this.recuperaTC();
   }
 
   async iniciarOperacion(){

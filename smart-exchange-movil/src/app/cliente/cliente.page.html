@@ -2,13 +2,22 @@
   <app-explore-container></app-explore-container>
   <div class="card">
     <form [formGroup]="operacionForm" (ngSubmit)="iniciarOperacion()" autocomplete="off">
-      <div class="tipo-cambio" *ngIf="tipoCambio">
+      <div class="tipo-cambio" *ngIf="!estaCargando">
         <div class="titulo">El mejor tipo de cambio <br>
           <small>{{fechaActual}}</small>
         </div>
         <div class="compra-venta">
           <div class="compra"><small>S/ </small>{{tipoCambio?.compra}}<br><small>COMPRA</small></div>
           <div class="venta"><small>S/ </small>{{tipoCambio?.venta}}<br><small>VENTA</small></div>
+        </div>
+      </div>
+      <div class="tipo-cambio" *ngIf="estaCargando">
+        <div class="titulo">El mejor tipo de cambio <br>
+          <small>{{fechaActual}}</small>
+        </div>
+        <div class="compra-venta">
+          <div class="compra"><ion-skeleton-text class="cargando-text" [animated]="true"></ion-skeleton-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></div>
+          <div class="venta"><ion-skeleton-text class="cargando-text" [animated]="true"></ion-skeleton-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></div>
         </div>
       </div><br>
         <div class="envio-recibo">

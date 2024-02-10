@@ -15,7 +15,7 @@ export const ESTADOS_GENERICOS = [
 ]
 export const MONEDAS = [
     {codigo: USD_ISO, nombre: 'Dólares'},
-    {codigo: EURO_ISO, nombre: 'Euros'},
+    //{codigo: EURO_ISO, nombre: 'Euros'},
 ]
 export const TIPO_DOCUMENTOS = [
     {codigo: 1, nombre: 'DNI', abrev:'DNI'},
@@ -37,8 +37,9 @@ export const CUENTA_MONEDAS_CLIENTE = [
     {codigo: USD_ISO, nombre: 'Dólares'},
 ]
 export const TIPO_CAMBIOS = [
-    {codigo: 1, nombre: 'Oficial'},
-    {codigo: 2, nombre: 'Empresa'},
+    {codigo: 1, nombre: 'Sunat'},
+    {codigo: 2, nombre: 'Lc Exchange'},
+    {codigo: 3, nombre: 'Bancos'},
 ]
 export const ESTADOS_OPERACION = [
     {codigo: OP_ACTIVO, nombre: 'Activo', class:'op-est-activo'},

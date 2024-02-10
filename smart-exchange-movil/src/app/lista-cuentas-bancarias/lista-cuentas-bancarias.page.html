@@ -1,11 +1,76 @@
 <ion-content [fullscreen]="true" class="page">
   <app-explore-container></app-explore-container>
   <div class="card">
-<!--     <button (click)="agregaCuentasBancarias()" mat-fab extended color="primary" class="btn-agregar-cuentas">
-      <mat-icon>add</mat-icon>
-      Agregar cuentas
-    </button>
- -->
+    <div class="scrol-infinito">
+      <ng-container *ngIf="!estaCargando">
+        <ng-container *ngFor="let item of dataSource; let index">
+          <ion-card>
+            <ion-item-sliding>
+              <ion-item>
+                <ion-label>
+                  <ion-card-header>
+                    <ion-card-subtitle>
+                      <small>{{item.nombre}}</small>
+                    </ion-card-subtitle>
+                    <ion-card-title>
+                      <small>{{item.bancoNombre}}</small>
+                    </ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <table>
+                      <tr><th>Moneda</th><th>Nro cuenta</th><th>Tipo cuenta</th></tr>
+                      <tr><td>{{recuperaNombre(item.moneda)}}</td><td>{{item.numeroCuenta}}</td><td>{{buscarNombreDeTipoCuenta(item.tipoCuenta)}}</td></tr>
+                    </table>
+                    <div class="estado" [class]="item.activo?'activo-estado':'deshabilitado-estado'">{{item.activo?'Activo':'Inactivo'}}</div>
+                  </ion-card-content>
+                </ion-label>
+              </ion-item>
+              <ion-item-options side="start">
+                <ion-item-option>
+                  <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+                </ion-item-option>
+                <ion-item-option>
+                  <ion-icon slot="icon-only" name="people-outline"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
+              <ion-item-options side="end">
+                <ion-item-option (click)="cambioEstado(item)" [color]="item.activo?'medium':'primary'">
+                  <ion-icon slot="icon-only" name="remove-circle" *ngIf="item.activo"></ion-icon>
+                  <ion-icon slot="icon-only" name="checkmark-circle" *ngIf="!item.activo"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-card>
+        </ng-container>
+      </ng-container>
 
+      <ng-container *ngIf="estaCargando">
+        <ng-container *ngFor="let item of loaderCustom; let index">
+          <ion-card>
+            <ion-item-sliding>
+              <ion-item>
+                <ion-label>
+                  <ion-card-header>
+                    <ion-card-subtitle>
+                      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                    </ion-card-subtitle>
+                    <ion-card-title>
+                      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                    </ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <table>
+                      <tr><th><ion-skeleton-text [animated]="true"></ion-skeleton-text></th><th><ion-skeleton-text [animated]="true"></ion-skeleton-text></th><th><ion-skeleton-text [animated]="true"></ion-skeleton-text></th></tr>
+                      <tr><td><ion-skeleton-text [animated]="true"></ion-skeleton-text></td><td><ion-skeleton-text [animated]="true"></ion-skeleton-text></td><td><ion-skeleton-text [animated]="true"></ion-skeleton-text></td></tr>
+                    </table>
+                    <div><ion-skeleton-text [animated]="true"></ion-skeleton-text></div>
+                  </ion-card-content>
+                </ion-label>
+              </ion-item>
+            </ion-item-sliding>
+          </ion-card>
+        </ng-container>
+      </ng-container>
+    </div>
   </div>
 </ion-content>
