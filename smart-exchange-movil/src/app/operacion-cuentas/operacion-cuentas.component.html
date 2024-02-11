@@ -45,11 +45,50 @@
           </ion-row>
         </ion-grid>
       </ion-card-content>
-    </ion-card> <br>
+    </ion-card>
+
+    <ion-card class="cuentas detalle-transferencia">
+      <ion-card-header>
+        <!-- <ion-card-title>Card Title</ion-card-title> -->
+        <ion-card-subtitle>A LC Exchange:</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>Banco</ion-col>
+            <ion-col>{{operacion.cuentaTransferencia.bancoNombre}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Número de cuenta</ion-col>
+            <ion-col>
+              {{operacion.cuentaTransferencia.numeroCuenta}}
+              <ion-icon  (click)="copiar(operacion.cuentaTransferencia.numeroCuenta)" name="copy"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Tipo de cuenta</ion-col>
+            <ion-col>{{buscarNombreTipoCuenta(operacion.cuentaTransferencia.tipoCuenta)}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Moneda</ion-col>
+            <ion-col>{{buscarNombreDeMoneda(operacion.cuentaTransferencia.moneda)}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Nombre de cuenta</ion-col>
+            <ion-col>{{operacion.cuentaTransferencia.nombre}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Estado</ion-col>
+            <ion-col>{{buscarNombreDeEstadoCuenta(operacion.cuentaTransferencia.estado)}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
     <ion-card class="cuentas detalle-destino">
       <ion-card-header>
-        <ion-card-title>Le transferiremos a:</ion-card-title>
+        <ion-card-title>Recibe su dinero en:</ion-card-title>
         <!-- <ion-card-subtitle>Le transferiremos a:</ion-card-subtitle> -->
       </ion-card-header>
     
@@ -81,45 +120,6 @@
           <ion-row>
             <ion-col>Estado</ion-col>
             <ion-col>{{buscarNombreDeEstadoCuenta(operacion.cuentaDestino.estado)}}</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-    <br><br>
-    <ion-card class="cuentas detalle-transferencia">
-      <ion-card-header>
-        <!-- <ion-card-title>Card Title</ion-card-title> -->
-        <ion-card-subtitle>Debe transferir a cuenta de LC Exchange:</ion-card-subtitle>
-      </ion-card-header>
-    
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col>Banco</ion-col>
-            <ion-col>{{operacion.cuentaTransferencia.bancoNombre}}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Número de cuenta</ion-col>
-            <ion-col>
-              {{operacion.cuentaTransferencia.numeroCuenta}}
-              <ion-icon  (click)="copiar(operacion.cuentaTransferencia.numeroCuenta)" name="copy"></ion-icon>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Tipo de cuenta</ion-col>
-            <ion-col>{{buscarNombreTipoCuenta(operacion.cuentaTransferencia.tipoCuenta)}}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Moneda</ion-col>
-            <ion-col>{{buscarNombreDeMoneda(operacion.cuentaTransferencia.moneda)}}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Nombre de cuenta</ion-col>
-            <ion-col>{{operacion.cuentaTransferencia.nombre}}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Estado</ion-col>
-            <ion-col>{{buscarNombreDeEstadoCuenta(operacion.cuentaTransferencia.estado)}}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-card-content>
