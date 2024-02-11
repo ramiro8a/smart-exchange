@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import { OperacionResponse, OperacionService, PaginaOperacionResponse } from '../services/operacion.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
 import * as Const from './../utils/constants.util'
 import { UtilsService } from '../utils/utilitarios.util';
 import { SocketService } from '../services/socket.service';
 import { TokenService } from '../services/token.service';
+import { OperacionCuentasComponent } from '../operacion-cuentas/operacion-cuentas.component';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -18,6 +19,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
   loaderCustom=[1,2,3,4,5,6,7,8,9,10]
   criterioForm: FormGroup;
   estaCargando = false
+  estaCargando2 = false
   dataSource: OperacionResponse[] = [];
   filasInicial: number=7
   paginaInicial: number=0
@@ -41,6 +43,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     private socketService: SocketService,
     private tokenServ: TokenService,
     private utils: UtilsService,
+    private modalCtrl: ModalController
   ) { 
     this.criterioForm = this.formBuilder.group({
       inicio: ['', Validators.required],
@@ -58,11 +61,63 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
   ionViewWillEnter() {
     this.dataSource = []
     this.recuperaInicial();
+  }
 
+  recuperarComprobante(operacionId:number, tipo:number):void{
+/*     this.estaCargando = true
+    this.restOperacion.recuperaComprobante(operacionId, tipo).subscribe({
+      next: (response:any) => {
+        this.estaCargando = false
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          base64:response
+        } 
+        const dialogRef = this.dialog.open(ImagenComponent, dialogConfig)
+        dialogRef.disableClose = true;
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            ///this.recuperaCuentasBancarias()
+          }
+        })
+      },
+      error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+      }
+    }); */
+  }
+
+  cargarComprobante(id:number){
+/*     const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      operacionId : id
+    } 
+    const dialogRef = this.dialog.open(CargaComprobanteComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
+      }
+    }) */
+  }
+
+  async verCuentas(operacion: OperacionResponse){
+    const modal = await this.modalCtrl.create({
+      component: OperacionCuentasComponent,
+      componentProps:{
+        operacion: operacion
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      //this.recuperaCuentasBancarias();
+    }
   }
 
   async recuperaOperacionesPaginado(pagina:number, filas:number ){
     this.estaScroll = true
+    this.estaCargando2 = true
     const valoresFormulario = this.criterioForm.value;
 /*     let datos={
       inicio: new Date(valoresFormulario.inicio).toISOString().split('T')[0],
@@ -82,10 +137,12 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
         this.dataSource = [...this.dataSource, ...response.content];
         this.paginaActual = response
         this.estaScroll = false
+        this.estaCargando2 = false
 //        await loading.dismiss();
       },
       error: async (error:Error) => {
         this.estaScroll = false
+        this.estaCargando2 = false
         this.utils.showMessage('Error',error.message)
 //        await loading.dismiss();
       }
@@ -96,8 +153,9 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     //this.resetForm()
     this.estaCargando = true
     await this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
-    this.estaCargando = false
-    
+    //setTimeout(()=>{
+      this.estaCargando = false
+    //}, 2000)
   }
 
 

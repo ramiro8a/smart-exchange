@@ -7,6 +7,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { MisOperacionesPageRoutingModule } from './mis-operaciones-routing.module';
 import { MaterialModule } from '../material.modules';
 import { MisOperacionesPage } from './mis-operaciones.page';
+import { OperacionCuentasComponentModule } from '../operacion-cuentas/operacion-cuentas.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MisOperacionesPage } from './mis-operaciones.page';
     ExploreContainerComponentModule,
     MaterialModule,
     ReactiveFormsModule,
-    MisOperacionesPageRoutingModule
+    MisOperacionesPageRoutingModule,
+    OperacionCuentasComponentModule
   ],
   declarations: [MisOperacionesPage]
 })

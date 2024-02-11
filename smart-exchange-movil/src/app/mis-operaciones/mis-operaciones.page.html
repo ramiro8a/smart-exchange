@@ -17,10 +17,36 @@
               </ion-card-header>
               <ion-card-content>
                 <table>
-                  <tr><th>DE</th><th>A</th></tr>
+                  <tr>
+                    <th>DE</th>
+                    <th>A</th>
+                    <th *ngIf="item.codigoTransferencia">Transf.</th>
+                    <th *ngIf="item.codigoTransferenciaEmpresa">Transf. Emp.</th>
+                    <th>Cuentas</th></tr>
                   <tr>
                     <td>{{item.monto | number:'1.2-2'}} {{buscarAbrevDeMoneda(item.cuentaOrigen.moneda)}}</td>
                     <td>{{item.montoFinal | number:'1.2-2'}} {{buscarAbrevDeMoneda(item.cuentaDestino.moneda)}}</td>
+                    <td *ngIf="item.codigoTransferencia">
+                      {{item.codigoTransferencia}}
+<!--                       <div (click)="cargarComprobante(item.id)" *ngIf="item.estado==6" class="btn-personal">
+                          <mat-icon>launch</mat-icon>
+                      </div>
+                      <div (click)="recuperarComprobante(item.id, 1)" *ngIf="item.estado!=6" class="btn-personal">
+                          <mat-icon>attachment</mat-icon>
+                      </div> -->
+                    </td>
+                    <td *ngIf="item.codigoTransferenciaEmpresa">
+                        {{item.codigoTransferenciaEmpresa}}
+<!--                       <div (click)="recuperarComprobante(item.id, 2)" *ngIf="item.codigoTransferenciaEmpresa" class="btn-personal">
+                          <mat-icon>attachment</mat-icon>
+                      </div> -->
+                    </td>
+                    <td>
+                      <div (click)="verCuentas(item)" class="btn-personal">
+                        <ion-icon name="eye"></ion-icon>
+                        <!--mat-icon>visibility</mat-icon-->
+                      </div>
+                    </td>
                   </tr>
                 </table>
                 <div class="estado">{{buscarNombreDeEstado(item.estado)}}</div>
@@ -41,11 +67,12 @@
           </ion-item-options>
         </ion-item-sliding>
       </ion-card>
-      <div class="spinner" *ngIf="estaCargando">
+      <div class="spinner" *ngIf="estaCargando2 && !estaCargando">
         <ion-progress-bar type="indeterminate"></ion-progress-bar>
       </div>
     </div>
     </ng-container>
+    
     <ng-container *ngIf="estaCargando">
       <ng-container *ngFor="let item of loaderCustom; let index">
         <ion-card>

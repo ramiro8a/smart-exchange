@@ -26,6 +26,12 @@ export const TIPO_DOCUMENTOS = [
     {codigo: 4, nombre: 'Pasaporte', abrev:'P'},
 ]
 
+export const ESTADOS_GENERICOS = [
+    {codigo: 0, nombre: 'Activo'},
+    {codigo: 1, nombre: 'Eliminado'},
+    {codigo: 2, nombre: 'Deshabilitado'},
+]
+
 export const ESTADOS_OPERACION = [
     {codigo: OP_ACTIVO, nombre: 'Activo', class:'op-est-activo'},
     {codigo: 1, nombre: 'Eliminado', class:'op-est-eliminado'},
