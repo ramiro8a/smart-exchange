@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from './../utils/constants.util'
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ViewWillEnter } from '@ionic/angular';
 import { BancosService, CuentaBancariaResponse } from '../services/bancos.service';
 import { UtilsService } from '../utils/utilitarios.util';
+import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
 
 @Component({
   selector: 'app-lista-cuentas-bancarias',
@@ -24,7 +25,8 @@ export class ListaCuentasBancariasPage implements OnInit, ViewWillEnter {
   constructor(
     private utils: UtilsService,
     private loadingController: LoadingController,
-    private restBancos: BancosService
+    private restBancos: BancosService,
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -73,31 +75,41 @@ export class ListaCuentasBancariasPage implements OnInit, ViewWillEnter {
     return Const.buscarNombrePorCodigo(codigo, Const.TIPO_CUENTAS);
   }
 
-  editar(cuenta: CuentaBancariaResponse){
-/*     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = cuenta
-    const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.recuperaCuentasBancarias()
-      }
-    }) */
-  }
-
   recuperaNombre(codig:number):string{
     const item = this.monedas.find(elemento => elemento.codigo == codig);
     return item ? item.nombre : '';
   }
 
-  agregaCuentasBancarias(){
-/*     const dialogRef = this.dialog.open(CuentasBancariasComponent)
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.recuperaCuentasBancarias()
+  async agregaCuentasBancarias(){
+    const modal = await this.modalCtrl.create({
+      component: CuentasBancariasComponent,
+      componentProps:{
       }
-    }) */
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      this.recuperaCuentasBancarias();
+    }else{
+      console.log(`HA SIDO CONCELADO`)
+    }
+  }
+
+  async editar(cuenta: CuentaBancariaResponse){
+    const modal = await this.modalCtrl.create({
+      component: CuentasBancariasComponent,
+      componentProps:{
+        cuentaBancaria: cuenta,
+        esNuevo: false
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      this.recuperaCuentasBancarias();
+    }else{
+      console.log(`HA SIDO CONCELADO`)
+    }
   }
 
   onScroll(event: any) {

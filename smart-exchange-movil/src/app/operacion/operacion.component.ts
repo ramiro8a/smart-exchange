@@ -245,15 +245,6 @@ export class OperacionComponent implements OnInit{
       }else{
         console.log(`HA SIDO CONCELADO`)
       }
-/*         const dialogConfig = new MatDialogConfig();
-        dialogConfig.panelClass = 'operacion-dialog'
-        const dialogRef = this.dialog.open(CuentasBancariasComponent, dialogConfig)
-        dialogRef.disableClose = true;
-        dialogRef.afterClosed().subscribe(result => {
-            if(result){
-            this.recuperaCuentasRegistradas()
-            }
-        })  */
     }
 
     async recuperaCuentaLCExchange(stepper:any){

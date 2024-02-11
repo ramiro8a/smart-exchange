@@ -45,7 +45,7 @@
             <input matInput type="text" formControlName="nombre">
         </mat-form-field>
         <mat-slide-toggle formControlName="deAcuerdo" color="primary"><small>Declaro que ésta cuenta es mía y authorizo a LC Exchange a almacenar estos datos para mis transacciones</small></mat-slide-toggle>
-    <ion-button type="submit" expand="Block" shape="round">Registrar</ion-button>
+    <ion-button type="submit" expand="Block" shape="round">{{this.esNuevo?'Registrar':'Actualizar'}}</ion-button>
     <ion-button (click)="cancel()" type="button" expand="Block" shape="round" color="secondary">Cancelar</ion-button>
     <!-- <button mat-fab extended color="primary" [disabled]="!estaDeAcuerdo()">
         <mat-icon>check</mat-icon>

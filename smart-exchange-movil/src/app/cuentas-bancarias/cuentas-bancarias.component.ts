@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from './../utils/constants.util'
 import { UtilsService } from '../utils/utilitarios.util';
@@ -14,13 +14,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./cuentas-bancarias.component.scss']
 })
 export class CuentasBancariasComponent implements OnInit{
-  esNuevo: boolean = true
+  @Input() esNuevo: boolean = true
   cuentaBancariaForm: FormGroup;
   bancos: any[] = []
   tipoCuentas: any[] = Const.TIPO_CUENTAS
   monedas: any[] = Const.CUENTA_MONEDAS_CLIENTE
-  cuentaBancaria!: CuentaBancariaResponse
-
+  @Input() cuentaBancaria!: CuentaBancariaResponse
   constructor(
     private formBuilder: FormBuilder,
     private restBancos: BancosService,
@@ -30,13 +29,6 @@ export class CuentasBancariasComponent implements OnInit{
     private utils: UtilsService,
     private loadingController: LoadingController,
   ){
-/*     if(data){
-      this.cuentaBancaria = data
-      this.esNuevo = false
-      console.warn('es edicion')
-    }else{
-      console.warn('es NUEVO')
-    } */
     this.cuentaBancariaForm = this.formBuilder.group({
       tipoCuenta: ['', [Validators.required]],
       moneda: ['', [Validators.required]],
@@ -49,9 +41,7 @@ export class CuentasBancariasComponent implements OnInit{
 
   ngOnInit(): void {
     this.recupertaBancos();
-    
-/*  
-if(!this.esNuevo){
+    if(!this.esNuevo){
      this.cuentaBancariaForm.setValue({
         tipoCuenta: this.cuentaBancaria.tipoCuenta,
         moneda: this.cuentaBancaria.moneda,
@@ -62,7 +52,7 @@ if(!this.esNuevo){
       })
       this.cuentaBancariaForm.controls['moneda'].disable()
       this.cuentaBancariaForm.controls['banco'].disable()
-    } */
+    }
   }
 
 
@@ -84,7 +74,7 @@ if(!this.esNuevo){
       if(this.cuentaBancaria){
         this.restBancos.editaCuentaBancaria(this.cuentaBancaria.id,this.cuentaBancariaForm.value).subscribe({
           next: async(response:any) => {
-            this.utils.showMessage('Genial!', 'Datos registrados exitosamente');
+            this.utils.showMessage('Genial!', 'Datos actualizados exitosamente');
             await loading.dismiss();
             this.confirm();
           },

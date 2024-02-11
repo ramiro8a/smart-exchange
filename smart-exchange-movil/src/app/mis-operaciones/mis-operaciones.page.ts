@@ -15,8 +15,9 @@ import { TokenService } from '../services/token.service';
 })
 export class MisOperacionesPage implements OnInit, ViewWillEnter {
   @ViewChild('scrolInfinito') scrolInfinito!: ElementRef;
+  loaderCustom=[1,2,3,4,5,6,7,8,9,10]
   criterioForm: FormGroup;
-  estaCargando = true
+  estaCargando = false
   dataSource: OperacionResponse[] = [];
   filasInicial: number=7
   paginaInicial: number=0
@@ -37,7 +38,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     private formBuilder: FormBuilder,
     private restOperacion: OperacionService,
     private loadingController: LoadingController,
-    //private socketService: SocketService,
+    private socketService: SocketService,
     private tokenServ: TokenService,
     private utils: UtilsService,
   ) { 
@@ -49,9 +50,9 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
   }
 
   ngOnInit() {
-    /* this.tokenServ.recuperaUsuarioId().then(userId => {
+    this.tokenServ.recuperaUsuarioId().then(userId => {
       this.socketService.joinRoomCambioEstado(userId);
-    }); */
+    });
   }
 
   ionViewWillEnter() {
@@ -61,7 +62,6 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
   }
 
   async recuperaOperacionesPaginado(pagina:number, filas:number ){
-    this.estaCargando=true
     this.estaScroll = true
     const valoresFormulario = this.criterioForm.value;
 /*     let datos={
@@ -81,12 +81,10 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
         //this.dataSource = response.content
         this.dataSource = [...this.dataSource, ...response.content];
         this.paginaActual = response
-        this.estaCargando=false
         this.estaScroll = false
 //        await loading.dismiss();
       },
       error: async (error:Error) => {
-        this.estaCargando=false
         this.estaScroll = false
         this.utils.showMessage('Error',error.message)
 //        await loading.dismiss();
@@ -94,9 +92,12 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     });
   }
 
-  recuperaInicial(){
+  async recuperaInicial(){
     //this.resetForm()
-    this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
+    this.estaCargando = true
+    await this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
+    this.estaCargando = false
+    
   }
 
 

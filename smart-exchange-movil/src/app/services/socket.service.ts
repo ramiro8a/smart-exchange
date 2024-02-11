@@ -21,13 +21,13 @@ export class SocketService {
     this.initConnenctionSocket();
   }
 
-  initConnenctionSocket() {
+  async initConnenctionSocket(): Promise<void> {
     const url = environment.baseUrl+'/ws';
     const socket = new SockJS(url);
     this.stompClient = Stomp.over(socket)
   }
 
-  joinRoom(roomId: string) {
+  async oinRoom(roomId: string) : Promise<void> {
     this.stompClient.connect({}, ()=>{
       this.stompClient.subscribe(`/topic/valida-cliente/${roomId}`, (messages: any) => {
         const messageContent = JSON.parse(messages.body)as Notificacion;
@@ -37,7 +37,7 @@ export class SocketService {
     })
   }
 
-  joinRoomCambioEstado(roomId: number) {
+  async joinRoomCambioEstado(roomId: number): Promise<void> {
     this.stompClient.connect({}, ()=>{
       this.stompClient.subscribe(`/topic/cambio-estado-operacion/${roomId}`, (messages: any) => {
         const messageContent = JSON.parse(messages.body)as OperacionResponse;
@@ -46,7 +46,7 @@ export class SocketService {
     })
   }
 
-  getOperationStatusSubject() {
+  getOperationStatusSubject(){
     return this.messageSubjectOperacion.asObservable();
   }
 

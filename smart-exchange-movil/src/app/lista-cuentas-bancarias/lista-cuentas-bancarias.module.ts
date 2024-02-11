@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { ListaCuentasBancariasPageRoutingModule } from './lista-cuentas-bancarias-routing.module';
-
+import { MaterialModule } from '../material.modules';
 import { ListaCuentasBancariasPage } from './lista-cuentas-bancarias.page';
 
 @NgModule({
@@ -13,6 +13,7 @@ import { ListaCuentasBancariasPage } from './lista-cuentas-bancarias.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    MaterialModule,
     ExploreContainerComponentModule,
     ListaCuentasBancariasPageRoutingModule
   ],

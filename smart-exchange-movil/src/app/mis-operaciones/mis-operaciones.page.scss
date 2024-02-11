@@ -37,42 +37,41 @@
 
 .estado {
     color: #ffffff !important;
+    position: absolute;
     text-transform: uppercase;
-    text-align: center;
-    border-radius: 9px;
-    padding: 0px 5px;
-    float: right;
     font-size: 0.6em;
-    box-sizing: border-box;
-    margin-top: 0.4em;
+    bottom: 0.3em;
+    right: 1em;
+    padding: 1px 4px;
+    border-radius: 7px;
 }
 
 .op-est-preliminar{
-    border: 1px #f03535 solid;
+    border-left: #f03535 solid 0.5em;
     .estado {
         background: #f03535 !important;
     }
 }
 .op-est-activo{
-    border: 1px #2d47af solid;
+    border-left: #2d47af solid 0.5em;
     .estado {
         background: #2d47af !important;
     }
 }
 .op-est-en-curso{
-    border: 1px #47be11 solid;
+    border-left: #47be11 solid 0.5em;
     .estado {
         background: #47be11 !important;
     }
 }
 .op-est-anulado{
-    border: 1px #686967 solid;
+    border-left: #686967 solid 0.5em;
     .estado {
         background: #686967 !important;
     }
 }
 .op-est-finalizado{
-    border: 1px #1f8b4c solid;
+    border-left: #1f8b4c solid 0.5em;
     .estado {
         background: #1f8b4c !important;
     }
