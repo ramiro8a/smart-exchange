@@ -1,12 +1,36 @@
-<ion-content>
-  <div class="contenido">
-    <div class="imagen">
-      <img src="" alt="">
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button (click)="cancel()" color="medium">
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content class="ion-padding">
+  <form [formGroup]="finalizaForm" autocomplete="off">
+    <ng-template matStepLabel>Finalizando</ng-template>
+    <div class="area-comprobante">
+        <mat-form-field appearance="outline">
+            <mat-label>Código transferencia</mat-label>
+            <input matInput type="text" formControlName="codigoTransferencia">
+        </mat-form-field><br>
+        <span>Suba una foto del comprobante, puede <i>TOMAR UNA FOTO</i> o <i>SUBIR UNA IMAGEN</i> existente</span><br>
+        <div class="carga-comprobante">
+              <ion-button (click)="abrirCamara()" type="button" expand="Block" shape="round" [color]="this.imagen.captura?'primary':'danger'">
+                  <ion-icon name="camera"></ion-icon>
+                  Tomar foto
+              </ion-button>
+              <ion-button (click)="cargaFoto()" type="button" expand="Block" shape="round" [color]="this.imagen.carga?'primary':'danger'">
+                  <ion-icon name="image"></ion-icon>
+                  Subir una imagen
+              </ion-button>
+        </div>
+        <br>
+        <span>Atenderemos su operación lo más antes posible, tambien puede hacer seguimiento en la sección de <i>Operaciones</i></span>
     </div>
-    <div class="botones">
-      <ion-button type="button" expand="Block" shape="round">Tomar una foto</ion-button>
-      <ion-button type="button" expand="Block" shape="round">Cargar foto existente</ion-button>
-      <ion-button type="button" expand="Block" shape="round">Tomar/Cargar otro</ion-button>
-    </div>
-  </div>
+      <div class="botones-operacion">
+            <button mat-fab extended color="primary" (click)="guardarFinalizar()" [disabled]="estaCargando || !finalizaForm.valid">
+                Guardar y finalizar
+            </button>
+      </div>
+  </form>
 </ion-content>

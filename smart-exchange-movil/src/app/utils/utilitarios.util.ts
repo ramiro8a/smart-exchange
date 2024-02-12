@@ -40,7 +40,7 @@ export class UtilsService {
     async showMessage(title: string ,message: string){
       const toast = await this.toastController.create({
         header: title.toUpperCase(),
-        icon: 'information-circle',
+        icon: 'globe',
         position: 'top',
         message: message,
         duration: Const.TOAST_TIME,

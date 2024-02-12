@@ -1,4 +1,18 @@
-.imagen{
-    max-width: 70vh;
-    max-width: 95vh;
+////CARGA COMPROBANTE
+.area-comprobante span{
+    font-style: italic;
+    text-align: justify;
+    padding: 5px 0px;
+    font-size: 0.7em;
+}
+mat-form-field {
+    width: 100%;
+}
+.carga-comprobante ion-button{
+    width: 100%;
+    margin-top: 0.3em;
+}
+
+ion-buttons ion-icon{
+    font-size: 3em;
 }

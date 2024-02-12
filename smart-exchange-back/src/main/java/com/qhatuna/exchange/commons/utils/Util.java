@@ -142,7 +142,7 @@ public class Util {
             File archivo = new File(path + nombre + "." + extension);
             ImageIO.write(bufferedImage, extension, archivo);
             return archivo.getAbsolutePath();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ProviderException(ErrorMsj.GUARDAR_COMPROBANTE.getMsj(),ErrorMsj.GUARDAR_COMPROBANTE.getCod());
         }
     }

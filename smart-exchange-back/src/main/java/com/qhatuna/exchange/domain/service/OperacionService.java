@@ -239,7 +239,9 @@ public class OperacionService {
         Operacion operacion = recuperaOperacionPorId(id);
         String path = Util.recuperaPathComprobantes();
         String direccionComprobante = Util.guardaComprobante(request.comprobante(), path, operacion.getTicket());
-        operacion.setEstado(0);
+        if(operacion.getCodigoTransferencia()==null){
+            operacion.setEstado(0);
+        }
         operacion.setCodigoTransferencia(request.codigoTransferencia());
         operacion.setComprobante(direccionComprobante);
         operacion.setUsuarioActualizacion(usuario.getId());

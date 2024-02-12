@@ -10,6 +10,7 @@ import { TokenService } from '../services/token.service';
 import { OperacionCuentasComponent } from '../operacion-cuentas/operacion-cuentas.component';
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -103,7 +104,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
 
   async cargarComprobante(id:number){
     const modal = await this.modalCtrl.create({
-      component: ImageViewerComponent,
+      component: CargaComprobanteComponent,
       componentProps:{
         operacionId: id
       }
@@ -194,8 +195,6 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
           console.log(offset + visibleHeight)
           console.log(height)
           if(!this.paginaActual.last){
-            console.log('RECUPERANDO: pagina'+(this.paginaActual.number+1)+' y filas: '+(this.paginaActual.numberOfElements));
-            console.warn(this.paginaActual);
             this.recuperaOperacionesPaginado(this.paginaActual.number+1, this.paginaActual.numberOfElements)
           }
       }

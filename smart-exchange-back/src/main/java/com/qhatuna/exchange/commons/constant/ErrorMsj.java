@@ -29,7 +29,7 @@ public enum ErrorMsj {
     OPERACION_NOEXISTE("ADV-0012", "La operacion no existe"),
     INICIO_ANTES_FIN("ADV-0013", "La fecha inicio debe ser antes que la fecha fin"),
     CONVERSION_NO_PERMITIDO("ADV-0014", "Conversión no permitida"),
-    GUARDAR_COMPROBANTE("ADV-0015", "Error al guardar el comprobante"),
+    GUARDAR_COMPROBANTE("ADV-0015", "Error al guardar el comprobante, verifique formatos"),
     PATH_COMPROBANTE("ADV-0016", "Error al crear la carpeta para guardar el comprobante"),
     API_PERU_ERROR("ADV-0017", "Error en el servicio de verificacion"),
     API_PERU_DATA_ERROR("ADV-0018", "No existe datos con los criterios de búsqueda enviados"),

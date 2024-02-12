@@ -4,7 +4,7 @@
   </div>
   <div class="info">
     <small>Bienvenido</small><br>
-    <strong>correogmail.com</strong>
+    <strong>{{correo}}</strong>
   </div>
     <ion-badge class="badage" color="danger">11</ion-badge>
   <ion-fab slot="fixed" vertical="top" horizontal="end">
@@ -12,13 +12,10 @@
       <ion-icon name="grid"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="bottom">
-      <ion-fab-button>
-        <ion-icon name="document"></ion-icon>
+      <ion-fab-button (click)="configuraciones()" color="primary">
+        <ion-icon name="settings"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="color-palette"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button href="/login">
+      <ion-fab-button href="/login" color="danger">
         <ion-icon name="log-out"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

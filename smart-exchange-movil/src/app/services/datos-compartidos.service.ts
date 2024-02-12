@@ -15,9 +15,17 @@ export class DatosCompartidosService {
   private notificacionesSubject = new BehaviorSubject<Notificacion[]>([]);
   public notificaciones$ = this.notificacionesSubject.asObservable();
 
+  private correoSubject = new BehaviorSubject<string>('');
+  public correo$ = this.correoSubject.asObservable();
+
+  agregarCorreo(correo:string){
+    this.correoSubject.next(correo);
+  }
+
   actualizarNotificaciones(nuevasNotificaciones: Notificacion[]) {
     this.notificacionesSubject.next(nuevasNotificaciones);
   }
+
   agregarNotificacion(nuevaNotificacion: Notificacion) {
     const notificacionesActuales = this.notificacionesSubject.value;
     const notificacionesActualizadas = [...notificacionesActuales, nuevaNotificacion];

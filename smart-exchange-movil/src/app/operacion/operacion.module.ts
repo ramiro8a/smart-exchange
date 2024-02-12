@@ -7,7 +7,6 @@ import { OperacionComponent } from './operacion.component';
 import { MaterialModule } from '../material.modules';
 import { ModalController } from '@ionic/angular';
 import { CuentasBancariasComponentModule } from '../cuentas-bancarias/cuentas-bancarias.module';
-import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
 
 @NgModule({
   imports: [
@@ -18,7 +17,7 @@ import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobant
     CuentasBancariasComponentModule,
     ReactiveFormsModule
   ],
-  declarations: [OperacionComponent, CargaComprobanteComponent],
+  declarations: [OperacionComponent],
   exports: [OperacionComponent]
 })
 export class OperacionComponentModule {

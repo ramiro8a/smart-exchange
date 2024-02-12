@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { ConfiguracionesComponent } from '../configuraciones/configuraciones.component';
 import { ExploreContainerComponent } from './explore-container.component';
 
 @NgModule({
   imports: [ CommonModule, FormsModule, IonicModule],
-  declarations: [ExploreContainerComponent],
+  declarations: [ExploreContainerComponent, ConfiguracionesComponent],
   exports: [ExploreContainerComponent]
 })
 export class ExploreContainerComponentModule {}

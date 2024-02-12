@@ -9,6 +9,7 @@ import { MaterialModule } from '../material.modules';
 import { MisOperacionesPage } from './mis-operaciones.page';
 import { OperacionCuentasComponentModule } from '../operacion-cuentas/operacion-cuentas.module';
 import { ImageViewerComponentModule } from '../image-viewer/image-viewer.module';
+import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,6 @@ import { ImageViewerComponentModule } from '../image-viewer/image-viewer.module'
     OperacionCuentasComponentModule,
     ImageViewerComponentModule
   ],
-  declarations: [MisOperacionesPage]
+  declarations: [MisOperacionesPage, CargaComprobanteComponent]
 })
 export class MisOperacionesPageModule {}
