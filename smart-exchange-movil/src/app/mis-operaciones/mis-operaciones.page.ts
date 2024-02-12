@@ -8,6 +8,8 @@ import { UtilsService } from '../utils/utilitarios.util';
 import { SocketService } from '../services/socket.service';
 import { TokenService } from '../services/token.service';
 import { OperacionCuentasComponent } from '../operacion-cuentas/operacion-cuentas.component';
+import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -63,31 +65,53 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     this.recuperaInicial();
   }
 
-  recuperarComprobante(operacionId:number, tipo:number):void{
-/*     this.estaCargando = true
+  async recuperarComprobante(operacionId:number, tipo:number) {
+    let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+    await loading.present();
     this.restOperacion.recuperaComprobante(operacionId, tipo).subscribe({
-      next: (response:any) => {
-        this.estaCargando = false
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          base64:response
-        } 
-        const dialogRef = this.dialog.open(ImagenComponent, dialogConfig)
-        dialogRef.disableClose = true;
-        dialogRef.afterClosed().subscribe(result => {
-          if(result){
-            ///this.recuperaCuentasBancarias()
+      next: async(response:any) => {
+        const partes: string[] = response.base64.split(",");
+        try {
+          loading.message = 'Guardando archivo..'
+          await Filesystem.writeFile({
+            path: response.nombreArchivo,
+            data: response.base64,
+            directory: Directory.Documents
+          });
+          this.utils.showMessage('Genial!','Se descargó en Documentos el archivo '+response.nombreArchivo)
+          await loading.dismiss();
+        } catch (e) {
+          await loading.dismiss();
+          this.utils.showMessage('Error','Error al guardar achivo, verifique permisos')
+        }
+        /* const modal = await this.modalCtrl.create({
+          component: ImageViewerComponent,
+          componentProps:{
+            imagenBase64: response.base64
           }
-        })
-      },
-      error: (error:any) => {
-        this.notif.notify('error',error);
-        this.estaCargando = false
+        });
+        modal.present();
+        const { data, role } = await modal.onWillDismiss();
+        if (role === 'confirm') {
+        } */
+      }, error: async(error:Error) => {
+        await loading.dismiss();
+        this.utils.showMessage('Error',error.message)
       }
-    }); */
+    });
   }
 
-  cargarComprobante(id:number){
+  async cargarComprobante(id:number){
+    const modal = await this.modalCtrl.create({
+      component: ImageViewerComponent,
+      componentProps:{
+        operacionId: id
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+    }
 /*     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       operacionId : id

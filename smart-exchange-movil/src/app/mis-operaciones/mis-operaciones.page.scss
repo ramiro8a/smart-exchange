@@ -123,3 +123,20 @@ ion-item-option div {
     bottom: 28%;
     font-size: 0.6em;
 }
+
+ion-item-options .titulo {
+    position: absolute;
+    left: 1em;
+    top: 1em;
+    font-size: 0.6em;
+    color: white;
+    text-align: center;
+}
+
+ion-item-options .titulo-empresa {
+    top: 1em;
+    position: absolute;
+    font-size: 0.6em;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,9 @@
+.photo-viewer {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .photo-viewer img {
+    transition: transform 0.3s ease;
+  }

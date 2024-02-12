@@ -10,6 +10,7 @@ import { OperacionService } from '../services/operacion.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogConfig} from "@angular/material/dialog";
 import { CuentasBancariasComponent } from '../cuentas-bancarias/cuentas-bancarias.component';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Clipboard } from '@capacitor/clipboard';
 
 interface Cambio {
     monto: number;
@@ -222,13 +223,15 @@ export class OperacionComponent implements OnInit{
         return item?true:false
       }
     
-      copiar(valor:any){
-        navigator.clipboard.writeText(valor).then(() => {
-            this.utils.showMessage('Genial!','Copiado al portapapeles');
-          console.log('Texto copiado al portapapeles!');
-        }).catch(err => {
-            this.utils.showMessage('Error','No hemos podido copiar el valor');
-        });
+      async copiar(valor:any){
+        try {
+          await Clipboard.write({
+            string: valor
+          });
+          this.utils.showMessage('Genial!', 'Texto copiado al portapapeles');
+        } catch (err) {
+          this.utils.showMessage('Error', 'No hemos podido copiar el valor');
+        }
       }
 
   async agregaCuentasBancarias(){

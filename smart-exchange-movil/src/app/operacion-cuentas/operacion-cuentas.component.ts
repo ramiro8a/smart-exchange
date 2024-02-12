@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { OperacionResponse } from '../services/operacion.service';
 import { ViewWillEnter } from '@ionic/angular';
 import { UtilsService } from '../utils/utilitarios.util';
+import { Clipboard } from '@capacitor/clipboard';
 
 @Component({
   selector: 'app-operacion-cuentas',
@@ -23,12 +24,15 @@ export class OperacionCuentasComponent  implements OnInit, ViewWillEnter {
     console.log(this.operacion)
   }
 
-  copiar(valor:any){
-    navigator.clipboard.writeText(valor).then(() => {
+  async copiar(valor:any){
+    try {
+      await Clipboard.write({
+        string: valor
+      });
       this.utils.showMessage('Genial!', 'Texto copiado al portapapeles');
-    }).catch(err => {
+    } catch (err) {
       this.utils.showMessage('Error', 'No hemos podido copiar el valor');
-    });
+    }
   }
 
   buscarNombreDeEstadoCuenta(codigo:number):string{

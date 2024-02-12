@@ -8,7 +8,7 @@ import { MisOperacionesPageRoutingModule } from './mis-operaciones-routing.modul
 import { MaterialModule } from '../material.modules';
 import { MisOperacionesPage } from './mis-operaciones.page';
 import { OperacionCuentasComponentModule } from '../operacion-cuentas/operacion-cuentas.module';
-
+import { ImageViewerComponentModule } from '../image-viewer/image-viewer.module';
 
 @NgModule({
   imports: [
@@ -19,7 +19,8 @@ import { OperacionCuentasComponentModule } from '../operacion-cuentas/operacion-
     MaterialModule,
     ReactiveFormsModule,
     MisOperacionesPageRoutingModule,
-    OperacionCuentasComponentModule
+    OperacionCuentasComponentModule,
+    ImageViewerComponentModule
   ],
   declarations: [MisOperacionesPage]
 })

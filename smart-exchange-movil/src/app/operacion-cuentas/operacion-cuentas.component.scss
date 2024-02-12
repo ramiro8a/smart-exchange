@@ -3,13 +3,13 @@ ion-col{
     padding: 0px !important;
 }
 .cuentas{
-    width: 70%;
+    width: 80%;
 }
 .detalle-origen{
-    margin-right: 30%;
+    margin-right: 20%;
 }
 .detalle-destino{
-    margin-left: 30%;
+    margin-left: 20%;
 }
 .detalle-transferencia{
     margin: auto;
@@ -17,5 +17,10 @@ ion-col{
 ion-col ion-icon {
     font-size: 2em;
     position: absolute;
-    right: 0;
+    right: -0.5em;
+}
+
+ion-card-title img{
+    max-height: 1.5em;
+    vertical-align: bottom
 }

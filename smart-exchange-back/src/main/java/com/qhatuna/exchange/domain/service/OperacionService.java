@@ -81,7 +81,21 @@ public class OperacionService {
 
     public ComprobanteResponse recuperaComprobante(Long operacionId, Integer tipo){
         Operacion operacion = recuperaOperacionPorId(operacionId);
-        return new ComprobanteResponse(Util.convertirImageABase64(tipo==2?operacion.getComprobanteEmpresa():operacion.getComprobante()));
+        String fileType = operacion.getComprobante().substring(operacion.getComprobante().lastIndexOf(".") + 1).toLowerCase();
+        String prefix;
+        if ("jpeg".equals(fileType) || "jpg".equals(fileType)) {
+            prefix = "data:image/jpeg;base64,";
+        } else if ("png".equals(fileType)) {
+            prefix = "data:image/png;base64,";
+        } else {
+            throw new ProviderException(ErrorMsj.NOHAY_COMPROBANTE.getMsj(),ErrorMsj.NOHAY_COMPROBANTE.getCod());
+        }
+        return new ComprobanteResponse(
+                Util.convertirImageABase64(tipo==2?operacion.getComprobanteEmpresa():operacion.getComprobante()),
+                prefix,
+                fileType,
+                operacion.getTicket()+"_"+(tipo==2?"LcExchange":"Cliente")+"."+fileType
+                );
     }
 
     public Page<OperacionResponse> operacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){

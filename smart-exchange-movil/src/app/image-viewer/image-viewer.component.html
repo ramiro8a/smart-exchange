@@ -1,0 +1,15 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button (click)="cancel()" color="medium">
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content class="ion-padding">
+  <div class="photo-viewer">
+    <img [src]="imagenBase64" [style.transform]="transform" />
+  </div>
+  <ion-button (click)="girarImagen()">Girar</ion-button>
+  <ion-button (click)="hacerZoom(true)">Zoom In</ion-button>
+  <ion-button (click)="hacerZoom(false)">Zoom Out</ion-button>
+</ion-content>
