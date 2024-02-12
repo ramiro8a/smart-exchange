@@ -4,6 +4,7 @@ import { UtilsService } from '../utils/utilitarios.util';
 import { DatosCompartidosService } from '../services/datos-compartidos.service';
 import { UsuariosService } from '../services/usuarios.service';
 import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio';
+import { TokenService } from '../services/token.service';
 
 @Component({
   selector: 'app-configuraciones',
@@ -11,7 +12,7 @@ import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio';
   styleUrls: ['./configuraciones.component.scss'],
 })
 export class ConfiguracionesComponent  implements OnInit {
-  biometricoHabilitado: boolean = false;
+  biometricoEstaConfigurado: boolean = false;
   tieneBiometrico:boolean = false;
   constructor(
     private modalCtrl: ModalController,
@@ -19,20 +20,22 @@ export class ConfiguracionesComponent  implements OnInit {
     private datosCompartidos: DatosCompartidosService,
     private restUsuarios: UsuariosService,
     private loadingController: LoadingController,
+    private tokenService: TokenService,
     private utils: UtilsService
   ) { }
 
-  ngOnInit() {
-    FingerprintAIO.isAvailable().then((result)=>{
-      console.warn(result)
+  async ngOnInit() {
+    FingerprintAIO.isAvailable().then(async (result)=>{
+      console.warn('ngOnInit: '+result)
       this.tieneBiometrico = true;
-    },(error)=>{
-      this.tieneBiometrico= false;
+      this.biometricoEstaConfigurado = await this.tokenService.haySecretoBiometrico();
+    }).catch((error)=>{
+      console.error('ngOnInit: '+error)
     })
   }
 
   async biometricoCambio(){
-    if(this.biometricoHabilitado){
+    if(this.biometricoEstaConfigurado){
       await this.configuraBiometrico()
     }else{
       await  this.eliminaConfBiometrico()
@@ -47,27 +50,17 @@ export class ConfiguracionesComponent  implements OnInit {
         {
           text: 'Cancelar', role: 'cancel', cssClass: 'secondary',
           handler: () => {
-            this.biometricoHabilitado = !this.biometricoHabilitado
+            this.biometricoEstaConfigurado = !this.biometricoEstaConfigurado
           }
         }, {
           text: 'Ok',
           handler: async(data) => {
             if(data.password){
               this.datosCompartidos.correo$.subscribe(correo => {
-                FingerprintAIO.show({
-                  title: 'LC-Exchange',
-                  subtitle: 'Necesitamos verificar que eres tú',
-                  description: 'Toca el sensor de huellas dactilares',
-                  disableBackup: true,
-                  cancelButtonTitle: 'CANCELAR'
-                }).then(async (val)=>{
-                  console.warn(JSON.stringify(val))
                   this.registrarValidar(correo, data.password);
-                }).catch(async(error)=>{
-                  this.utils.showMessage('Error','No hemos podido verificar tu identidad biométrica')
-                })
               });
             }else{
+              this.biometricoEstaConfigurado = !this.biometricoEstaConfigurado
               this.utils.showMessage('Alerta','Debe ingresar un valor válido')
             }
           }
@@ -87,17 +80,21 @@ export class ConfiguracionesComponent  implements OnInit {
           title: 'Lc-Exchange',
           subtitle: 'Necesitamos verificar que eres tú',
           description: correo,
-          secret: password
+          secret: JSON.stringify({username:correo,password:password})
         }).then(async(result:any)=>{
-          console.warn(JSON.stringify(result))
+          console.warn('config 95: '+JSON.stringify(result))
+          await this.tokenService.guardaConfiguracionBiometrica()
+          this.utils.showMessage('Genial','Configuración guardada')
           await loading.dismiss();
         }).catch(async(error:any)=>{
+          this.biometricoEstaConfigurado = !this.biometricoEstaConfigurado
+          console.warn('config 99: '+JSON.stringify(error))
           await loading.dismiss();
           this.utils.showMessage('Error',error)
         })
-        
       },
       error: async(error:Error) => {
+        this.biometricoEstaConfigurado = !this.biometricoEstaConfigurado
         await loading.dismiss();
         this.utils.showMessage('Error',error.message)
       }
@@ -105,7 +102,7 @@ export class ConfiguracionesComponent  implements OnInit {
   }
 
   async eliminaConfBiometrico(){
-
+    await this.tokenService.eliminaConfigBiometrica()
   }
 
   confirm(){

@@ -21,6 +21,7 @@ export class LoginPage implements OnInit {
   panelOpen = false
   leyenda: string =''
   opcion:string=''
+  biometricoEstaConfigurado: boolean =false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,9 +43,9 @@ export class LoginPage implements OnInit {
     this.tokenService.removeToken()
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.biometricoEstaConfigurado = await this.tokenService.haySecretoBiometrico();
   }
-
 
   async login() {
     if(this.loginForm.valid){
@@ -75,7 +76,22 @@ export class LoginPage implements OnInit {
       description: 'Toca el sensor de huellas dactilares',
       disableBackup: true,
     }).then(async (val)=>{
-      console.warn(JSON.stringify(val))
+      const datos = JSON.parse(val)
+      let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+      await loading.present();
+      this.restUsuarios.login(datos).subscribe({
+        next: async(response:any) => {
+          await this.tokenService.setToken(response)
+          const correo = await this.tokenService.recuperaUsuario()
+          await this.datosCompartidos.agregarCorreo(correo);
+          this.router.navigateByUrl('/tabs', { replaceUrl: true });
+          await loading.dismiss();
+        },
+        error: async(error:Error) => {
+          await loading.dismiss();
+          this.utils.showMessage('Error',error.message)
+        }
+      });
     }).catch(async(error)=>{
       this.utils.showMessage('Error','No hemos podido verificar tu identidad biométrica')
     })

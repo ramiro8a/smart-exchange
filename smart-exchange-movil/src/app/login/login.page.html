@@ -13,7 +13,7 @@
         <mat-label>Contraseña</mat-label>
         <input matInput [type]="hide?'password':'text'" formControlName="password">
         <mat-icon class="pointer" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </mat-form-field><br>
+      </mat-form-field>
       <!-- <ion-list>
         <ion-item>
           <ion-input formControlName="username" placeholder="correo@gmail.com"></ion-input>
@@ -24,7 +24,7 @@
       </ion-list> -->
       <ion-button type="submit" expand="Block" shape="round">Iniciar sesión</ion-button>
       <ion-button type="reset" expand="Block" shape="round" color="secondary">Cancelar</ion-button>
-      <div class="biometrico">
+      <div class="biometrico" *ngIf="biometricoEstaConfigurado">
         <ion-button (click)="leeBiometrico()" fill="clear" type="button">
           <ion-icon size="large" name="finger-print"></ion-icon>
         </ion-button>

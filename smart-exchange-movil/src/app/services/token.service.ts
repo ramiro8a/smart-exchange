@@ -6,10 +6,23 @@ import { Preferences } from '@capacitor/preferences';
   providedIn: 'root'
 })
 export class TokenService {
+  FINGER: string = 'FINGER';
   TOKEN: string = 'token';
   REFRESH_TOKEN: string = 'refreshToken';
 
   constructor() { }
+
+  public async guardaConfiguracionBiometrica(): Promise<void> {
+    await Preferences.set({ key: this.FINGER, value: 'SI' });
+  }
+  public async haySecretoBiometrico(): Promise<boolean> {
+    const item = await Preferences.get({ key: this.FINGER });
+    return item.value === 'SI';
+  }
+
+  public async eliminaConfigBiometrica(): Promise<void> {
+    await Preferences.remove({ key: this.FINGER });
+  }
 
   public async setToken(data: any): Promise<void> {
     await Preferences.set({ key: this.TOKEN, value: data.token });

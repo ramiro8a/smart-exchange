@@ -24,7 +24,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
   estaCargando = false
   estaCargando2 = false
   dataSource: OperacionResponse[] = [];
-  filasInicial: number=7
+  filasInicial: number=8
   paginaInicial: number=0
   paginaActual : PaginaOperacionResponse = {
     content: [],
@@ -85,16 +85,6 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
           await loading.dismiss();
           this.utils.showMessage('Error','Error al guardar achivo, verifique permisos')
         }
-        /* const modal = await this.modalCtrl.create({
-          component: ImageViewerComponent,
-          componentProps:{
-            imagenBase64: response.base64
-          }
-        });
-        modal.present();
-        const { data, role } = await modal.onWillDismiss();
-        if (role === 'confirm') {
-        } */
       }, error: async(error:Error) => {
         await loading.dismiss();
         this.utils.showMessage('Error',error.message)
@@ -113,17 +103,6 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
     }
-/*     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      operacionId : id
-    } 
-    const dialogRef = this.dialog.open(CargaComprobanteComponent, dialogConfig)
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.recuperaOperacionesPaginado(this.paginaActual.number, this.paginaActual.size);
-      }
-    }) */
   }
 
   async verCuentas(operacion: OperacionResponse){
@@ -142,44 +121,40 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
 
   async recuperaOperacionesPaginado(pagina:number, filas:number ){
     this.estaScroll = true
-    this.estaCargando2 = true
+    if(this.paginaInicial==pagina){
+      this.estaCargando = true
+    }else{
+      this.estaCargando2 = true
+    }
     const valoresFormulario = this.criterioForm.value;
-/*     let datos={
-      inicio: new Date(valoresFormulario.inicio).toISOString().split('T')[0],
-      fin: new Date(valoresFormulario.fin).toISOString().split('T')[0],
-      ticket: valoresFormulario.ticket
-    } */
     let datos = {
       inicio: new Date('2000-01-01').toISOString().split('T')[0],
       fin: new Date('3000-12-31').toISOString().split('T')[0],
       ticket: valoresFormulario.ticket
     };
-//    let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
-//    await loading.present();
     this.restOperacion.recuperaOperacionesPaginado(pagina, filas, datos).subscribe({
       next: async(response:PaginaOperacionResponse) => {
-        //this.dataSource = response.content
         this.dataSource = [...this.dataSource, ...response.content];
         this.paginaActual = response
         this.estaScroll = false
         this.estaCargando2 = false
-//        await loading.dismiss();
+        this.estaCargando = false
       },
       error: async (error:Error) => {
         this.estaScroll = false
         this.estaCargando2 = false
+        this.estaCargando = false
         this.utils.showMessage('Error',error.message)
-//        await loading.dismiss();
       }
     });
   }
 
   async recuperaInicial(){
     //this.resetForm()
-    this.estaCargando = true
+    //this.estaCargando = true
     await this.recuperaOperacionesPaginado(this.paginaInicial, this.filasInicial)
     //setTimeout(()=>{
-      this.estaCargando = false
+      //this.estaCargando = false
     //}, 2000)
   }
 
