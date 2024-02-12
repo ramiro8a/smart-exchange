@@ -6,6 +6,7 @@ import { TokenService } from '../services/token.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { UtilsService } from '../utils/utilitarios.util';
 import { DatosCompartidosService } from '../services/datos-compartidos.service';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio';
 
 @Component({
   selector: 'app-login',
@@ -65,6 +66,19 @@ export class LoginPage implements OnInit {
     }else{
       this.utils.showMessage('Atención','Complete el formulario por favor')
     }
+  }
+
+  leeBiometrico(){
+    FingerprintAIO.loadBiometricSecret({
+      title: 'LC-Exchange',
+      subtitle: 'Necesitamos verificar que eres tú',
+      description: 'Toca el sensor de huellas dactilares',
+      disableBackup: true,
+    }).then(async (val)=>{
+      console.warn(JSON.stringify(val))
+    }).catch(async(error)=>{
+      this.utils.showMessage('Error','No hemos podido verificar tu identidad biométrica')
+    })
   }
 
 }

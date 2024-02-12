@@ -12,7 +12,7 @@
     </ion-card-header>
   
     <ion-card-content>
-      <ion-toggle [(ngModel)]="biometricoHabilitado" (ionChange)="biometricoCambio()" [enableOnOffLabels]="true"  mode="ios">Activado</ion-toggle>
+      <ion-toggle [(ngModel)]="biometricoHabilitado" (ionChange)="biometricoCambio()" [enableOnOffLabels]="true"  mode="ios" [disabled]="!tieneBiometrico">Activado</ion-toggle>
     </ion-card-content>
   </ion-card>
 </ion-content>

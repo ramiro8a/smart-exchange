@@ -24,6 +24,12 @@
       </ion-list> -->
       <ion-button type="submit" expand="Block" shape="round">Iniciar sesión</ion-button>
       <ion-button type="reset" expand="Block" shape="round" color="secondary">Cancelar</ion-button>
+      <div class="biometrico">
+        <ion-button (click)="leeBiometrico()" fill="clear" type="button">
+          <ion-icon size="large" name="finger-print"></ion-icon>
+        </ion-button>
+        Autenticación con biometría
+      </div>
       <div class="registrate">¿Aún no tienes cuenta?</div>
       <ion-button href="/registrate" type="button" expand="Block" shape="round">Regístrate</ion-button>
     </form>

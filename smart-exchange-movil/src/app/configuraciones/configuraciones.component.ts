@@ -3,6 +3,7 @@ import { ModalController, AlertController, LoadingController } from '@ionic/angu
 import { UtilsService } from '../utils/utilitarios.util';
 import { DatosCompartidosService } from '../services/datos-compartidos.service';
 import { UsuariosService } from '../services/usuarios.service';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio';
 
 @Component({
   selector: 'app-configuraciones',
@@ -11,6 +12,7 @@ import { UsuariosService } from '../services/usuarios.service';
 })
 export class ConfiguracionesComponent  implements OnInit {
   biometricoHabilitado: boolean = false;
+  tieneBiometrico:boolean = false;
   constructor(
     private modalCtrl: ModalController,
     private alertController: AlertController,
@@ -20,7 +22,14 @@ export class ConfiguracionesComponent  implements OnInit {
     private utils: UtilsService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    FingerprintAIO.isAvailable().then((result)=>{
+      console.warn(result)
+      this.tieneBiometrico = true;
+    },(error)=>{
+      this.tieneBiometrico= false;
+    })
+  }
 
   async biometricoCambio(){
     if(this.biometricoHabilitado){
@@ -44,22 +53,19 @@ export class ConfiguracionesComponent  implements OnInit {
           text: 'Ok',
           handler: async(data) => {
             if(data.password){
-              let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Recuperando usuario'});
-              await loading.present();
               this.datosCompartidos.correo$.subscribe(correo => {
-/*                 this.restUsuarios.login({username: correo, password: data.password}).subscribe({
-                  next: async(response:any) => {
-                    await this.tokenService.setToken(response)
-                    const correo = await this.tokenService.recuperaUsuario()
-                    await this.datosCompartidos.agregarCorreo(correo);
-                    this.router.navigateByUrl('/tabs', { replaceUrl: true });
-                    await loading.dismiss();
-                  },
-                  error: async(error:Error) => {
-                    await loading.dismiss();
-                    this.utils.showMessage('Error',error.message)
-                  }
-                }); */
+                FingerprintAIO.show({
+                  title: 'LC-Exchange',
+                  subtitle: 'Necesitamos verificar que eres tú',
+                  description: 'Toca el sensor de huellas dactilares',
+                  disableBackup: true,
+                  cancelButtonTitle: 'CANCELAR'
+                }).then(async (val)=>{
+                  console.warn(JSON.stringify(val))
+                  this.registrarValidar(correo, data.password);
+                }).catch(async(error)=>{
+                  this.utils.showMessage('Error','No hemos podido verificar tu identidad biométrica')
+                })
               });
             }else{
               this.utils.showMessage('Alerta','Debe ingresar un valor válido')
@@ -70,6 +76,32 @@ export class ConfiguracionesComponent  implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async registrarValidar(correo:string, password:string){
+    let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Verificando su identidad'});
+    await loading.present();
+    this.restUsuarios.login({username: correo, password: password}).subscribe({
+      next: async(response:any) => {
+        FingerprintAIO.registerBiometricSecret({
+          title: 'Lc-Exchange',
+          subtitle: 'Necesitamos verificar que eres tú',
+          description: correo,
+          secret: password
+        }).then(async(result:any)=>{
+          console.warn(JSON.stringify(result))
+          await loading.dismiss();
+        }).catch(async(error:any)=>{
+          await loading.dismiss();
+          this.utils.showMessage('Error',error)
+        })
+        
+      },
+      error: async(error:Error) => {
+        await loading.dismiss();
+        this.utils.showMessage('Error',error.message)
+      }
+    });
   }
 
   async eliminaConfBiometrico(){
