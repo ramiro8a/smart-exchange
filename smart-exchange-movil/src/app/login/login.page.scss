@@ -1,10 +1,8 @@
 ion-content.background{
-    //--background: url(../../assets/img/background-login.png) 0 0/100% 100% no-repeat;
-    //--background: linear-gradient(63deg, rgb(45, 71, 175) 0%, rgba(6,162,201,1) 43%, rgba(32,181,152,1) 100%);
     --background: white;
 }
 .logo{
-    padding: 1em 0em;
+    padding: 1em 0em 0em 0em;
     width: 40%;
     margin: auto;
 }
@@ -55,7 +53,7 @@ ion-button, mat-form-field{
     left: 0.2em;
 }
 .registrate{
-    margin-top: 0.8em;
+    margin-top: 0.9em;
     border-top: dashed 1px #838384;
     color: #6d6d6d;
     padding: 5px;
@@ -65,9 +63,10 @@ ion-button, mat-form-field{
 
 .titulo{
     color: #6d6d6d;
-    font-size: 0.7em;
+    font-size: 0.8em;
     text-align: center;
     font-weight: 700;
+    margin-top: 0;
 }
 ion-item{
     border: 1px solid #2d47af;

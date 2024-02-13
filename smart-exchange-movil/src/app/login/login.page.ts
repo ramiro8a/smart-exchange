@@ -54,10 +54,15 @@ export class LoginPage implements OnInit {
       this.restUsuarios.login(this.loginForm.value).subscribe({
         next: async(response:any) => {
           await this.tokenService.setToken(response)
-          const correo = await this.tokenService.recuperaUsuario()
-          await this.datosCompartidos.agregarCorreo(correo);
-          this.router.navigateByUrl('/tabs', { replaceUrl: true });
-          await loading.dismiss();
+          if(await this.tokenService.esCliente()){
+            const correo = await this.tokenService.recuperaUsuario()
+            //await this.datosCompartidos.agregarCorreo(correo);
+            this.router.navigateByUrl('/tabs', { replaceUrl: true });
+            await loading.dismiss();
+          }else{
+            this.utils.showMessage('Alerta', 'Inicie sesión desde un navegador')
+            await loading.dismiss();
+          }
         },
         error: async(error:Error) => {
           await loading.dismiss();
@@ -82,10 +87,15 @@ export class LoginPage implements OnInit {
       this.restUsuarios.login(datos).subscribe({
         next: async(response:any) => {
           await this.tokenService.setToken(response)
-          const correo = await this.tokenService.recuperaUsuario()
-          await this.datosCompartidos.agregarCorreo(correo);
-          this.router.navigateByUrl('/tabs', { replaceUrl: true });
-          await loading.dismiss();
+          if(await this.tokenService.esCliente()){
+            const correo = await this.tokenService.recuperaUsuario()
+            //await this.datosCompartidos.agregarCorreo(correo);
+            this.router.navigateByUrl('/tabs', { replaceUrl: true });
+            await loading.dismiss();
+          }else{
+            this.utils.showMessage('Alerta', 'Inicie sesión desde un navegador')
+            await loading.dismiss();
+          }
         },
         error: async(error:Error) => {
           await loading.dismiss();

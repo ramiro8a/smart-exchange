@@ -6,16 +6,16 @@
     <small>Bienvenido</small><br>
     <strong>{{correo}}</strong>
   </div>
-    <ion-badge class="badage" color="danger">11</ion-badge>
+    <ion-badge *ngIf="notificaciones.length > 0" class="badage" color="danger">{{notificaciones.length}}</ion-badge>
   <ion-fab slot="fixed" vertical="top" horizontal="end">
     <ion-fab-button color="primary">
       <ion-icon name="grid"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="bottom">
-      <ion-fab-button (click)="configuraciones()" color="primary">
+      <ion-fab-button (click)="configuraciones()" color="primary" size="x-large">
         <ion-icon name="settings"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button href="/login" color="danger">
+      <ion-fab-button href="/login" color="danger"  size="large">
         <ion-icon name="log-out"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

@@ -104,13 +104,19 @@ public class OperacionService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         if(usuario.esCliente()){
-            Cliente cliente =clienteService.recuperaClientePorUsuarioId(usuario.getId());
+            String nroDocumento="0";
+            try {
+                Cliente cliente = clienteService.recuperaClientePorUsuarioId(usuario.getId());
+                nroDocumento = cliente.getNroDocumento();
+            }catch (Exception ex){
+                //No se hace nada el nroDocumento permanece con 0
+            }
             request = new OperacionCriteriaRequest(
                     request.inicio(),
                     request.fin(),
                     null,
                     null,
-                    cliente.getNroDocumento(),
+                    nroDocumento,
                     request.ticket(),
                     0L,
                     100

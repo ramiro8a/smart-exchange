@@ -49,6 +49,15 @@ export class TokenService {
     return decodedToken && decodedToken.sub ? decodedToken.sub : '';
   }
 
+  public async esCliente():Promise<boolean>{
+    const roles = await this.getUserRoles()
+    if(roles){
+      return roles.includes('CLIENTE')
+    }else{
+      return false
+    }
+  }
+
   public async recuperaUsuarioId(): Promise<number> {
     const decodedToken = await this.decodeRefrehToken();
     return decodedToken && decodedToken.id ? decodedToken.id : 0;

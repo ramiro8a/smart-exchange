@@ -67,3 +67,19 @@
     --mdc-protected-button-label-text-color: #ffffff;
     color: #ffffff !important;
 }
+
+.alerta-horario h2{
+    background: red;
+    color: white !important;
+    width: 100%;
+    padding: 0.5em 0.2em !important;
+    border-radius: 0.4em;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.9em !important;
+}
+.alerta-horario button{
+    background: red !important;
+    color: white !important;
+    border-radius: 1em !important;
+}
