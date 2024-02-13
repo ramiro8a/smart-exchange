@@ -73,7 +73,7 @@
     color: white !important;
     width: 100%;
     padding: 0.5em 0.2em !important;
-    border-radius: 0.4em;
+    border-radius: 0.7em;
     text-align: center;
     text-transform: uppercase;
     font-size: 0.9em !important;
@@ -81,5 +81,8 @@
 .alerta-horario button{
     background: red !important;
     color: white !important;
-    border-radius: 1em !important;
+    border-radius: 1.5em !important;
+}
+.modal-datos-personales{
+    --background: rgb(0, 0, 0, 0.1) !important;
 }

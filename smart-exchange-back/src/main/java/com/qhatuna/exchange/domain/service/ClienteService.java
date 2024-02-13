@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -36,16 +37,34 @@ public class ClienteService {
     }
     public ClienteResponse crea(ClienteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
-        Cliente cliente = Cliente.builder()
-                .tipoDocumento(request.tipoDocumento())
-                .nroDocumento(request.nroDocumento())
-                .celular(request.celular())
-                .telefono(request.telefono())
-                .nombres(request.nombres())
-                .paterno(request.paterno())
-                .materno(request.materno())
-                .usuarioId(usuario.getId())
-                .build();
+        Optional<Cliente> optCliente = repository.findByUsuarioId(usuario.getId());
+        if(optCliente.isPresent() && optCliente.get().isValidado()){
+            throw new ProviderException(ErrorMsj.CLIENTE_YA_EXISTE.getMsj(),
+                    ErrorMsj.CLIENTE_YA_EXISTE.getCod(),HttpStatus.BAD_REQUEST);
+        }
+        Cliente cliente = new Cliente();
+        if(optCliente.isPresent() && !optCliente.get().isValidado()){
+            cliente = optCliente.get();
+            cliente.setTipoDocumento(request.tipoDocumento());
+            cliente.setNroDocumento(request.nroDocumento());
+            cliente.setCelular(request.celular());
+            cliente.setTelefono(request.telefono());
+            cliente.setNombres(request.nombres());
+            cliente.setPaterno(request.paterno());
+            cliente.setMaterno(request.materno());
+        }
+        if(optCliente.isEmpty()){
+            cliente = Cliente.builder()
+                    .tipoDocumento(request.tipoDocumento())
+                    .nroDocumento(request.nroDocumento())
+                    .celular(request.celular())
+                    .telefono(request.telefono())
+                    .nombres(request.nombres())
+                    .paterno(request.paterno())
+                    .materno(request.materno())
+                    .usuarioId(usuario.getId())
+                    .build();
+        }
         if(request.tipoDocumento().equals(ConstValues.TD_RUC)) {
             validaEmpresa(cliente, request.nroDocumento());
         } else {
@@ -54,6 +73,8 @@ public class ClienteService {
         cliente = repository.save(cliente);
         if(!cliente.isValidado()){
             notificacionService.notifValidarCLiente(cliente);
+            throw new ProviderException(ErrorMsj.CLIENTE_REG_NO_VALIDADO.getMsj(),
+                    ErrorMsj.CLIENTE_REG_NO_VALIDADO.getCod(),HttpStatus.BAD_REQUEST);
         }
         return Cliente.aResponse(cliente);
     }

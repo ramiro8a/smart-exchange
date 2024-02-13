@@ -4,6 +4,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { ConfiguracionesComponent } from '../configuraciones/configuraciones.component';
 import { UtilsService } from '../utils/utilitarios.util';
 import { TokenService } from '../services/token.service';
+import { DatosPersonalesComponent } from '../datos-personales/datos-personales.component';
 
 @Component({
   selector: 'app-explore-container',
@@ -35,24 +36,50 @@ export class ExploreContainerComponent implements OnInit{
     this.recuperaNotificaciones()
   }
 
-  recuperaNotificaciones():void{
+  async recuperaNotificaciones(){
     this.restUtils.recuperaNotificaciones().subscribe({
-      next: (response:any) => {
+      next: async (response:any) => {
         this.datosCompartidos.actualizarNotificaciones(response as Notificacion[]);
-/*         if(this.pedirDatospersonales()){
-          this.datosPersonales()
-        } */
-        if(this.verificaOrarioAtencion()){
-          const notificac = this.recuperaOrarioAtencionLocal();
-          this.horarioAtencionCliente(notificac!.valor)
-        }
+        await this.verificaHorario();
+        await this.verificaDatosPersonales();
       },
       error: (error:any) => {
       }
     });
   }
 
-  async horarioAtencionCliente(mensaje:string){
+  async verificaHorario(){
+    if(await this.verificaOrarioAtencion()){
+      const notificac = await this.recuperaOrarioAtencionLocal();
+      await this.horarioAtencionCliente(notificac!.valor)
+    }
+  }
+  async verificaDatosPersonales(){
+    if(await this.pedirDatospersonales()){
+      await this.datosPersonales()
+    }
+  }
+
+  async datosPersonales(){
+    const modal = await this.modalCtrl.create({
+      component: DatosPersonalesComponent,
+      cssClass: 'modal-datos-personales',
+      backdropDismiss: false,
+      componentProps: {nuevo: true}
+    });
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      await this.recuperaNotificaciones()
+    }
+  }
+
+  pedirDatospersonales():boolean{
+    const item = this.notificaciones.find(elemento => elemento.metodo == 'datosPersonales');
+    return item?true:false
+  }
+
+/*   async horarioAtencionCliente(mensaje:string){
     const alert = await this.alertController.create({
       header: 'Horario de atención',
       message: mensaje,
@@ -61,9 +88,28 @@ export class ExploreContainerComponent implements OnInit{
     });
 
     await alert.present();
-  }
+  } */
 
-  recuperaOrarioAtencionLocal():Notificacion | undefined{
+  async horarioAtencionCliente(mensaje: string): Promise<void> {
+    return new Promise(async resolve => {
+      const alert = await this.alertController.create({
+        header: 'Horario de atención',
+        message: mensaje,
+        buttons: [{
+          text: 'Entiendo',
+          handler: () => {
+            resolve();
+          }
+        }],
+        cssClass: 'alerta-horario'
+      });
+  
+      await alert.present();
+    });
+  }
+  
+
+  async recuperaOrarioAtencionLocal(): Promise<Notificacion | undefined>{
     return this.notificaciones.find(elemento => elemento.metodo == 'horarioAtencion');
   }
 

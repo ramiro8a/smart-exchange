@@ -7,6 +7,7 @@ import { OperacionComponent } from './operacion.component';
 import { MaterialModule } from '../material.modules';
 import { ModalController } from '@ionic/angular';
 import { CuentasBancariasComponentModule } from '../cuentas-bancarias/cuentas-bancarias.module';
+import { DatosPersonalesComponent } from '../datos-personales/datos-personales.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { CuentasBancariasComponentModule } from '../cuentas-bancarias/cuentas-ba
     CuentasBancariasComponentModule,
     ReactiveFormsModule
   ],
-  declarations: [OperacionComponent],
+  declarations: [OperacionComponent, DatosPersonalesComponent],
   exports: [OperacionComponent]
 })
 export class OperacionComponentModule {
