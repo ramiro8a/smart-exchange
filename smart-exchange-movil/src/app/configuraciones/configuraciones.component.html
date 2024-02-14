@@ -8,11 +8,18 @@
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Autenticación biométrica <ion-icon class="icono-bio" size="large" name="finger-print"></ion-icon></ion-card-title>
+      <ion-card-title>Autenticación biométrica <ion-icon class="icono-config" size="large" name="finger-print"></ion-icon></ion-card-title>
     </ion-card-header>
-  
     <ion-card-content>
-      <ion-toggle [(ngModel)]="biometricoEstaConfigurado" (ionChange)="biometricoCambio()" [enableOnOffLabels]="true"  mode="ios" [disabled]="!tieneBiometrico">Activado</ion-toggle>
+      <ion-toggle [(ngModel)]="biometricoEstaConfigurado" (ionChange)="biometricoCambio()" [enableOnOffLabels]="true"  mode="ios" [disabled]="!tieneBiometrico">{{biometricoEstaConfigurado?'Activado':'Desactivado'}}</ion-toggle>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Promociones <ion-icon class="icono-config" size="large" name="information-circle"></ion-icon></ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-toggle [(ngModel)]="aceptaPromociones" (ionChange)="promocionesCambio()" [enableOnOffLabels]="true"  mode="ios">{{aceptaPromociones?'Acepta promociones':'Sin promociones'}}</ion-toggle>
     </ion-card-content>
   </ion-card>
 </ion-content>

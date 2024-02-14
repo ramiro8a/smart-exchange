@@ -14,6 +14,7 @@ import { TokenService } from '../services/token.service';
 export class ConfiguracionesComponent  implements OnInit {
   biometricoEstaConfigurado: boolean = false;
   tieneBiometrico:boolean = false;
+  aceptaPromociones: boolean = false;
   constructor(
     private modalCtrl: ModalController,
     private alertController: AlertController,
@@ -26,12 +27,12 @@ export class ConfiguracionesComponent  implements OnInit {
 
   async ngOnInit() {
     FingerprintAIO.isAvailable().then(async (result)=>{
-      console.warn('ngOnInit: '+result)
       this.tieneBiometrico = true;
       this.biometricoEstaConfigurado = await this.tokenService.haySecretoBiometrico();
     }).catch((error)=>{
-      console.error('ngOnInit: '+error)
+      console.error(error)
     })
+    this.aceptaPromociones = await this.tokenService.aceptaPromociones();
   }
 
   async biometricoCambio(){
@@ -39,6 +40,14 @@ export class ConfiguracionesComponent  implements OnInit {
       await this.configuraBiometrico()
     }else{
       await  this.eliminaConfBiometrico()
+    }
+  }
+
+  async promocionesCambio(){
+    if(this.aceptaPromociones){
+      await this.tokenService.guardaConfiguracionPromociones()
+    }else{
+      await this.tokenService.eliminaPromociones()
     }
   }
 
@@ -56,9 +65,14 @@ export class ConfiguracionesComponent  implements OnInit {
           text: 'Ok',
           handler: async(data) => {
             if(data.password){
-              this.datosCompartidos.correo$.subscribe(correo => {
+              const correo = await this.tokenService.recuperaUsuario();
+              //this.datosCompartidos.correo$.subscribe(correo => {
+                if(await this.tokenService.haySecretoBiometrico()){
+                  this.utils.showMessage('Alerta','Ya existe una sesión configurada con biométrico')
+                }else{
                   this.registrarValidar(correo, data.password);
-              });
+                }
+              //});
             }else{
               this.biometricoEstaConfigurado = !this.biometricoEstaConfigurado
               this.utils.showMessage('Alerta','Debe ingresar un valor válido')

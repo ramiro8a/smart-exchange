@@ -41,4 +41,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             }
         };
     }*/
+
+
+
+    //////2024-02-14T15:00:26.733-04:00  WARN 19280 --- [nio-8050-exec-1] o.s.w.s.s.t.h.DefaultSockJsService       : Origin header value 'http://localhost:8100' not allowed.
 }

@@ -19,4 +19,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("select c from Cliente c where c.nroDocumento=?1 and c.estado not in (1)")
     List<Cliente> recuperaPorNroDocumento(String nroDocumento, Pageable pageable);
+    @Query("select c from Cliente c where c.nroDocumento=?1 and c.estado not in (1)")
+    List<Cliente> recuperaPorNroDocumento(String nroDocumento);
 }

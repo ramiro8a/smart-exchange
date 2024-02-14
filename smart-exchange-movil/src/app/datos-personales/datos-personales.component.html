@@ -1,8 +1,8 @@
-<mat-card class="datos-personales-card">
+<mat-card class="datos-personales-card" *ngIf="!estaCargando">
   <mat-card-header>
     <ion-icon (click)="cancel()" name="close-circle" size="large" color="medium"></ion-icon>
     <mat-card-subtitle *ngIf="esNuevo">Por favor ingresa tus</mat-card-subtitle>
-    <mat-card-title>DATOS PERSONALES</mat-card-title>
+    <mat-card-title>DATOS PERSONALES <small *ngIf="!clienteValidado && !esNuevo"><ion-badge color="danger">Datos no validados</ion-badge></small></mat-card-title>
   </mat-card-header>
   <form [formGroup]="personalForm" (ngSubmit)="registra()" autocomplete="off">
       <mat-card-content>
@@ -44,15 +44,15 @@
           </mat-form-field>
           <mat-slide-toggle *ngIf="esNuevo" formControlName="deAcuerdo" color="primary">Authorizo a LC Exchange a almacenar mis datos personales</mat-slide-toggle>
       </mat-card-content>
-      <mat-card-actions *ngIf="esNuevo">
-      <button mat-fab extended color="primary" [disabled]="estaCargando || !estaDeAcuerdo()">
-          <mat-icon>check</mat-icon>
-          Registrar
-      </button>&nbsp;
-      <button type="reset" mat-fab extended color="accent" [disabled]="estaCargando">
-          <mat-icon>block</mat-icon>
-          Cancelar
-      </button>
+      <mat-card-actions>
+        <button mat-fab extended color="primary" [disabled]="!estaDeAcuerdo()">
+            <mat-icon>check</mat-icon>
+            {{imprimeBtn()}}
+        </button>&nbsp;
+        <button type="reset" mat-fab extended color="accent" *ngIf="!clienteValidado">
+            <mat-icon>block</mat-icon>
+            Cancelar
+        </button>
       </mat-card-actions>
   </form>
 </mat-card>

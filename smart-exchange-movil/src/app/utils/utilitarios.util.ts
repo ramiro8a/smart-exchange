@@ -38,9 +38,17 @@ export class UtilsService {
     }
   
     async showMessage(title: string ,message: string){
+      let icono = 'mail'
+      if(title.toLowerCase().includes('Error'.toLowerCase())){
+        icono = 'warning'
+      }else if(title.toLowerCase().includes('Alerta'.toLowerCase())){
+        icono = 'information-circle'
+      }else if(title.toLowerCase().includes('Alerta'.toLowerCase())){
+        icono = 'checkmark-circle'
+      }
       const toast = await this.toastController.create({
         header: title.toUpperCase(),
-        icon: 'globe',
+        icon: icono,
         position: 'top',
         message: message,
         duration: Const.TOAST_TIME,

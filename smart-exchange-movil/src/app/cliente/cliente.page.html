@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true" class="page">
   <app-explore-container></app-explore-container>
   <div class="card">
-    <form [formGroup]="operacionForm" (ngSubmit)="iniciarOperacion()" autocomplete="off">
+    <form [formGroup]="operacionForm" (ngSubmit)="preIniciarOperacion()" autocomplete="off">
       <div class="tipo-cambio" *ngIf="!estaCargando">
         <div class="titulo">El mejor tipo de cambio <br>
           <small>{{fechaActual}}</small>

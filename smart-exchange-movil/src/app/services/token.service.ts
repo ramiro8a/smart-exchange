@@ -7,10 +7,23 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class TokenService {
   FINGER: string = 'FINGER';
+  PROMOCIONES: string = 'PROMOCIONES';
   TOKEN: string = 'token';
   REFRESH_TOKEN: string = 'refreshToken';
 
   constructor() { }
+
+  public async guardaConfiguracionPromociones(): Promise<void> {
+    await Preferences.set({ key: this.PROMOCIONES, value: 'SI' });
+  }
+  public async aceptaPromociones(): Promise<boolean> {
+    const item = await Preferences.get({ key: this.PROMOCIONES });
+    return item.value === 'SI';
+  }
+
+  public async eliminaPromociones(): Promise<void> {
+    await Preferences.remove({ key: this.PROMOCIONES });
+  }
 
   public async guardaConfiguracionBiometrica(): Promise<void> {
     await Preferences.set({ key: this.FINGER, value: 'SI' });

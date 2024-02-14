@@ -39,8 +39,14 @@ public class ClienteService {
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Optional<Cliente> optCliente = repository.findByUsuarioId(usuario.getId());
         if(optCliente.isPresent() && optCliente.get().isValidado()){
-            throw new ProviderException(ErrorMsj.CLIENTE_YA_EXISTE.getMsj(),
-                    ErrorMsj.CLIENTE_YA_EXISTE.getCod(),HttpStatus.BAD_REQUEST);
+            if(request.celular().isBlank()){
+                throw new ProviderException(ErrorMsj.CLIENTE_YA_EXISTE.getMsj(),
+                        ErrorMsj.CLIENTE_YA_EXISTE.getCod(),HttpStatus.BAD_REQUEST);
+            }else{
+                Cliente clActualizado = optCliente.get();
+                clActualizado.setCelular(request.celular());
+                return Cliente.aResponse(repository.save(clActualizado));
+            }
         }
         Cliente cliente = new Cliente();
         if(optCliente.isPresent() && !optCliente.get().isValidado()){
@@ -54,9 +60,14 @@ public class ClienteService {
             cliente.setMaterno(request.materno());
         }
         if(optCliente.isEmpty()){
+            List<Cliente> clientes = repository.recuperaPorNroDocumento(request.nroDocumento().trim());
+            if(!clientes.isEmpty()){
+                throw new ProviderException(ErrorMsj.CLIENTE_YA_EXISTE.getMsj(),
+                        ErrorMsj.CLIENTE_YA_EXISTE.getCod(),HttpStatus.BAD_REQUEST);
+            }
             cliente = Cliente.builder()
                     .tipoDocumento(request.tipoDocumento())
-                    .nroDocumento(request.nroDocumento())
+                    .nroDocumento(request.nroDocumento().trim())
                     .celular(request.celular())
                     .telefono(request.telefono())
                     .nombres(request.nombres())

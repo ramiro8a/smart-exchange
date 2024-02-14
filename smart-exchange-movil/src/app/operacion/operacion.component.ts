@@ -103,49 +103,49 @@ export class OperacionComponent implements OnInit{
         }
     ngOnInit(): void {
       Camera.requestPermissions();
-    this.recuperaCuentasRegistradas();
-    this.recuperaNotificaciones()
-    this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
-        this.notificaciones = notificaciones;
-    });
+      this.recuperaCuentasRegistradas();
+      this.recuperaNotificaciones()
+      this.datosCompartidos.notificaciones$.subscribe(notificaciones => {
+          this.notificaciones = notificaciones;
+      });
 
-    this.cuentasFormGroup.controls.bancoOrigen.valueChanges.subscribe(data=>{
-        this.cuentasOrigenActual = []
-        this.cuentaTransferencia = null
-        this.cuentasFormGroup.controls['cuentaOrigen'].setValue('');
-        this.cambio.origen.bancoId = Number(data)
-        this.cuentasOrigen.forEach(element => {
-        if (element.banco===data) {
-            this.cuentasOrigenActual.push(element)
-        }
-        })
-    })
-    this.cuentasFormGroup.controls.bancoDestino.valueChanges.subscribe(data=>{
-        this.cuentasDestinoActual = []
-        this.cambio.destino.bancoId = Number(data)
-        this.cuentasFormGroup.controls['cuentaDestino'].setValue('');
-        this.cuentasDestino.forEach(element => {
-        if (element.banco===data) {
-            this.cuentasDestinoActual.push(element)
-        }
-        })
-    })
-    this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
-        if(tipoDocumento===2){
-        this.personalForm.controls['paterno'].setValidators([]);
-        }else{
-        this.personalForm.controls['paterno'].setValidators([Validators.required]);
-        }
-        this.personalForm.controls['paterno'].updateValueAndValidity();
-    });
-    this.finalizaForm.get('noTiene')?.valueChanges.subscribe((noTiene) => {
-        if(noTiene){
-        this.finalizaForm.controls['codigoTransferencia'].setValidators([]);
-        }else{
-        this.finalizaForm.controls['codigoTransferencia'].setValidators([Validators.required]);
-        }
-        this.finalizaForm.controls['codigoTransferencia'].updateValueAndValidity();
-    });
+      this.cuentasFormGroup.controls.bancoOrigen.valueChanges.subscribe(data=>{
+          this.cuentasOrigenActual = []
+          this.cuentaTransferencia = null
+          this.cuentasFormGroup.controls['cuentaOrigen'].setValue('');
+          this.cambio.origen.bancoId = Number(data)
+          this.cuentasOrigen.forEach(element => {
+          if (element.banco===data) {
+              this.cuentasOrigenActual.push(element)
+          }
+          })
+      })
+      this.cuentasFormGroup.controls.bancoDestino.valueChanges.subscribe(data=>{
+          this.cuentasDestinoActual = []
+          this.cambio.destino.bancoId = Number(data)
+          this.cuentasFormGroup.controls['cuentaDestino'].setValue('');
+          this.cuentasDestino.forEach(element => {
+          if (element.banco===data) {
+              this.cuentasDestinoActual.push(element)
+          }
+          })
+      })
+      this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
+          if(tipoDocumento===2){
+          this.personalForm.controls['paterno'].setValidators([]);
+          }else{
+          this.personalForm.controls['paterno'].setValidators([Validators.required]);
+          }
+          this.personalForm.controls['paterno'].updateValueAndValidity();
+      });
+      this.finalizaForm.get('noTiene')?.valueChanges.subscribe((noTiene) => {
+          if(noTiene){
+          this.finalizaForm.controls['codigoTransferencia'].setValidators([]);
+          }else{
+          this.finalizaForm.controls['codigoTransferencia'].setValidators([Validators.required]);
+          }
+          this.finalizaForm.controls['codigoTransferencia'].updateValueAndValidity();
+      });
     }
 
     async recuperaCuentasRegistradas(){

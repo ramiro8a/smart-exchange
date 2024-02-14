@@ -11,6 +11,8 @@ import { UtilsService } from '../utils/utilitarios.util';
 import { ModalController } from '@ionic/angular';
 import { OperacionComponent } from '../operacion/operacion.component';
 import { ViewWillEnter } from '@ionic/angular';
+import { ClienteResponse, UsuariosService } from '../services/usuarios.service';
+import { DatosPersonalesComponent } from '../datos-personales/datos-personales.component';
 
 @Component({
   selector: 'app-cliente',
@@ -47,6 +49,7 @@ export class ClientePage implements OnInit, ViewWillEnter {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private utils: UtilsService,
+    private restUsuario: UsuariosService,
     private modalCtrl: ModalController
   ) { 
     moment.locale('es');
@@ -59,7 +62,6 @@ export class ClientePage implements OnInit, ViewWillEnter {
   }
 
   ngOnInit() {
-    //
     this.operacionForm.get('envio')?.valueChanges.subscribe((valorEnvio) => {
       this.recalcula(valorEnvio)
     });
@@ -67,6 +69,25 @@ export class ClientePage implements OnInit, ViewWillEnter {
 
   ionViewWillEnter() {
     this.recuperaTC();
+  }
+
+  async preIniciarOperacion(){
+    let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Verificando datos'});
+    await loading.present();
+    this.restUsuario.recuperaCliente().subscribe({
+      next: async(response:ClienteResponse) => {
+        if(response.validado){
+          this.iniciarOperacion()
+        }else{
+          this.datosPersonales()
+        }
+        await loading.dismiss();
+      },
+      error: async (error:Error) => {
+        this.datosPersonales()
+        await loading.dismiss();
+      }
+    });
   }
 
   async iniciarOperacion(){
@@ -98,6 +119,22 @@ export class ClientePage implements OnInit, ViewWillEnter {
       }
     }else{
       this.utils.showMessage('Atención','Complete el formulario con datos válidos por favor');
+    }
+  }
+
+
+  async datosPersonales(){
+    const modal = await this.modalCtrl.create({
+      component: DatosPersonalesComponent,
+      cssClass: 'modal-datos-personales',
+      backdropDismiss: false,
+      componentProps: {nuevo: true}
+    });
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      console.error(role)
+      await this.iniciarOperacion()
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
 import * as Const from './../utils/constants.util'
-import { UsuariosService } from '../services/usuarios.service';
+import { ClienteResponse, UsuariosService } from '../services/usuarios.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { UtilsService } from '../utils/utilitarios.util';
 
@@ -15,6 +15,7 @@ export class DatosPersonalesComponent  implements OnInit {
   esNuevo:boolean = true
   personalForm: FormGroup;
   tipoDocumentos: any[] = Const.TIPO_DOCUMENTOS
+  clienteValidado:boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,24 +36,36 @@ export class DatosPersonalesComponent  implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.recuperaDatosCliente()
+    this.personalForm.get('tipoDocumento')?.valueChanges.subscribe((tipoDocumento) => {
+      if(tipoDocumento===2){
+        this.personalForm.controls['paterno'].setValidators([]);
+      }else{
+        this.personalForm.controls['paterno'].setValidators([Validators.required]);
+      }
+      this.personalForm.controls['paterno'].updateValueAndValidity();
+    });
+  }
 
   async registra(){
     if(this.personalForm.valid){
-      this.estaCargando = true;
       let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
       await loading.present();
       this.restUsuario.registraDatosPersonalesCliente(this.personalForm.value).subscribe({
         next: async(response:any) => {
-          this.estaCargando = false;
-          this.utils.showMessage('Genial!', 'Datos registradosexitosamente');
+          this.utils.showMessage('Genial!', 'Datos registrados exitosamente');
           await loading.dismiss();
           this.confirm();
         },
         error: async(error:Error) => {
-          this.estaCargando = false;
-          this.utils.showMessage('Error', error.message);
           await loading.dismiss();
+          if (error.message.toLowerCase().includes('revise sus datos en USUARIO'.toLowerCase())) {
+            this.utils.showMessage('Alerta', error.message);
+            this.cancel();
+          } else {
+            this.utils.showMessage('Error', error.message);
+          }
         }
       });
     }else{
@@ -73,6 +86,48 @@ export class DatosPersonalesComponent  implements OnInit {
   }
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  imprimeBtn():string{
+    if(this.esNuevo){
+      return 'Registrar'
+    }else if(!this.clienteValidado && !this.esNuevo){
+      return 'Actualizar'
+    }else{
+      return 'Actualizar celular'
+    }
+  }
+
+  async recuperaDatosCliente(){
+    this.estaCargando = true
+    let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+    await loading.present();
+    this.restUsuario.recuperaCliente().subscribe({
+      next: async(response:ClienteResponse) => {
+        response.tipoDocumento
+        this.personalForm.setValue({
+          tipoDocumento: response.tipoDocumento,
+          nroDocumento: response.nroDocumento,
+          nombres: response.nombres,
+          paterno: response.paterno,
+          materno: response.materno,
+          celular: response.celular,
+          deAcuerdo: true,
+        })
+        this.clienteValidado = response.validado
+        this.estaCargando = false;
+        this.esNuevo = false
+        if(this.clienteValidado){
+          this.personalForm.disable();
+          this.personalForm.get('celular')?.enable()
+        }
+        await loading.dismiss();
+      },
+      error: async (error:Error) => {
+        await loading.dismiss();
+        this.estaCargando = false;
+      }
+    });
   }
 
 }
