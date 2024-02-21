@@ -1,0 +1,15 @@
+<mat-card class="notificaciones-card">
+  <mat-card-header>
+    <ion-icon (click)="cancel()" name="close-circle" size="large" color="medium"></ion-icon>
+    <mat-card-title>NOTIFICACIONES </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ion-list lines="full">
+      <ng-container *ngFor="let item of notificaciones; let index">
+        <ion-item (click)="ejecutarMetodo(item.metodo, item.valor)">
+          <ion-label>{{item.descripcion}}</ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </mat-card-content>
+</mat-card>

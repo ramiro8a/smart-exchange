@@ -5,6 +5,8 @@ import { ConfiguracionesComponent } from '../configuraciones/configuraciones.com
 import { UtilsService } from '../utils/utilitarios.util';
 import { TokenService } from '../services/token.service';
 import { DatosPersonalesComponent } from '../datos-personales/datos-personales.component';
+import { NotificacionesComponent } from '../notificaciones/notificaciones.component';
+
 
 @Component({
   selector: 'app-explore-container',
@@ -71,6 +73,20 @@ export class ExploreContainerComponent implements OnInit{
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
       await this.recuperaNotificaciones()
+    }
+  }
+
+  async abreNotificaciones(){
+    const modal = await this.modalCtrl.create({
+      component: NotificacionesComponent,
+      cssClass: 'modal-datos-personales',
+      backdropDismiss: false,
+      componentProps: {nuevo: true}
+    });
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      //await this.recuperaNotificaciones()
     }
   }
 

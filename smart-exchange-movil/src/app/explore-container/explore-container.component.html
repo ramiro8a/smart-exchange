@@ -12,7 +12,8 @@
       <ion-icon name="grid"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="bottom">
-      <ion-fab-button color="primary" size="large">
+      <ion-badge *ngIf="notificaciones.length > 0" class="badage" color="danger">{{notificaciones.length}}</ion-badge>
+      <ion-fab-button (click)="abreNotificaciones()" *ngIf="notificaciones.length > 0" color="primary" size="large">
         <ion-icon name="notifications"></ion-icon>
       </ion-fab-button>
       <ion-fab-button (click)="datosPersonales()" color="primary" size="large">

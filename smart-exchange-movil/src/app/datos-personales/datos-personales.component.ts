@@ -4,6 +4,7 @@ import * as Const from './../utils/constants.util'
 import { ClienteResponse, UsuariosService } from '../services/usuarios.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { UtilsService } from '../utils/utilitarios.util';
+import { DatosCompartidosService, Notificacion } from '../services/datos-compartidos.service';
 
 @Component({
   selector: 'app-datos-personales',
@@ -22,7 +23,9 @@ export class DatosPersonalesComponent  implements OnInit {
     private modalCtrl: ModalController,
     private loadingController: LoadingController,
     private utils: UtilsService,
-    private restUsuario: UsuariosService
+    private restUsuario: UsuariosService,
+    private datosCompartidos: DatosCompartidosService,
+    private restUtils: UtilsService,
   ) { 
     this.personalForm = this.formBuilder.group({
       tipoDocumento: [1, [Validators.required]],
@@ -56,6 +59,7 @@ export class DatosPersonalesComponent  implements OnInit {
         next: async(response:any) => {
           this.utils.showMessage('Genial!', 'Datos registrados exitosamente');
           await loading.dismiss();
+          this.recuperaNotificaciones()
           this.confirm();
         },
         error: async(error:Error) => {
@@ -71,6 +75,16 @@ export class DatosPersonalesComponent  implements OnInit {
     }else{
       //this.notif.notify('warning','Complete el formulario por favor');
     }
+  }
+
+  async recuperaNotificaciones(){
+    this.restUtils.recuperaNotificaciones().subscribe({
+      next: async (response:any) => {
+        this.datosCompartidos.actualizarNotificaciones(response as Notificacion[]);
+      },
+      error: (error:any) => {
+      }
+    });
   }
 
   esPersona():boolean{

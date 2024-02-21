@@ -55,7 +55,7 @@
           </ion-item>
           <ion-item-options side="start">
             <div class="titulo">COMPROBANTE CLIENTE</div>
-            <ion-item-option (click)="cargarComprobante(item.id)" color="secondary">
+            <ion-item-option (click)="cargarComprobante(item.id)" [color]="item.estado==10?'medium':'secondary'" [disabled]="item.estado==10">
               <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
               <div>Carga</div>
             </ion-item-option>
