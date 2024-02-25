@@ -39,7 +39,6 @@ public class ApiPeruProviderImpl implements ApiPeruProvider {
                 .header(ACCEPT, APP_JSON)
                 .header(AUTHORIZATION, BEARER+env.getProperty(TOKEN))
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new ProviderException(ErrorMsj.API_PERU_ERROR.getMsj(), ErrorMsj.API_PERU_ERROR.getCod());
             PersonaResponse persona = Util.stringToObject(response.body().string(), PersonaResponse.class);
