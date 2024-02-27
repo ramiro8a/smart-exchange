@@ -22,7 +22,8 @@ public class ConstValues {
     public static final Integer SOLES_ISO = 604;
     public static final Integer USD_ISO = 840;
     public static final Integer EURO_ISO = 978;
-    public static final Integer TC_OFICIAL = 1;
-    public static final Integer TC_EMPRESA = 2;
+    public static final Integer TC_LC_EXCHANGE = 1;
+    public static final Integer TC_SUNAT = 2;
+    public static final Integer TC_BANCOS = 3;
     public static final Integer TD_RUC = 2;
 }

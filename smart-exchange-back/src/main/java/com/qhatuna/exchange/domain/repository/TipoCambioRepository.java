@@ -16,6 +16,8 @@ public interface TipoCambioRepository extends JpaRepository<TipoCambio, Long> {
     Optional<TipoCambio> buscaTipoDeCambioPorMonedaYFecha(Integer moneda,Integer tipo, LocalDate fecha);*/
     @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.fecha <= ?3 and tc.estado = 0 order by tc.fecha desc")
     List<TipoCambio> buscaTipoDeCambioRecientePorMonedaYTipo(Integer moneda, Integer tipo, LocalDate fecha, Pageable pageable);
+    @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.estado = 0 order by tc.fecha desc")
+    List<TipoCambio> buscaTipoDeCambioRecientePorMonedaYTipo(Integer moneda, Integer tipo, Pageable pageable);
 
 
     @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.estado = 0 and tc.fecha <= ?3")

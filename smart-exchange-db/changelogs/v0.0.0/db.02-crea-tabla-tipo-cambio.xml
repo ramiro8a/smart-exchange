@@ -19,7 +19,7 @@
             <column name="VERSION" type="INTEGER" defaultValue="0"/>
             <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
             
-            <column name="TIPO" type="INTEGER" defaultValue="0" remarks="1:Oficial,2:Empresa"/>
+            <column name="TIPO" type="INTEGER" defaultValue="0" remarks="1:LcExchange,2:Sunat,3:bancos"/>
             <column name="MONEDA" type="INTEGER" defaultValue="0" remarks="840:dolares,604:soles,978:euros"/>
             <column name="COMPRA" type="DECIMAL(19,4)" defaultValue="0" remarks="Valor de la moneda para la compra respecto a soles"/>
             <column name="VENTA" type="DECIMAL(19,4)" defaultValue="0" remarks="Valor de la moneda para la venta respecto a soles"/>

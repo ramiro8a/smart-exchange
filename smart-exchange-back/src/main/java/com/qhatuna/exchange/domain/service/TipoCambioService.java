@@ -1,6 +1,7 @@
 package com.qhatuna.exchange.domain.service;
 
 import com.qhatuna.exchange.app.rest.request.TipoCambioRequest;
+import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
 import com.qhatuna.exchange.app.rest.response.TipoCambioResponse;
 import com.qhatuna.exchange.commons.constant.Const;
 import com.qhatuna.exchange.commons.constant.ConstValues;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -28,20 +30,79 @@ public class TipoCambioService {
     private final TipoCambioRepository tipoCambioRepository;
     private final ApiPeruProvider apiPeruProvider;
 
+    public List<TCPublicoResponse> recuperaTCPulico(){
+        Integer moneda = ConstValues.USD_ISO;
+        List<TipoCambio> lcExchange = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                moneda,
+                ConstValues.TC_LC_EXCHANGE,
+                PageRequest.of(0, 1)
+        );
+        List<TipoCambio> sunat = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                moneda,
+                ConstValues.TC_SUNAT,
+                PageRequest.of(0, 1)
+        );
+        List<TipoCambio> bancos = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                moneda,
+                ConstValues.TC_BANCOS,
+                PageRequest.of(0, 1)
+        );
+        if(lcExchange.isEmpty() || bancos.isEmpty()){
+            throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
+        }
+        List<TCPublicoResponse> lista = new ArrayList<>();
+        lista.add(new TCPublicoResponse(
+                lcExchange.get(0).getTipo(),
+                "Lc Exchange",
+                lcExchange.get(0).getCompra(),
+                lcExchange.get(0).getVenta()
+                ));
+        if(!sunat.isEmpty()){
+            lista.add(new TCPublicoResponse(
+                    sunat.get(0).getTipo(),
+                    "Sunat",
+                    sunat.get(0).getCompra(),
+                    sunat.get(0).getVenta()
+            ));
+        }
+        lista.add(new TCPublicoResponse(
+                bancos.get(0).getTipo(),
+                "Bancos",
+                bancos.get(0).getCompra(),
+                bancos.get(0).getVenta()
+        ));
+        return lista;
+    }
+
 
     public void sincroniza(){
         try {
             TipoCambioResponseDTO tc = apiPeruProvider.recuperaTipoCambio();
             if(tc.data()!=null){
                 TipoCambioRequest tcr= new TipoCambioRequest(
-                        ConstValues.TC_OFICIAL,
+                        ConstValues.TC_SUNAT,
                         true,
                         LocalDate.now(),
                         ConstValues.USD_ISO,
                         tc.data().compra(),
                         tc.data().venta()
                         );
+                List<TipoCambio> sunats = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                        ConstValues.USD_ISO,
+                        ConstValues.TC_SUNAT,
+                        LocalDate.now(),
+                        PageRequest.of(0, 1)
+                );
+                if(sunats.isEmpty()){
                     crea(tcr);
+                }else {
+                    TipoCambio sunatLocal = sunats.get(0);
+                    if(!(tcr.compra().compareTo(sunatLocal.getCompra())==0 &&
+                            tcr.venta().compareTo(sunatLocal.getVenta())==0)
+                    ){
+                        crea(tcr);
+                    }
+                }
             }
         }catch (Exception ex){
             log.error("Error al sincronizar tipo de cambio: {}", ex.getMessage());
@@ -99,14 +160,12 @@ public class TipoCambioService {
     public TipoCambioResponse recuperaTipoCambioUSD(Integer moneda){
         List<TipoCambio> oficial = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
                 moneda,
-                ConstValues.TC_OFICIAL,
-                LocalDate.now(),
+                ConstValues.TC_BANCOS,
                 PageRequest.of(0, 1)
         );
         List<TipoCambio> empresa = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
                 moneda,
-                ConstValues.TC_EMPRESA,
-                LocalDate.now(),
+                ConstValues.TC_LC_EXCHANGE,
                 PageRequest.of(0, 1)
         );
         if(oficial.isEmpty() || empresa.isEmpty()){

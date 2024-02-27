@@ -4,10 +4,12 @@ import com.qhatuna.exchange.app.rest.request.RegistroRequest;
 import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
 import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
+import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.domain.model.Empresa;
 import com.qhatuna.exchange.domain.service.AutenticacionService;
 import com.qhatuna.exchange.domain.service.EmpresaService;
+import com.qhatuna.exchange.domain.service.TipoCambioService;
 import com.qhatuna.exchange.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/auth")
 @Tag(name = "Autenticacion", description = "Este controlador expone los servicio de authenticacion y registro")
@@ -31,6 +35,8 @@ public class AutenticacionController {
     private UsuarioService usuarioService;
     @Autowired
     private EmpresaService empresaService;
+    @Autowired
+    private TipoCambioService tcService;
     @PostMapping(path = "/login", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<AutenticationResponse> autenticacion(
             @RequestHeader("Authorization") String basicAuth
@@ -69,5 +75,10 @@ public class AutenticacionController {
     @GetMapping(path = "/empresa-public", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Empresa> recuperaEmpresa() {
         return new ResponseEntity<>(empresaService.recuperaEmpresa(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/tipo-cambio", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<TCPublicoResponse>> recupertaTCPublico() {
+        return new ResponseEntity<>(tcService.recuperaTCPulico(), HttpStatus.OK);
     }
 }

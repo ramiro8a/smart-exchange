@@ -37,8 +37,8 @@ export const CUENTA_MONEDAS_CLIENTE = [
     {codigo: USD_ISO, nombre: 'Dólares'},
 ]
 export const TIPO_CAMBIOS = [
-    {codigo: 1, nombre: 'Sunat'},
-    {codigo: 2, nombre: 'Lc Exchange'},
+    {codigo: 1, nombre: 'Lc Exchange'},
+    {codigo: 2, nombre: 'Sunat'},
     {codigo: 3, nombre: 'Bancos'},
 ]
 export const ESTADOS_OPERACION = [

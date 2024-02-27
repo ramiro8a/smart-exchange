@@ -17,7 +17,7 @@ public class TareasAutomáticas {
     private TipoCambioService tipoCambioService;
     private Integer i =0;
 
-    @Scheduled(cron = "0 30 * * * *")
+    @Scheduled(cron = "0 0 */2 * * *")
     public void recuperaTipoCambio() {
         log.info("Recuperando tipo cambio");
         tipoCambioService.sincroniza();

@@ -27,7 +27,7 @@ export class TipoCambioComponent implements OnInit{
       this.tcForm = this.formBuilder.group({
         tipo: ['', Validators.required],
         fecha: ['', Validators.required],
-        moneda: ['', [Validators.required]],
+        moneda: [Const.USD_ISO, [Validators.required]],
         compra: ['', [Validators.required, ImporteValidator()]],
         venta: ['', [Validators.required, ImporteValidator()]],
         porDefecto: [true, Validators.required]

@@ -16,14 +16,14 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+<!--             <mat-form-field appearance="outline">
                 <mat-label>Moneda</mat-label>
                 <mat-select formControlName="moneda">
                   <mat-option *ngFor="let moneda of monedas" [value]="moneda.codigo">
                     {{ moneda.nombre }}
                   </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
             <mat-form-field appearance="outline">
                 <mat-label>Compra</mat-label>
                 <input matInput type="text" formControlName="compra">

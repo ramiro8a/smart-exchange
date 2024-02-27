@@ -63,6 +63,14 @@
         <div class="contenido-der3">
             <div class="logo-log-reg3">
                 <img src='assets/img/logofooter.png' alt="">
+            </div><br>
+            <div class="tipos-de-cambios">
+                <table *ngIf="lcExchange && banco">
+                    <tr class="lc"><td></td><td><small>COMPRA</small></td><td><small>VENTA</small></td></tr>
+                    <tr *ngIf="lcExchange" class="lc"><td><img src="assets/img/logo3.png"></td><td><small>S/ </small>{{lcExchange.compra}}</td><td><small>S/ </small>{{lcExchange.venta}}</td></tr>
+                    <tr *ngIf="sunat"><td><img src="assets/img/sunat.svg" alt=""></td><td><small>S/ </small>{{sunat.compra}}</td><td><small>S/ </small>{{sunat.venta}}</td></tr>
+                    <tr *ngIf="banco"><td><mat-icon>account_balance</mat-icon> Bancos</td><td><small>S/ </small>{{banco.compra}}</td><td><small>S/ </small>{{banco.venta}}</td></tr>
+                </table>
             </div>
             <br>
             <div class="contenedor-carrusel">

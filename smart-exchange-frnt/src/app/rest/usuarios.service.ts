@@ -6,6 +6,13 @@ import { environment } from './../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { Empresa } from './empresa.service';
 
+export interface TCPublicoResponse{
+  tipo: number,
+  tipoDesc: string,
+  compra: number,
+  venta: number
+}
+
 export interface ClienteResponse{
   id:number,
   fechaCreacion:Date,
@@ -49,6 +56,12 @@ export class UsuariosService {
   authPath:string = '/auth'
 
   constructor(private http: HttpClient) { }
+  
+  recuperaTCPublico(): Observable<TCPublicoResponse[]>{
+    return this.http.get<any>(`${environment.baseUrl}${this.authPath}/tipo-cambio`).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   recuperaEmpresa(): Observable<Empresa>{
     return this.http.get<any>(`${environment.baseUrl}${this.authPath}/empresa-public`).pipe(

@@ -13,7 +13,7 @@ import { UsuariosService } from '../rest/usuarios.service';
 import { MatDialog } from '@angular/material/dialog';
 
 
-const ROUTES_WITHOUT_AUTH = ['/login', '/registro','/refresh-token','empresa-public','/auth'];
+const ROUTES_WITHOUT_AUTH = ['/login', '/registro','/refresh-token','/empresa-public','/auth','/auth/tipo-cambio'];
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

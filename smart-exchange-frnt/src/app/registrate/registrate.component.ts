@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder ,FormGroup, Validators } from '@angular/forms'
-import { UsuariosService } from '../rest/usuarios.service';
+import { TCPublicoResponse, UsuariosService } from '../rest/usuarios.service';
 import { ReCaptchaV3Service } from "ng-recaptcha";
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -13,10 +13,14 @@ import { NotifierService } from 'angular-notifier';
   templateUrl: './registrate.component.html',
   styleUrls: ['./registrate.component.sass']
 })
-export class RegistrateComponent {
+export class RegistrateComponent implements OnInit{
   hide1: boolean = true
   hide2: boolean = true
   estaCargando: boolean = false
+  tiposCambio: TCPublicoResponse[]=[]
+  lcExchange!: TCPublicoResponse
+  sunat!: TCPublicoResponse
+  banco!: TCPublicoResponse
   registraForm: FormGroup;
 
   constructor(
@@ -34,6 +38,40 @@ export class RegistrateComponent {
           Validators.maxLength(30)]],
       });
       this.registraForm.addValidators(ConfirmPasswordValidator('password', 'rePassword'))
+  }
+
+  ngOnInit(): void {
+    this.recuperaTCPublico()
+  }
+
+  recuperaTCPublico():void{
+    this.restUsuarios.recuperaTCPublico().subscribe({
+      next: (tiposCambios:TCPublicoResponse[]) => {
+        this.tiposCambio = tiposCambios
+        this.asignaTCFuente()
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+        this.notif.notify('error', error);
+      }
+    });
+  }
+
+  asignaTCFuente():void{
+    this.tiposCambio.forEach((item:TCPublicoResponse)=>{
+      if(item.tipo===1){
+        this.lcExchange = item
+        console.log('EXCHANGE')
+      }
+      if(item.tipo===2){
+        this.sunat = item
+        console.log('WARN')
+      }
+      if(item.tipo===3){
+        console.log('ERRO')
+        this.banco = item
+      }
+    })
   }
 
   registra():void {
