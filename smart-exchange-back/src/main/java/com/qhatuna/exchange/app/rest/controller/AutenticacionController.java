@@ -3,14 +3,12 @@ package com.qhatuna.exchange.app.rest.controller;
 import com.qhatuna.exchange.app.rest.request.RegistroRequest;
 import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
+import com.qhatuna.exchange.app.rest.response.AhorroResponse;
 import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.domain.model.Empresa;
-import com.qhatuna.exchange.domain.service.AutenticacionService;
-import com.qhatuna.exchange.domain.service.EmpresaService;
-import com.qhatuna.exchange.domain.service.TipoCambioService;
-import com.qhatuna.exchange.domain.service.UsuarioService;
+import com.qhatuna.exchange.domain.service.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +35,9 @@ public class AutenticacionController {
     private EmpresaService empresaService;
     @Autowired
     private TipoCambioService tcService;
+    @Autowired
+    private OperacionService operacionService;
+
     @PostMapping(path = "/login", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<AutenticationResponse> autenticacion(
             @RequestHeader("Authorization") String basicAuth
@@ -80,5 +81,10 @@ public class AutenticacionController {
     @GetMapping(path = "/tipo-cambio", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<TCPublicoResponse>> recupertaTCPublico() {
         return new ResponseEntity<>(tcService.recuperaTCPulico(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/ahorro/{opcion}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<AhorroResponse>> recupertaAhorroPublico(@PathVariable Integer opcion) {
+        return new ResponseEntity<>(operacionService.recuperAhorroPublico(opcion), HttpStatus.OK);
     }
 }

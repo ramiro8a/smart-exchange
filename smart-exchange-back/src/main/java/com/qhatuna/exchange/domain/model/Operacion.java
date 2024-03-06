@@ -39,6 +39,8 @@ public class Operacion extends BaseModel{
     private BigDecimal monto;
     @Column(name = "monto_final")
     private BigDecimal montoFinal;
+    @Column(name = "monto_bancos_aux")
+    private BigDecimal montoBancosAux;
     @ManyToOne
     @JoinColumn(name="tipo_cambio_id",referencedColumnName="id")
     private TipoCambio tipoCambio;

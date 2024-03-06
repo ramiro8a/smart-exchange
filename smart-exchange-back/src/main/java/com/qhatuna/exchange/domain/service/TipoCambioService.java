@@ -30,6 +30,18 @@ public class TipoCambioService {
     private final TipoCambioRepository tipoCambioRepository;
     private final ApiPeruProvider apiPeruProvider;
 
+    public TipoCambio recuperaTCBancos(){
+        List<TipoCambio> bancos = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
+                ConstValues.USD_ISO,
+                ConstValues.TC_BANCOS,
+                PageRequest.of(0, 1)
+        );
+        if (bancos.isEmpty()){
+            throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
+        }
+        return bancos.get(0);
+    }
+
     public List<TCPublicoResponse> recuperaTCPulico(){
         Integer moneda = ConstValues.USD_ISO;
         List<TipoCambio> lcExchange = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(

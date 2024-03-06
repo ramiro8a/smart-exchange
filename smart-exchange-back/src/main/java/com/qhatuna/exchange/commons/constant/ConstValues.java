@@ -26,4 +26,5 @@ public class ConstValues {
     public static final Integer TC_SUNAT = 2;
     public static final Integer TC_BANCOS = 3;
     public static final Integer TD_RUC = 2;
+    public static final Integer AHORRO_DIA = 1;
 }

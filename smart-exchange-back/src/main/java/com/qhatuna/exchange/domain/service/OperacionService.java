@@ -3,6 +3,7 @@ package com.qhatuna.exchange.domain.service;
 import com.qhatuna.exchange.app.rest.request.ComprobanteRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionCriteriaRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionRequest;
+import com.qhatuna.exchange.app.rest.response.AhorroResponse;
 import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
@@ -40,6 +41,30 @@ public class OperacionService {
     private final ClienteService clienteService;
     private final NotificacionService notificacionService;
 
+    public List<AhorroResponse> recuperAhorroPublico(Integer opcion){
+        LocalDate fecha = LocalDate.now();
+        LocalDate semana = fecha.minusDays(7L);
+        LocalDate mes = fecha.minusMonths(1L);
+        LocalDate anio = fecha.minusYears(1L);
+        List<AhorroResponse> lista = new ArrayList<>();
+        List<Operacion> operaciones = switch (opcion) {
+            case 1 -> operacionRepository.recuperaOperacionesPorDia(fecha);
+            case 2 -> operacionRepository.recuperaOperacionesEntreFechas(semana, fecha);
+            case 3 -> operacionRepository.recuperaOperacionesEntreFechas(mes, fecha);
+            case 4 -> operacionRepository.recuperaOperacionesEntreFechas(anio, fecha);
+            default -> throw new ProviderException(ErrorMsj.OPCION_NO_EXISTE.getMsj(), ErrorMsj.OPCION_NO_EXISTE.getCod());
+        };
+        BigDecimal totalLcExchange = BigDecimal.ZERO;
+        BigDecimal totalBancos = BigDecimal.ZERO;
+        for(Operacion operacion: operaciones){
+            totalLcExchange = totalLcExchange.add(aSoles(operacion));
+            totalBancos = totalBancos.add(aSolesAux(operacion));
+        }
+        lista.add(new AhorroResponse("1","Lc Exchange", totalLcExchange.setScale(2, RoundingMode.HALF_UP)));
+        lista.add(new AhorroResponse("2","Sin Lc Exchange", totalBancos.setScale(2, RoundingMode.HALF_UP)));
+        lista.add(new AhorroResponse("3","Ahorro", (totalLcExchange.subtract(totalBancos)).setScale(2, RoundingMode.HALF_UP)));
+        return lista;
+    }
 
     public void reasignar(Long id, Long operadorId){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
@@ -134,6 +159,7 @@ public class OperacionService {
         CuentaBancaria destino =  bancosService.recuperaCuentaBancariaPorId(request.cuentaDestinoId());
         CuentaBancaria transferencia =  bancosService.recuperaCuentaBancariaPorId(request.cuentaTransferenciaId());
         TipoCambio tipoCambio =  tipoCambioService.recuperaTipoCambioPorId(request.tipoCambioId());
+        TipoCambio tipoCambioBancos = tipoCambioService.recuperaTCBancos();
         Cliente cliente = clienteService.recuperaClientePorUsuarioId(usuario.getId());
         if(!cliente.isValidado()){
             throw new ProviderException(
@@ -149,6 +175,7 @@ public class OperacionService {
                 .cuentaTransferencia(transferencia)
                 .monto(request.monto())
                 .montoFinal(calculaCambio(origen, destino, request.monto(), tipoCambio))
+                .montoBancosAux(calculaCambio(origen, destino, request.monto(), tipoCambioBancos))
                 .estado(6)
                 .usuarioCreacion(usuario.getId())
                 .tipoCambio(tipoCambio)
@@ -227,6 +254,7 @@ public class OperacionService {
         CuentaBancaria destino =  bancosService.recuperaCuentaBancariaPorId(request.cuentaDestinoId());
         CuentaBancaria transferencia =  bancosService.recuperaCuentaBancariaPorId(request.cuentaTransferenciaId());
         TipoCambio tipoCambio =  tipoCambioService.recuperaTipoCambioPorId(request.tipoCambioId());
+        TipoCambio tipoCambioBancos = tipoCambioService.recuperaTCBancos();
 
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Operacion operacion = recuperaOperacionPorId(id);
@@ -236,6 +264,7 @@ public class OperacionService {
         operacion.setTipoCambio(tipoCambio);
         operacion.setMonto(request.monto());
         operacion.setMontoFinal(calculaCambio(origen, destino, request.monto(), tipoCambio));
+        operacion.setMontoBancosAux(calculaCambio(origen, destino, request.monto(), tipoCambioBancos));
         operacion.setUsuarioActualizacion(usuario.getId());
         operacionRepository.save(operacion);
     }
@@ -291,6 +320,21 @@ public class OperacionService {
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private BigDecimal aSoles(Operacion operacion){
+        BigDecimal monto = operacion.getMontoFinal();
+        if(operacion.getCuentaDestino().esDolares()){
+            monto = operacion.getMontoFinal().multiply(operacion.getTipoCambio().getCompra());
+        }
+        return monto;
+    }
+    private BigDecimal aSolesAux(Operacion operacion){
+        BigDecimal monto = operacion.getMontoBancosAux();
+        if(operacion.getCuentaDestino().esDolares()){
+            monto = operacion.getMontoBancosAux().multiply(operacion.getTipoCambio().getCompra());
+        }
+        return monto;
     }
 
 }
