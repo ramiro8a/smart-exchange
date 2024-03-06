@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.1.0-04-inserta-t-cuentas-bancarias-01" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_CUENTA_BANCARIA interbank soles
+		</comment>
+        <insert tableName="T_CUENTA_BANCARIA">
+            <column name="FECHA_CREACION" value="now()"/>
+            <column name="FECHA_ACTUALIZACION" value="now()"/>
+            <column name="USUARIO_CREACION" value="0"/>
+            <column name="USUARIO_ACTUALIZACION" value="0"/>
+            
+            <column name="TIPO_CUENTA" value="2"/>
+            <column name="MONEDA" value="604" remarks="840:dolares,604:soles,978:euros"/>
+            <column name="BANCO_ID" value="2"/>
+            <column name="NRO_CUENTA" value="2003005788097"/>
+            <column name="NOMBRE" value="interbankCorrienteSoles"/>
+            <column name="USUARIO_ID" value="0"/>
+        </insert>
+    </changeSet>
+
+        <changeSet id="v0.1.0-04-inserta-t-cuentas-bancarias-02" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_CUENTA_BANCARIA interbank dolares
+		</comment>
+        <insert tableName="T_CUENTA_BANCARIA">
+            <column name="FECHA_CREACION" value="now()"/>
+            <column name="FECHA_ACTUALIZACION" value="now()"/>
+            <column name="USUARIO_CREACION" value="0"/>
+            <column name="USUARIO_ACTUALIZACION" value="0"/>
+            
+            <column name="TIPO_CUENTA" value="2"/>
+            <column name="MONEDA" value="840"/>
+            <column name="BANCO_ID" value="2"/>
+            <column name="NRO_CUENTA" value="2003005788100"/>
+            <column name="NOMBRE" value="interbankCorrienteDolares"/>
+            <column name="USUARIO_ID" value="0"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

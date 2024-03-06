@@ -26,6 +26,7 @@
             <column name="SALIDA_TRANSFERENCIA_ID" type="BIGINT" remarks="Id de la cuenta de la que se hizo la tranferencia al cliente"/>
             <column name="MONTO" type="DECIMAL(19,4)" remarks="Monto original"/>
             <column name="MONTO_FINAL" type="DECIMAL(19,4)" remarks="Monto cambiado"/>
+            <column name="MONTO_BANCOS_AUX" type="DECIMAL(19,4)" defaultValue="0" remarks="Monto cambiado sin LC Exchange"/>
             <column name="TIPO_CAMBIO_ID" type="BIGINT" remarks="Id del tipo de cambio"/>
             <column name="TICKET" type="VARCHAR(200)" remarks="Ticket publico para el cliente y operador que identifica a la operacion"/>
             <column name="CODIGO_TRANSFERENCIA" type="VARCHAR(200)" remarks="Código de transferencia cliente"/>
