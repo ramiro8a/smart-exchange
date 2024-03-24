@@ -50,6 +50,7 @@ import { RegClientesComponent } from './reportes/reg-clientes/reg-clientes.compo
 import { RegOperadoresComponent } from './reportes/reg-operadores/reg-operadores.component';
 import { CambioPasswordComponent } from './ui-utils/cambio-password/cambio-password.component';
 import { BancosComponent } from './operaciones/bancos/bancos.component';
+import { FacturaComponent } from './operaciones/factura/factura.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsColor: "#2d47af",
@@ -141,6 +142,7 @@ const customNotifierOptions: NotifierOptions = {
     RegOperadoresComponent,
     CambioPasswordComponent,
     BancosComponent,
+    FacturaComponent,
   ],
   imports: [
     BrowserModule,

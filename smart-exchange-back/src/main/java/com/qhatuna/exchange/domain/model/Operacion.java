@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @SuperBuilder
@@ -60,6 +61,9 @@ public class Operacion extends BaseModel{
     private String comprobanteEmpresa;
     @Column(name = "fecha_finalizacion")
     private LocalDate fechaFinalizacion;
+    @OneToOne
+    @JoinColumn(name="comprobante_venta_id",referencedColumnName="id")
+    private ComprobanteVenta comprobanteVenta;
 
 /*    @PrePersist
     public void prePersistTicket(){
@@ -68,6 +72,10 @@ public class Operacion extends BaseModel{
     }*/
 
     public static OperacionResponse aResponse(Operacion operacion){
+        boolean envioSunat = false;
+        if(operacion.getComprobanteVenta()!=null){
+            envioSunat = operacion.getComprobanteVenta().isEnvioSunat();
+        }
         return new OperacionResponse(
                 operacion.getId(),
                 operacion.getFechaCreacion(),
@@ -86,7 +94,16 @@ public class Operacion extends BaseModel{
                 Cliente.aResponse(operacion.getCliente()),
                 Usuario.aResponse(operacion.getOperador()),
                 operacion.getTicket(),
-                operacion.getFechaFinalizacion()
+                operacion.getFechaFinalizacion(),
+                envioSunat
         );
+    }
+
+    public BigDecimal getCambio(){
+        if(cuentaOrigen.esDolares() && cuentaDestino.esSoles()) {
+            return tipoCambio.getCompra();
+        }else {
+            return tipoCambio.getVenta();
+        }
     }
 }

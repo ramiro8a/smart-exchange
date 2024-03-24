@@ -40,7 +40,12 @@ public enum ErrorMsj {
     DIA_NOEXISTE("ADV-0023", "El dia no existe"),
     FORMATO_IMG("ADV-0024", "El formato de la imagen debe ser jpg o png"),
     CLIENTE_YA_EXISTE("ADV-0025", "El cliente ya existe"),
-    CLIENTE_REG_NO_VALIDADO("ADV-0026", "No hemos podido validar sus datos automáticamente, revise sus datos en USUARIO o póngase en contacto con nosotros"),;
+    CLIENTE_REG_NO_VALIDADO("ADV-0026", "No hemos podido validar sus datos automáticamente, revise sus datos en USUARIO o póngase en contacto con nosotros"),
+    XML_FIRMA("ADV-0027", "No es posible firmar la factura"),
+    XML_CONVERT("ADV-0028", "No es posible convertir el xml a byte"),
+    JASPER("ADV-0029", "No es posible generar el documento desde jasper"),
+    COMPROBANTE_VACIO("ADV-0030", "No hay comprobantes"),
+    NO_EXISTE_ARCHIVO("ADV-0031", "No hemos podido encontrar el archivo"),;
     final String cod;
     final String msj;
     final String msjTec;

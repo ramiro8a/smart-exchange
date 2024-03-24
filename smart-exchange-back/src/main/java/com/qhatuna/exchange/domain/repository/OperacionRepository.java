@@ -39,4 +39,7 @@ public interface OperacionRepository extends JpaRepository<Operacion, Long>, Jpa
     @Query("select o from Operacion o where o.estado=10 and o.fechaFinalizacion >= :fechaInicio and o.fechaFinalizacion <= :fechaFin")
     List<Operacion> recuperaOperacionesEntreFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
+    @Query("select o from Operacion o where o.comprobanteVenta.id=?1")
+    Operacion recuperaPorComprobanteVentaId(Long comprobanteVentaId);
+
 }

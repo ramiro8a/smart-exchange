@@ -37,6 +37,7 @@ export interface OperacionResponse{
   cuentaTransferencia: CuentaBancariaResponse;
   tipoCambio: TipoCambioResponse;
   operador: UsuarioResponse;
+  envioSunat: boolean;
 }
 
 @Injectable({

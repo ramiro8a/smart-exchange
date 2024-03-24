@@ -36,6 +36,7 @@
             <column name="COMPROBANTE" type="VARCHAR(500)" remarks="url del comprobante"/>
             <column name="COMPROBANTE_EMPRESA" type="VARCHAR(500)" remarks="url del comprobante que cargó la empresa"/>
             <column name="FECHA_FINALIZACION" type="DATE" remarks="Fecha finalización de la operacion"/>
+            <column name="COMPROBANTE_VENTA_ID" type="BIGINT" remarks="Id del comprobante de venta"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_cuenta_origen_operacion"
             baseTableName="T_OPERACION"

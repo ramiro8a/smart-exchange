@@ -22,5 +22,6 @@ public record OperacionResponse(
         ClienteResponse cliente,
         UsuarioResponse operador,
         String ticket,
-        LocalDate fechaFinalizacion
+        LocalDate fechaFinalizacion,
+        boolean envioSunat
 ) {}

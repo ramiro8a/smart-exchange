@@ -5,9 +5,9 @@
                 xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet id="v0.1.0-01-inserta-t-usuario" author="ramiro.ochoa">
+    <changeSet id="v0.1.0-01-inserta-t-usuario-admin" author="ramiro.ochoa">
         <comment>
-			Inserta tabla T_USUARIO
+			Inserta tabla T_USUARIO admin
 		</comment>
         <insert tableName="T_USUARIO">
             <column name="EST_REG" value="0"/>
@@ -24,6 +24,28 @@
             </delete>
         </rollback>
     </changeSet>
+
+<!--     <changeSet id="v0.1.0-01-inserta-t-usuario-operador" author="ramiro.ochoa">
+        <comment>
+			Inserta tabla T_USUARIO operador
+		</comment>
+        <insert tableName="T_USUARIO">
+            <column name="EST_REG" value="0"/>
+            <column name="USUARIO" value="operador"/>
+            <column name="PASSWORD" value="$2a$10$vdyN1ur19.bokD3ZZ97jh.8uBYIMlOr.U8PKpKIJGyQUlvV1pct1O"/>
+            <column name="CORREO" value="operador@operador.com"/>
+            <column name="CORREO_VALIDADO" valueBoolean="false"/>
+            <column name="BLOQUEADO" valueBoolean="false"/>
+            <column name="INTENTOS_FALLIDOS" value="0"/>
+            <column name="INICIO" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="FIN" valueComputed="CURRENT_TIMESTAMP + INTERVAL '5 year'"/>
+        </insert>
+        <rollback>
+            <delete tableName="T_USUARIO">
+                <where>USUARIO='operador' AND CORREO='operador@operador.com'</where>
+            </delete>
+        </rollback>
+    </changeSet> -->
 
     <changeSet id="v0.1.0-02-inserta-t-rol" author="ramiro.ochoa">
         <comment>
@@ -92,4 +114,14 @@
             <column name="ROL_ID" value="4"/>
         </insert>
     </changeSet>
+
+<!--     <changeSet id="v0.1.0-07-inserta-t-usuario-rol-operador" author="ramiro.ochoa">
+        <comment>
+			inserta T_USUARIO_ROL operador inicial
+		</comment>
+        <insert tableName="T_USUARIO_ROL">
+            <column name="USUARIO_ID" value="2"/>
+            <column name="ROL_ID" value="2"/>
+        </insert>
+    </changeSet> -->
 </databaseChangeLog>

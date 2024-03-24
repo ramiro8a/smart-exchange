@@ -55,4 +55,124 @@
         </insert>
     </changeSet>
 
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-06" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.certificado.path
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.certificado.path"/>
+            <column name="VALOR" value="certificado_sunat.pfx"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-07" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.certificado.password
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.certificado.password"/>
+            <column name="VALOR" value="12345"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-08" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.firmador-id.value
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.firmador-id.value"/>
+            <column name="VALOR" value="testLcExchange"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-09" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES lc-exchange.factura.razon-social.value
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="lc-exchange.factura.razon-social.value"/>
+            <column name="VALOR" value="SERVICE CORPORATION LC S.A.C."/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-10" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES lc-exchange.factura.ruc.value
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="lc-exchange.factura.ruc.value"/>
+            <column name="VALOR" value="20611808098"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-11" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES lc-exchange.factura.direccion.value
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="lc-exchange.factura.direccion.value"/>
+            <column name="VALOR" value="Lima - Perú"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-12" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.factura-url
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.factura-url"/>
+            <column name="VALOR" value="https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-13" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.username
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.username"/>
+            <column name="VALOR" value="20000000001MODDATOS"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-14" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.password
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.password"/>
+            <column name="VALOR" value="MODDATOS"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-15" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.icb-tasa
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.icb-tasa"/>
+            <column name="VALOR" value="0.2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-16" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES provider.sunat.igv-tasa
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="provider.sunat.igv-tasa"/>
+            <column name="VALOR" value="0.18"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="v0.1.0-03-inserta-t-propiedades-17" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_PROPIEDADES lc-exchange.sunat.unidade-medida
+		</comment>
+        <insert tableName="T_PROPIEDADES">
+            <column name="PROPIEDAD" value="lc-exchange.sunat.unidade-medida"/>
+            <column name="VALOR" value="NIU"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

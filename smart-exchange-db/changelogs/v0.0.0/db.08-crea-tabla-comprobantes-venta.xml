@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="v0.0.0-08-crea-t-comprobantes-venta" author="ramiro.ochoa">
+        <comment>
+			Create table T_COMPROBANTE_VENTA
+		</comment>
+        <createTable tableName="T_COMPROBANTE_VENTA">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NRO_FACTURA" type="INTEGER" remarks="Nro de factura"/>
+            <column name="RUTA_FACTURA_ZIP" type="VARCHAR(500)" remarks="Ruta de la factura xml"/>
+            <column name="RUTA_FACTURA_IMPRESA" type="VARCHAR(500)" remarks="Ruta de la factura pdf"/>
+            <column name="RUTA_FACTURA_CDR" type="VARCHAR(500)" remarks="Ruta de la factura cdr"/>
+            <column name="FACTURA_TICKET_SUNAT" type="VARCHAR(100)" remarks="Ticket devuelto por Sunat"/>
+            <column name="FACTURA_HASH" type="VARCHAR(250)" remarks="Hash sunat"/>
+            <column name="NRO_COMPROBANTE" type="INTEGER" remarks="Nro comprobante"/>
+            <column name="RUTA_COMPROBANTE" type="VARCHAR(500)" remarks="Ruta comprobante pdf"/>
+            <column name="ENVIO_SUNAT" type="BOOLEAN" defaultValueBoolean="false" remarks="Se marca cuando la factura o coprobante se generó con éxito"/>
+            <column name="ESTADO" type="VARCHAR(50)" remarks="Estado devuelto por sunat"/>
+            <column name="CODIGO_RESPUESTA" type="INTEGER" remarks="COdigo de respuesta Sunat"/>
+            <column name="DESCRIPCION" type="TEXT" remarks="Descripcion devuelto por Sunat"/>
+            <column name="NRO_COMPLETO" type="VARCHAR(50)" remarks="Nro de comprobante completo"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="T_COMPROBANTE_VENTA"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

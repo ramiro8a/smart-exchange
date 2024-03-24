@@ -6,14 +6,22 @@ import com.qhatuna.exchange.app.rest.request.OperacionRequest;
 import com.qhatuna.exchange.app.rest.response.AhorroResponse;
 import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
+import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.utils.Util;
+import com.qhatuna.exchange.domain.component.CompilaJasperComponent;
 import com.qhatuna.exchange.domain.model.*;
+import com.qhatuna.exchange.domain.provider.sunat.SunatProvider;
+import com.qhatuna.exchange.domain.provider.sunat.response.ComprobanteDatos;
 import com.qhatuna.exchange.domain.repository.OperacionRepository;
+import com.tenpisoft.n2w.MoneyConverters;
+import io.github.project.openubl.xbuilder.content.models.standard.general.DocumentoVentaDetalle;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +35,11 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class OperacionService {
@@ -40,6 +50,11 @@ public class OperacionService {
     private final UsuarioService usuarioService;
     private final ClienteService clienteService;
     private final NotificacionService notificacionService;
+    private final Environment env;
+    private final CompilaJasperComponent jasperComponent;
+    private final SunatProvider sunatProvider;
+    private final CorreoService correoService;
+    private final ComprobanteVentaService comprobanteVentaService;
 
     public List<AhorroResponse> recuperAhorroPublico(Integer opcion){
         LocalDate fecha = LocalDate.now();
@@ -75,6 +90,7 @@ public class OperacionService {
     }
 
 
+    @Transactional
     public void finaliza(Long id, ComprobanteRequest request){
         Usuario usuario = sessionInfoService.getSession().getUsusario();
         Operacion operacion = recuperaOperacionPorId(id);
@@ -89,6 +105,39 @@ public class OperacionService {
         operacion.setUsuarioActualizacion(usuario.getId());
         operacion = operacionRepository.save(operacion);
         notificacionService.cambioEstadoOperacion(Operacion.aResponse(operacion));
+        ComprobanteVenta comprobanteVenta = operacion.getCliente().esFactura()?comprobanteVentaService.creaNuevaFactura():comprobanteVentaService.creaNuevoComprobante();
+        operacion.setComprobanteVenta(comprobanteVenta);
+        enviarComprobanteVenta(operacion, comprobanteVenta);
+        comprobanteVentaService.guarda(comprobanteVenta);
+    }
+
+    public void enviarComprobanteVenta(Operacion operacion, ComprobanteVenta comprobanteVenta){
+        try {
+            DocumentoVentaDetalle ventaDetalle = DocumentoVentaDetalle.builder()
+                    .descripcion("Cambio de "+(operacion.getMonto().setScale(2,RoundingMode.HALF_UP))+" "+operacion.getCuentaOrigen().getMomedaSigla()+" a "+ operacion.getCuentaDestino().getMomedaSigla()+" con tipo de cambio "+operacion.getCambio().toString())
+                    .cantidad(new BigDecimal("1"))
+                    .precio(operacion.getMonto())
+                    .unidadMedida(env.getProperty("lc-exchange.sunat.unidade-medida"))
+                    .build();
+            ComprobanteDatos datos =sunatProvider.enviaFactura(
+                    Cliente.aClienteSunat(operacion.getCliente()),
+                    ventaDetalle,
+                    comprobanteVenta,
+                    operacion
+            );
+            comprobanteVenta.setEnvioSunat(true);
+            String rutaReporte = imprimeFacturaPdf(operacion, datos);
+            comprobanteVenta.setRutaFacturaImpresa(rutaReporte);
+            Usuario clienteUs = usuarioService.recuperaUsuarioPorId(operacion.getCliente().getUsuarioId());
+            correoService.sendSimpleMessageWithAttachment(
+                    clienteUs.getCorreo(),
+                    ConstValues.ASUNTO_COMPROBANTE,
+                    String.format(ConstValues.CUERPO_COMPROBANTE, operacion.getTicket()),
+                    rutaReporte
+            );
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
     }
 
     public void accionesOperador(Long id, Integer estado){
@@ -247,6 +296,35 @@ public class OperacionService {
         }else {
             return null;
         }
+    }
+
+    public String imprimeFacturaPdf(Operacion operacion, ComprobanteDatos documento){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("P_EMP_RUC", env.getProperty("lc-exchange.factura.ruc.value"));
+        map.put("P_EMP_TITULO", operacion.getCliente().esFactura()?"FACTURA ELECTRÓNICA":"BOLETA DE VENTA ELECTRÓNICA");
+        map.put("P_EMP_NR_FACTURA", documento.numero());
+        map.put("P_EMP_RAZON_SOCIAL", env.getProperty("lc-exchange.factura.razon-social.value"));
+        map.put("P_EMP_DIRECCION", env.getProperty("lc-exchange.factura.direccion.value"));
+        map.put("P_CLI_TIPO_DOC", operacion.getCliente().getTipoDocDesc());
+        map.put("P_CLI_DOCUMENTO", operacion.getCliente().getNroDocumento());
+        map.put("P_CLI_NOMBRE", operacion.getCliente().getNombreCompleto());
+        map.put("P_FECHA_EMISION", Util.dateADD_MM_YYYY(documento.fechaEmision()));
+        map.put("P_MONEDA", operacion.getCuentaOrigen().getMomedaDesc());
+        map.put("P_CANTIDAD", "1");
+        map.put("P_UN_MEDIDA", "M4");
+        map.put("P_DESCRIPCION", documento.concepto());
+        map.put("P_IMPORTE", String.valueOf(operacion.getMonto().setScale(2,RoundingMode.HALF_UP)));
+        map.put("P_PRE_UNITARIO", String.valueOf(operacion.getMonto().setScale(2,RoundingMode.HALF_UP)));
+        map.put("P_FORMA_PAGO", "Transferencia electrónica de fondos");
+        MoneyConverters converter = MoneyConverters.SPANISH_BANKING_MONEY_VALUE;
+        map.put("P_IMPORTE_LETRA", "SON "+converter.asWords(operacion.getMonto().setScale(2,RoundingMode.HALF_UP)).toUpperCase()+" "+operacion.getCuentaOrigen().getMomedaDesc());
+        map.put("P_QR_DATOS", documento.numero()+"|"+operacion.getMonto());
+        byte[] byt = jasperComponent.buildDocument(map, "factura.jrxml");
+        return Util.guardaArchivo(byt, "comprobanteEnviadoAlCliente",operacion.getTicket()+".pdf");
+    }
+
+    public Operacion recuperaOperacionPorComprovanteVentaId(Long comprobanteVentaId){
+        return operacionRepository.recuperaPorComprobanteVentaId(comprobanteVentaId);
     }
 
     private void actualiza(Long id, OperacionRequest request){

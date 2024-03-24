@@ -21,6 +21,10 @@ public class LogPrinter<T> {
         log.info(Util.objectToString(apiRequestLog, true));
     }
 
+    public void write(String data){
+        log.info(data);
+    }
+
     public void write(Exception ex) {
         ApiRequestLog apiLog = ApiRequestLog.builder()
                 .requestIdInternal(getRequestIdInternal())

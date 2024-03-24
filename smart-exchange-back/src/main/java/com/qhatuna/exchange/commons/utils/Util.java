@@ -7,16 +7,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
+import io.github.project.openubl.xbuilder.content.catalogs.Catalog6;
+import io.github.project.openubl.xbuilder.signature.CertificateDetails;
+import io.github.project.openubl.xbuilder.signature.CertificateDetailsFactory;
+import io.github.project.openubl.xbuilder.signature.XMLSigner;
+import org.springframework.core.io.ClassPathResource;
+import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.security.*;
+import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,6 +39,79 @@ public class Util {
     private static final ObjectMapper objectMapper = createObjectMapper();
     private static final AtomicLong counter = new AtomicLong(0);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+    private static final DateTimeFormatter carpeta = DateTimeFormatter.ofPattern("yyyyMM");
+    private static final String CERT_SUNAT = "certificateSUNAT.pem";
+
+    public static String recuperaTipoDoocumentoSunat(Integer tipoDocLocal){
+        return switch (tipoDocLocal) {
+            case 1 -> "DNI";
+            case 2 -> "RUC";
+            case 3 -> "EXTRANJERIA";
+            case 4 -> "PASAPORTE";
+            default -> "999999";
+        };
+    }
+    public static String recuperaTipoComprobante(String tipoDocumento){
+        if((Catalog6.RUC.toString()).equals(tipoDocumento)){
+            return "01";
+        } else if ((Catalog6.DNI.toString()).equals(tipoDocumento)) {
+            return "03";
+        } else if ((Catalog6.EXTRANJERIA.toString()).equals(tipoDocumento)) {
+            return "03";
+        } else if ((Catalog6.PASAPORTE.toString()).equals(tipoDocumento)) {
+            return "03";
+        }else {
+            return "000";
+        }
+    }
+
+    public static String recuperaSerie(String tipoDocumento, String ticket){
+        if((Catalog6.RUC.toString()).equals(tipoDocumento)){
+            return "F"+ticket;
+        } else if ((Catalog6.DNI.toString()).equals(tipoDocumento)) {
+            return "B"+ticket;
+        } else if ((Catalog6.EXTRANJERIA.toString()).equals(tipoDocumento)) {
+            return "B"+ticket;
+        } else if ((Catalog6.PASAPORTE.toString()).equals(tipoDocumento)) {
+            return "B"+ticket;
+        }else {
+            return "000";
+        }
+    }
+
+    public static Document firmarXml(String xml, String pathCertificado,String passCertificado, String firmadorId) {
+        try {
+            ClassPathResource resource = new ClassPathResource(pathCertificado);
+            InputStream ksInputStream = resource.getInputStream();
+            CertificateDetails certificate = CertificateDetailsFactory.create(ksInputStream, passCertificado);
+            X509Certificate certificado = certificate.getX509Certificate();
+            PrivateKey privateKey = certificate.getPrivateKey();
+            return XMLSigner.signXML(xml, firmadorId, certificado, privateKey);
+        }catch (Exception ex){
+            throw new ProviderException(ex.getMessage(), ErrorMsj.XML_FIRMA.getMsj(), ErrorMsj.XML_FIRMA.getCod());
+        }
+    }
+
+    public static String guardaArchivo(byte[] datos,String carpetaPrincipal, String fileName){
+        String monthDirName = LocalDate.now().format(carpeta);
+        String jarDir = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
+        String cdrDirPath = jarDir + File.separator + carpetaPrincipal + File.separator +monthDirName;
+        File directory = new File(cdrDirPath);
+        if (!directory.exists()) {
+            boolean wasDirectoryMade = directory.mkdirs();
+            if (!wasDirectoryMade) {
+                throw new ProviderException(ErrorMsj.PATH_COMPROBANTE.getMsj(),ErrorMsj.PATH_COMPROBANTE.getCod());
+            }
+        }
+        String rutaCompleta = cdrDirPath+ File.separator + fileName;
+        try {
+            Files.write(Paths.get(rutaCompleta), datos, StandardOpenOption.CREATE);
+            return rutaCompleta;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static String toCamelCase(String input){
         if (input == null || input.isEmpty()) {
@@ -91,6 +172,19 @@ public class Util {
         return data.format(formateador);
     }
 
+    public static String aHoraMinutoSegundo(LocalTime data) {
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return data.format(formateador);
+    }
+    public static String dateAYYYY_MM_DD(LocalDate data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return data.format(formatter);
+    }
+    public static String dateADD_MM_YYYY(LocalDate data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return data.format(formatter);
+    }
+
     private static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -103,7 +197,7 @@ public class Util {
     public static String recuperaPathComprobantes() {
         String jarDir = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
         String comprobantesDirPath = jarDir + File.separator + "comprobantes";
-        String monthDirName = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        String monthDirName = LocalDate.now().format(carpeta);
         return comprobantesDirPath + File.separator + monthDirName+File.separator;
     }
 
@@ -114,6 +208,21 @@ public class Util {
             return Base64.getEncoder().encodeToString(fileContent);
         }catch (Exception e){
             throw new ProviderException(ErrorMsj.NOHAY_COMPROBANTE.getMsj(),ErrorMsj.NOHAY_COMPROBANTE.getCod());
+        }
+    }
+
+    public static ComprobanteResponse recuperaArchivoSunat(String ruta, String prefijo, Integer tipo){
+        try{
+            File file = new File(ruta);
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            return new ComprobanteResponse(
+                    Base64.getEncoder().encodeToString(fileContent),
+                    prefijo,
+                    String.valueOf(tipo),
+                    file.getName()
+            );
+        }catch (Exception e){
+            throw new ProviderException(ErrorMsj.NO_EXISTE_ARCHIVO.getMsj(),ErrorMsj.NO_EXISTE_ARCHIVO.getCod());
         }
     }
 
@@ -146,4 +255,58 @@ public class Util {
             throw new ProviderException(ErrorMsj.GUARDAR_COMPROBANTE.getMsj(),ErrorMsj.GUARDAR_COMPROBANTE.getCod());
         }
     }
+
+/*    public static X509Certificate getCertificate(){
+        ClassPathResource resource = new ClassPathResource(CERT_SUNAT);
+        try (InputStream inputStream = resource.getInputStream()) {
+            String pemContent = readPemContent(inputStream);
+            String[] parts = pemContent.split("-----END CERTIFICATE-----", 2);
+            return loadCertificate(parts[0] + "-----END CERTIFICATE-----");
+        }catch (Exception ex){
+            //throw new ProviderException(ex.getMessage(), )
+        }
+    }
+
+    private static String readPemContent(InputStream inputStream) throws Exception {
+        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    private static X509Certificate loadCertificate(String certificateString) throws Exception {
+        String certContents = certificateString.trim().replace("-----BEGIN CERTIFICATE-----", "").replace("-----END CERTIFICATE-----", "");
+        byte[] decoded = Base64.getDecoder().decode(certContents);
+
+        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+        X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(decoded));
+        return certificate;
+    }
+
+    private static PrivateKey loadPrivateKey(String keyString) throws Exception {
+        String privKeyPEM = keyString.trim().replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
+        byte[] decoded = Base64.getDecoder().decode(privKeyPEM);
+
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(decoded);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        return privateKey;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String filename = "path/inside/jar/to/pemfile.pem"; // Actualiza esta ruta al archivo PEM dentro del JAR
+        ClassPathResource resource = new ClassPathResource(filename);
+        try (InputStream inputStream = resource.getInputStream()) {
+            String pemContent = readPemContent(inputStream);
+
+            String[] parts = pemContent.split("-----END CERTIFICATE-----", 2);
+
+            X509Certificate certificate = loadCertificate(parts[0] + "-----END CERTIFICATE-----");
+            PrivateKey privateKey = loadPrivateKey(parts[1]);
+
+            System.out.println("Certificate:");
+            System.out.println(certificate);
+            System.out.println("Private Key:");
+            System.out.println(privateKey);
+        }
+    }*/
+
+
 }

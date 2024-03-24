@@ -30,6 +30,14 @@ public class CuentaBancaria extends BaseModel{
     private String nombre;
     //private String ruc;
 
+    public String getMomedaDesc(){
+        return esDolares()?"DÓLARES":"SOLES";
+    }
+
+    public String getMomedaSigla(){
+        return esDolares()?"USD":"PEN";
+    }
+
     public boolean esDolares(){
         return this.moneda.equals(ConstValues.USD_ISO);
     }

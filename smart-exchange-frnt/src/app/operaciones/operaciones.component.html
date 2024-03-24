@@ -61,7 +61,7 @@
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef> Estado </th>
                 <td mat-cell *matCellDef="let item"> 
-                    <div [class]="buscarClasePorCodigo(item.estado)">
+                    <div [class]="buscarClasePorCodigo(item.estado, item.envioSunat)">
                         {{buscarNombreDeEstado(item.estado)}}
                     </div>
                 </td>
@@ -143,30 +143,34 @@
             <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let item">
-                    <button *ngIf="item.estado!=10" mat-icon-button [matMenuTriggerFor]="menu">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
                         <mat-icon>more_vert</mat-icon>
                     </button>
                         <mat-menu #menu="matMenu">
-                        <button (click)="abreReasignacion(item.id)" mat-menu-item *ngIf="mostrarReasignar(item.estado)">
-                            <mat-icon>sync_alt</mat-icon>
-                            <span>Reasignar operador</span>
-                        </button>
-                        <button (click)="accionOperador(item.id, item.ticket, 3)" mat-menu-item *ngIf="mostrarEnCurso(item.estado) && estaAsignadoATi(item.operador.usuario)">
-                            <mat-icon>check</mat-icon>
-                            <span>En curso</span>
-                        </button>
-                        <button (click)="accionOperador(item.id,item.ticket, 5)" mat-menu-item *ngIf="mostrarAnular(item.estado)">
-                            <mat-icon>thumb_down</mat-icon>
-                            <span>Anular</span>
-                        </button>
-                        <button (click)="finalizaOperacion(item.id)" mat-menu-item *ngIf="mostrarFinalizar(item.estado) && estaAsignadoATi(item.operador.usuario)">
-                            <mat-icon>done_all</mat-icon>
-                            <span>Finalizar</span>
-                        </button>
-                        <button (click)="accionOperador(item.id,item.ticket, 0)" mat-menu-item *ngIf="mostrarReactivar(item.estado)">
-                            <mat-icon>refresh</mat-icon>
-                            <span>Reactivar</span>
-                        </button>
+                            <button (click)="abreReasignacion(item.id)" mat-menu-item *ngIf="mostrarReasignar(item.estado)">
+                                <mat-icon>sync_alt</mat-icon>
+                                <span>Reasignar operador</span>
+                            </button>
+                            <button (click)="accionOperador(item.id, item.ticket, 3)" mat-menu-item *ngIf="mostrarEnCurso(item.estado) && estaAsignadoATi(item.operador.usuario)">
+                                <mat-icon>check</mat-icon>
+                                <span>En curso</span>
+                            </button>
+                            <button (click)="accionOperador(item.id,item.ticket, 5)" mat-menu-item *ngIf="mostrarAnular(item.estado)">
+                                <mat-icon>thumb_down</mat-icon>
+                                <span>Anular</span>
+                            </button>
+                            <button (click)="finalizaOperacion(item.id)" mat-menu-item *ngIf="mostrarFinalizar(item.estado) && estaAsignadoATi(item.operador.usuario)">
+                                <mat-icon>done_all</mat-icon>
+                                <span>Finalizar</span>
+                            </button>
+                            <button (click)="accionOperador(item.id,item.ticket, 0)" mat-menu-item *ngIf="mostrarReactivar(item.estado)">
+                                <mat-icon>refresh</mat-icon>
+                                <span>Reactivar</span>
+                            </button>
+                            <button (click)="abrirFactura(item.id)" mat-menu-item *ngIf="item.estado==10">
+                                <mat-icon>shopping_cart_checkout</mat-icon>
+                                <span>Factura/CV</span>
+                            </button>
                         </mat-menu>
                 </td>
             </ng-container>

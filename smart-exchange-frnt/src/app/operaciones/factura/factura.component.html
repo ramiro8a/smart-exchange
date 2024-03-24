@@ -1,0 +1,57 @@
+<mat-card>
+    <mat-card-header>
+        <span class="cierra-componente accent-color">
+            <mat-icon (click)="close(false)" matTooltip="Cerrar">cancel</mat-icon>
+        </span>
+        <mat-card-title>FACTURA/COMPROBANTE DE VENTA</mat-card-title>
+        <mat-card-subtitle *ngIf="comprobante?.nroFactura">FACTURA {{comprobante.nroFactura}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="comprobante?.nroComprobante">COMPROBANTE {{comprobante.nroComprobante}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <table *ngIf="comprobante">
+            <tr>
+                <th>Estado</th>
+                <th>Código de Respuesta</th>
+                <th>Descripción</th>
+                <th>Ticket</th>
+                <th>Hash</th>
+                <th>Factura/CV</th>
+                <th>CDR</th>
+                <th>Impreso PDF</th>
+                <th *ngIf="!comprobante.envioSunat">Re envio</th>
+            </tr>
+            <tr>
+                <td>{{comprobante.estado}}</td>
+                <td>{{comprobante.codigoRespuesta}}</td>
+                <td>{{comprobante.descripcion}}</td>
+                <td>{{comprobante.facturaTicketSunat}}</td>
+                <td>{{comprobante.facturaHash}}</td>
+                <td>
+                    <button mat-mini-fab [disabled]="estaCargando" (click)="recuperaArchivosSunat(comprobante.id, 1)">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </td>
+                <td>
+                    <button mat-mini-fab [disabled]="estaCargando" (click)="recuperaArchivosSunat(comprobante.id, 2)">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </td>
+                <td>
+                    <button mat-mini-fab [disabled]="estaCargando || !comprobante.envioSunat" (click)="recuperaArchivosSunat(comprobante.id, 3)">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </td>
+                <td>
+                    <button mat-mini-fab color="warn" (click)="reEnvio(comprobante.id)" *ngIf="!comprobante.envioSunat" [disabled]="estaCargando">
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

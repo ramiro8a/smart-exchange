@@ -17,6 +17,7 @@ import { TokenService } from '../servicios/token.service';
 import { ConfirmacionComponent } from '../ui-utils/confirmacion/confirmacion.component';
 import { PromptComponent } from '../ui-utils/prompt/prompt.component';
 import { PrompSelecComponent, Item } from '../ui-utils/promp-selec/promp-selec.component';
+import { FacturaComponent } from './factura/factura.component';
 
 @Component({
   selector: 'app-operaciones',
@@ -80,6 +81,20 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe((pageEvent: PageEvent) => {
       this.recuperaOperacionesPaginado(pageEvent.pageIndex, pageEvent.pageSize);
     });
+  }
+
+  abrirFactura(operacionId:number){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      operacionId: operacionId
+    } 
+    const dialogRef = this.dialog.open(FacturaComponent, dialogConfig)
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        ///this.recuperaCuentasBancarias()
+      }
+    })
   }
   
   llenaEstados(){
@@ -313,7 +328,10 @@ export class OperacionesComponent implements OnInit, AfterViewInit {
   buscarNombreDeMoneda(codigo:number):string{
     return Const.buscarNombrePorCodigo(codigo, Const.CUENTA_MONEDAS_CLIENTE);
   }
-  buscarClasePorCodigo(codigo:number):string{
+  buscarClasePorCodigo(codigo:number, envioSunat:boolean):string{
+    if(Const.OP_FINALIZADO==codigo && !envioSunat){
+      return 'op-est-finalizado-sin-sunat'
+    }
     return Const.buscarClassPorCodigo(codigo, Const.ESTADOS_OPERACION);
   }
 }

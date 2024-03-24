@@ -1,4 +1,4 @@
-package com.qhatuna.exchange.domain.provider.dto;
+package com.qhatuna.exchange.domain.provider.apiperu.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

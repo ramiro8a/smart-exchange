@@ -8,6 +8,7 @@ import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.domain.model.Empresa;
+import com.qhatuna.exchange.domain.provider.sunat.SunatProvider;
 import com.qhatuna.exchange.domain.service.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,6 +38,8 @@ public class AutenticacionController {
     private TipoCambioService tcService;
     @Autowired
     private OperacionService operacionService;
+    @Autowired
+    private SunatProvider sunatProvider;
 
     @PostMapping(path = "/login", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<AutenticationResponse> autenticacion(
@@ -86,5 +89,14 @@ public class AutenticacionController {
     @GetMapping(path = "/ahorro/{opcion}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<AhorroResponse>> recupertaAhorroPublico(@PathVariable Integer opcion) {
         return new ResponseEntity<>(operacionService.recuperAhorroPublico(opcion), HttpStatus.OK);
+    }
+    @GetMapping(path = "/test-factura", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> testFactura() {
+        try {
+            sunatProvider.enviaFacturaTest();
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

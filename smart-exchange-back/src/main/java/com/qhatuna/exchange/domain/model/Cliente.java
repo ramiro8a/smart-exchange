@@ -1,6 +1,10 @@
 package com.qhatuna.exchange.domain.model;
 
 import com.qhatuna.exchange.app.rest.response.ClienteResponse;
+import com.qhatuna.exchange.commons.constant.ErrorMsj;
+import com.qhatuna.exchange.commons.exception.ProviderException;
+import com.qhatuna.exchange.commons.utils.Util;
+import io.github.project.openubl.xbuilder.content.catalogs.Catalog6;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +44,14 @@ public class Cliente  extends BaseModel{
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;*/
 
+    public static io.github.project.openubl.xbuilder.content.models.common.Cliente aClienteSunat(Cliente cliente){
+        return io.github.project.openubl.xbuilder.content.models.common.Cliente.builder()
+                .nombre(cliente.nombreCompleto)
+                .numeroDocumentoIdentidad(cliente.nroDocumento)
+                .tipoDocumentoIdentidad(Util.recuperaTipoDoocumentoSunat(cliente.getTipoDocumento()))
+                .build();
+    }
+
     public static ClienteResponse aResponse(Cliente cliente){
         return new ClienteResponse(
                 cliente.getId(),
@@ -55,5 +67,22 @@ public class Cliente  extends BaseModel{
                 cliente.isValidado(),
                 cliente.getUsuarioId()
         );
+    }
+
+    public boolean esFactura(){
+        String tipoComprobante= Util.recuperaTipoComprobante(
+                Util.recuperaTipoDoocumentoSunat(this.getTipoDocumento())
+        );
+        return tipoComprobante.equals("01");
+    }
+
+    public String getTipoDocDesc(){
+        return switch (this.getTipoDocumento()) {
+            case 1 -> "DNI";
+            case 2 -> "RUC";
+            case 3 -> "CE";
+            case 4 -> "PSP";
+            default -> "DESCONOCIDO";
+        };
     }
 }

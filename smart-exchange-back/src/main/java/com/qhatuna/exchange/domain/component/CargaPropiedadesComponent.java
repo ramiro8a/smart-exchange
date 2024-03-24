@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CargaPropiedades implements CommandLineRunner {
+public class CargaPropiedadesComponent implements CommandLineRunner {
     @Autowired
     PropiedadesService propiedadesService;
 
