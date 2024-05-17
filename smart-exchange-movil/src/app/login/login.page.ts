@@ -107,4 +107,55 @@ export class LoginPage implements OnInit {
     })
   }
 
+  async cuentasAux(opc:number){
+    let texto = ''
+    if(opc==1){
+      texto = 'cambiar su contraseña'
+    }
+    if(opc==2){
+      texto = 'confirmar su correo'
+    }
+    const alert = await this.alertController.create({
+      header: `Ingrese su correo, se le enviará un link para ${texto}`,
+      inputs: [{name: 'email',type: 'email', placeholder: 'Correo'}],
+      buttons: [
+        {
+          text: 'Cancelar', role: 'cancel', cssClass: 'secondary',
+          handler: () => {
+            
+          }
+        }, {
+          text: 'Ok',
+          handler: async(data) => {
+            if(data.email && this.esEmailValido(data.email)){
+              const emailEnvio=data.email
+              let loading = await this.loadingController.create({spinner: 'bubbles', message: 'Espere por favor'});
+              await loading.present();
+              this.restUsuarios.cuentasClienteAux({opc:opc, emailEnvio}).subscribe({
+                next: async(response:any) => {
+                  this.estaCargando = false
+                  this.utils.showMessage('Genial',`Le hemos enviado un link a su correo para ${texto}`)
+                  await loading.dismiss();
+                },
+                error: async(error:Error) => {
+                  await loading.dismiss();
+                  this.utils.showMessage('Error',error.message)
+                }
+              });
+            }else{
+              this.utils.showMessage('Alerta','Debe ingresar un correo válido')
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  esEmailValido(email: string): boolean {
+    const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regexEmail.test(email);
+  }
+
 }

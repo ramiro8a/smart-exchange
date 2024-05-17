@@ -135,7 +135,7 @@ export class LoginComponent implements OnInit{
       texto = 'confirmar su correo'
     }
     dialogConfig.data = {
-      texto: `Ingrese su correo, se le enviará un correo para ${texto}`,
+      texto: `Ingrese su correo, se le enviará un link para ${texto}`,
       label: 'Email',
       tipoInput: 'email'
     }

@@ -1,5 +1,14 @@
 ion-content.background{
-    --background: white;
+    --background: linear-gradient(0deg, rgba(67,64,64,1) 0%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(45,71,175,1) 100%);
+}
+.contenido{
+    border-top-left-radius: 1.5em !important;
+    border-top-right-radius: 1.5em !important;
+    background: white;
+}
+.adorno{
+    background: #2d47af;
+    height: 0.1em;
 }
 .logo{
     padding: 1em 0em 0em 0em;

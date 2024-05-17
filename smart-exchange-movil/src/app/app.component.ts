@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ScreenOrientation, OrientationType } from '@capawesome/capacitor-screen-orientation';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { isPlatform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,9 @@ export class AppComponent {
   }
 
     async initializeApp() {
+      if(isPlatform('mobile')){
+        StatusBar.setBackgroundColor({color: '#2d47af'})
+      }
       await ScreenOrientation.lock({ type: OrientationType.PORTRAIT });
   }
 }

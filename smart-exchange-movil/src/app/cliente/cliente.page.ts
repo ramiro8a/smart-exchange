@@ -13,6 +13,7 @@ import { OperacionComponent } from '../operacion/operacion.component';
 import { ViewWillEnter } from '@ionic/angular';
 import { ClienteResponse, UsuariosService } from '../services/usuarios.service';
 import { DatosPersonalesComponent } from '../datos-personales/datos-personales.component';
+import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-cliente',
@@ -51,7 +52,8 @@ export class ClientePage implements OnInit, ViewWillEnter {
     private utils: UtilsService,
     private restUsuario: UsuariosService,
     private modalCtrl: ModalController
-  ) { 
+  ) {
+    StatusBar.setBackgroundColor({color: '#2d47af'})
     moment.locale('es');
     this.operacionForm = this.formBuilder.group({
       envio: [1.00, [Validators.required, ImporteValidator()]],

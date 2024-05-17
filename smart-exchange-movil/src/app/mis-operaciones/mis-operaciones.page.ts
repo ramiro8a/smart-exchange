@@ -11,6 +11,7 @@ import { OperacionCuentasComponent } from '../operacion-cuentas/operacion-cuenta
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { CargaComprobanteComponent } from '../carga-comprobante/carga-comprobante.component';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-mis-operaciones',
@@ -48,6 +49,7 @@ export class MisOperacionesPage implements OnInit, ViewWillEnter {
     private utils: UtilsService,
     private modalCtrl: ModalController
   ) { 
+    StatusBar.setBackgroundColor({color: '#2d47af'})
     this.criterioForm = this.formBuilder.group({
       inicio: ['', Validators.required],
       fin: ['', Validators.required],

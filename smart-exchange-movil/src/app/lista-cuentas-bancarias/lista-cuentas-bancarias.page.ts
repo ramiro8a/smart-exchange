@@ -27,7 +27,8 @@ export class ListaCuentasBancariasPage implements OnInit, ViewWillEnter {
     private loadingController: LoadingController,
     private restBancos: BancosService,
     private modalCtrl: ModalController,
-  ) { }
+  ) {
+   }
 
   ngOnInit() {
   }
