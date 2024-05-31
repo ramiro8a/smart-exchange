@@ -149,6 +149,7 @@ export class OperacionComponent implements OnInit{
 
   asignaComprobante(base64: string):void{
     this.finalizaForm.controls['comprobante'].setValue(base64);
+    this.notif.notify('success','Archivo seleccionado on éxito');
   }
 
   archivoSeleccionado(event: any):void{

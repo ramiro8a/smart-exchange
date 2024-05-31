@@ -1,19 +1,19 @@
-#server:
-#  port: 443
-#  ssl:
-#    key-store-type: PKCS12
-#    key-store: classpath:keystore-artilugioproductions.p12
-#    key-store-password: h4ckm3
-#    key-alias: artilugioproductions.com
 server:
-  port: 8050
+  port: 443
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore.app.lc-exchange.com.p12
+    key-store-password: h4ckm3
+#    key-alias: artilugioproductions.com
+#server:
+#  port: 8050
 spring:
   application:
     name: smart-exchange
   datasource:
-    url: jdbc:postgresql://localhost:5432/smart-exchange
-    username: postgres
-    password: h4ckm3
+    url: jdbc:postgresql://localhost:5432/smart_exchange
+    username: lcexchange #postgres
+    password: Lc-3xch4ng32024. #h4ckm3
   jpa:
     properties:
       hibernate:
@@ -23,7 +23,7 @@ spring:
       show-sql: true
 ---
 jwt:
-  secret: secretsecretsecretsecretsecretsecretsecretsecret
+  secret: secrets3cretsecr3ts3cr3tsecr3tsecrets3crets3cret
   expiration: 240 #min 60 1 hora
   confirm:
     expiration: 120 #min
@@ -32,13 +32,27 @@ jwt:
 ---
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: artilugio.productions.tech@gmail.com
-    password: 'hhbg hxon pyuh gghp'
+    host: mail.lc-exchange.com
+    port: 465
+    username: operaciones@lc-exchange.com
+    password: ',u?ur5.wKJ$k'
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+          ssl:
+            enable: true
+#spring:
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: artilugio.productions.tech@gmail.com
+#    password: 'hhbg hxon pyuh gghp'
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true

@@ -7,7 +7,7 @@
                  <h4 class="mat-primary">INICIE SESIÓN</h4>
                 <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
                     <mat-form-field appearance="outline">
-                        <mat-label>Ingrese su usuario</mat-label>
+                        <mat-label>Ingrese su correo/usuario</mat-label>
                         <input matInput type="text" formControlName="username">
                     </mat-form-field>
                     <mat-form-field appearance="outline">
@@ -37,7 +37,7 @@
     <div class="derecho3">
         <div class="contenido-der3">
             <div class="logo-log-reg3">
-                <img src='assets/img/logofooter.png' alt="">
+                <img src='assets/img/logofooter-test.png' alt="">
             </div><br>
             <div class="tipos-de-cambios">
                 <table *ngIf="lcExchange && banco">

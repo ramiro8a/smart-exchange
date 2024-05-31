@@ -1,7 +1,6 @@
 package com.qhatuna.exchange.domain.service;
 
 import com.qhatuna.exchange.app.rest.request.*;
-import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
 import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
 import com.qhatuna.exchange.app.security.JwtProvider;
 import com.qhatuna.exchange.commons.constant.ConstValues;

@@ -4,7 +4,8 @@ import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
 import com.qhatuna.exchange.commons.utils.Util;
 import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CorreoService {
+    @Value("${spring.mail.username:operaciones@lc-exchange.com}")
+    private String from;
 
     private final JavaMailSender mailSender;
 
@@ -22,7 +25,7 @@ public class CorreoService {
         try{
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("support@lcexchange.pe");
+            helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);
@@ -40,7 +43,7 @@ public class CorreoService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("support@lcexchange.pe");
+            helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);

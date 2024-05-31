@@ -12,7 +12,8 @@ public class ConstValues {
                 Estimad@ cliente.<br>Para confirmar su cuenta en LC-EXCHANGE haga clic
                 <a href='%s' target="_blank"
                 style="background-color: #007bff; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px; font-size: 16px; font-family: Arial, sans-serif;"
-                >%s</a>
+                >%s</a><br>
+                Su usuario para ingresar a nuestra plataforma es su correo y la contraseña con la que se registró.
             """;
     public static final String CUERPO_PASSWORD = """
                 Estimad@ cliente.<br>Para cambiar la contraseña de su cuenta en LC-EXCHANGE haga clic
