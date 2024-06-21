@@ -90,6 +90,28 @@ public class ClienteService {
         return Cliente.aResponse(cliente);
     }
 
+    public ClienteResponse validaClienteSunat(String nroDocumento){
+        Optional<Cliente> optCliente = repository.findByNroDocumento(nroDocumento);
+        if(optCliente.isPresent()){
+            Cliente cliente = optCliente.get();
+            if(cliente.getTipoDocumento().equals(ConstValues.TD_RUC)) {
+                validaEmpresa(cliente, cliente.getNroDocumento());
+            } else {
+                validaPersona(cliente, cliente.getNroDocumento());
+            }
+            cliente = repository.save(cliente);
+            if(!cliente.isValidado()){
+                notificacionService.notifValidarCLiente(cliente);
+                throw new ProviderException(ErrorMsj.CLIENTE_REG_NO_VALIDADO.getMsj(),
+                        ErrorMsj.CLIENTE_REG_NO_VALIDADO.getCod(),HttpStatus.BAD_REQUEST);
+            }
+            return Cliente.aResponse(cliente);
+        }else{
+            throw new ProviderException(ErrorMsj.CLIENTE_REG_NO_VALIDADO.getMsj(),
+                    ErrorMsj.CLIENTE_REG_NO_VALIDADO.getCod(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public List<ClienteResponse> lista(Integer page, Integer size, Integer tipo, String valor){
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         List<Cliente> clientes;

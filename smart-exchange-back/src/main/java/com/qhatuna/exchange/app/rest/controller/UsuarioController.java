@@ -113,6 +113,12 @@ public class UsuarioController {
         return new ResponseEntity<>(clienteService.crea(request), HttpStatus.CREATED);
     }
 
+    @PatchMapping(path = "/cliente/{nroDocumento}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ClienteResponse> validaClienteSunat(
+            @PathVariable final String nroDocumento) {
+        return new ResponseEntity<>(clienteService.validaClienteSunat(nroDocumento), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/cliente/{page}/{size}/{tipo}/{valor}", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<ClienteResponse>> listaClientes(
             @PathVariable final Integer page,

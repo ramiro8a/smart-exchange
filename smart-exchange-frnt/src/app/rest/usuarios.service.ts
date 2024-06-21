@@ -123,6 +123,12 @@ export class UsuariosService {
     )
   }
 
+  validaDatosPersonalesClienteSunat(nroDocumento: string): Observable<ClienteResponse> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/cliente/${nroDocumento}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   recuperaClientes(tipo:number, valor: string, pagina:number, tamano:number): Observable<ClienteResponse[]> {
     return this.http.get<any>(`${environment.baseUrl}${this.path}/cliente/${pagina}/${tamano}/${tipo}/${valor}`).pipe(
       catchError(this.errorHandler)

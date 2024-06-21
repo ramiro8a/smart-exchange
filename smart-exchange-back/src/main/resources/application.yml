@@ -4,7 +4,7 @@ server:
     key-store-type: PKCS12
     key-store: classpath:keystore.app.lc-exchange.com.p12
     key-store-password: h4ckm3
-#    key-alias: artilugioproductions.com
+    ##################key-alias: artilugioproductions.com
 #server:
 #  port: 8050
 spring:
@@ -24,11 +24,11 @@ spring:
 ---
 jwt:
   secret: secrets3cretsecr3ts3cr3tsecr3tsecrets3crets3cret
-  expiration: 240 #min 60 1 hora
+  expiration: 30 #min 60 1 hora
   confirm:
     expiration: 120 #min
   refresh:
-    expiration: 15 #min
+    expiration: 35 #min
 ---
 spring:
   mail:

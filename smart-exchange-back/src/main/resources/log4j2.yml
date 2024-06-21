@@ -1,0 +1,33 @@
+Configuration:
+  status: error
+  Properties:
+    property:
+      - name: logFolder
+        value: ${sys:LOGS_FOLDER_PATH:-logs}
+      - name: appenderRef
+        value: ${sys:APPENDER_REF:-CONSOLE_APPENDER}
+  Appenders:
+    Console:
+      name: CONSOLE_APPENDER
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{${LOG_DATEFORMAT_PATTERN}} -%5p ${PID} ----- [%15.15t] %-40.40logger{39} : %msg %wEx %n"
+    RollingFile:
+      name: FILE_APPENDER
+      fileName: "${logFolder}/application.log"
+      filePattern: "${logFolder}/application-%d{yyyy-MM-dd}.log"
+      PatternLayout:
+        pattern: "%d{${LOG_DATEFORMAT_PATTERN}} -%5p ${PID} ----- [%15.15t] %-40.40logger{39} : %msg %wEx %n"
+      Policies:
+        TimeBasedTriggeringPolicy: {}
+  Loggers:
+    Logger:
+      - name: LOGGER
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: "${appenderRef}"
+    Root:
+      level: info
+      AppenderRef:
+        - ref: "${appenderRef}"

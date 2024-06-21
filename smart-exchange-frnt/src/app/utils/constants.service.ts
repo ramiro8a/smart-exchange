@@ -20,8 +20,8 @@ export const MONEDAS = [
 export const TIPO_DOCUMENTOS = [
     {codigo: 1, nombre: 'DNI', abrev:'DNI'},
     {codigo: 2, nombre: 'RUC', abrev:'RUC'},
-    {codigo: 3, nombre: 'Carnet extranjero', abrev:'CE'},
-    {codigo: 4, nombre: 'Pasaporte', abrev:'P'},
+/*     {codigo: 3, nombre: 'Carnet extranjero', abrev:'CE'},
+    {codigo: 4, nombre: 'Pasaporte', abrev:'P'}, */
 ]
 export const TIPO_CUENTAS = [
     {codigo: 1, nombre: 'Ahorro'},

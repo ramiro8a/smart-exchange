@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByUsuarioId(Long id);
+    Optional<Cliente> findByNroDocumento(String nroDocumento);
     @Query("select c from Cliente c where c.estado not in (1)")
     List<Cliente> recuperaTodo(Pageable pageable);
     @Query("select c from Cliente c where (LOWER(c.paterno) like LOWER(%?1%) or LOWER(c.materno) like LOWER(%?1%)) and c.estado not in (1)")

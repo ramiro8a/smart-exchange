@@ -125,6 +125,21 @@ export class ClientesComponent implements OnInit{
     })
   }
 
+  validarClienteSunat(cliente: ClienteResponse):void{
+    this.estaCargando = true
+    this.restUsuarios.validaDatosPersonalesClienteSunat(cliente.nroDocumento).subscribe({next: (response:ClienteResponse) => {
+        cliente.validado = response.validado
+        this.estaCargando = false
+      },
+      error: (error:any) => {
+        this.notif.notify('error',error);
+        this.estaCargando = false
+      }
+    });
+  }
+
+  
+
   recuperaClientes(tipo:number, valor: string, pagina:number, tamano:number):void{
     this.estaCargando = true
     this.restUsuarios.recuperaClientes(tipo, valor, pagina, tamano).subscribe({

@@ -55,9 +55,12 @@
             <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let item">
-                <button (click)="validarCliente(item)" mat-mini-fab [color]="item.validado?'primary':'warn'" matTooltip="Datos validados">
+                  <button (click)="validarClienteSunat(item)" mat-mini-fab *ngIf="!item.validado" color="primary" matTooltip="Valida datos con SUNAT">
+                    <mat-icon>send</mat-icon>
+                  </button>
+                  <button (click)="validarCliente(item)" mat-mini-fab [color]="item.validado?'primary':'warn'" matTooltip="Datos validados">
                     <mat-icon>verified</mat-icon>
-                </button>
+                  </button>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
