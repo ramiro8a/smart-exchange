@@ -43,4 +43,42 @@
         </insert>
     </changeSet>
 
+        <changeSet id="v0.1.0-04-inserta-t-cuentas-bancarias-03" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_CUENTA_BANCARIA BBVA soles
+		</comment>
+        <insert tableName="T_CUENTA_BANCARIA">
+            <column name="FECHA_CREACION" value="now()"/>
+            <column name="FECHA_ACTUALIZACION" value="now()"/>
+            <column name="USUARIO_CREACION" value="0"/>
+            <column name="USUARIO_ACTUALIZACION" value="0"/>
+            
+            <column name="TIPO_CUENTA" value="2"/>
+            <column name="MONEDA" value="604" remarks="840:dolares,604:soles,978:euros"/>
+            <column name="BANCO_ID" value="3"/>
+            <column name="NRO_CUENTA" value="0200277522"/>
+            <column name="NOMBRE" value="bbvaCorrienteSoles"/>
+            <column name="USUARIO_ID" value="0"/>
+        </insert>
+    </changeSet>
+
+        <changeSet id="v0.1.0-04-inserta-t-cuentas-bancarias-04" author="ramiro.ochoa">
+        <comment> 
+			Inserta tabla T_CUENTA_BANCARIA BBVA dolares
+		</comment>
+        <insert tableName="T_CUENTA_BANCARIA">
+            <column name="FECHA_CREACION" value="now()"/>
+            <column name="FECHA_ACTUALIZACION" value="now()"/>
+            <column name="USUARIO_CREACION" value="0"/>
+            <column name="USUARIO_ACTUALIZACION" value="0"/>
+            
+            <column name="TIPO_CUENTA" value="2"/>
+            <column name="MONEDA" value="840"/>
+            <column name="BANCO_ID" value="3"/>
+            <column name="NRO_CUENTA" value="0200277549"/>
+            <column name="NOMBRE" value="bbvaCorrienteDolares"/>
+            <column name="USUARIO_ID" value="0"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
