@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { Empresa } from './empresa.service';
+import { TokenService } from '../servicios/token.service';
+import { Router } from '@angular/router';
 
 export interface TCPublicoResponse{
   tipo: number,
@@ -55,7 +57,11 @@ export class UsuariosService {
   path:string = '/api/usuario'
   authPath:string = '/auth'
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private router: Router
+    ) { }
   
   recuperaTCPublico(): Observable<TCPublicoResponse[]>{
     return this.http.get<any>(`${environment.baseUrl}${this.authPath}/tipo-cambio`).pipe(
@@ -173,14 +179,35 @@ export class UsuariosService {
     )
   }
 
-  refreshToken(token:string | null): Observable<any> {
+/*   refreshToken(token:string | null): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
     return this.http.post<any>(`${environment.baseUrl}${this.path}/refresh-token`, null, { headers: headers }).pipe(
       catchError(this.errorHandler)
     )
+  } */
+
+  refreshToken(token: string | null): void {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    this.http.post<any>(`${environment.baseUrl}${this.path}/refresh-token`, null, { headers: headers }).pipe(
+      catchError(this.errorHandler)
+    ).subscribe({
+      next: (response: any) => {
+        this.tokenService.setToken(response);
+        const token = this.tokenService.getToken();
+        // Aquí puedes realizar cualquier otra acción que necesites con el nuevo token.
+      },
+      error: (error: Error) => {
+        this.router.navigate(['/login']);
+        console.error('Imposible recuperar token')
+      }
+    });
   }
+  
 
   confirmaCorreo(token: string): Observable<any> {
     console.warn(`${environment.baseUrl}${this.authPath}/confirmer/${token}`)

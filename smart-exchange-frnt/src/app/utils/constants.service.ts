@@ -49,14 +49,14 @@ export const ESTADOS_OPERACION = [
     {codigo: 4, nombre: 'Rechazado', class:'op-est-rechazado'},
     {codigo: OP_ANULADO, nombre: 'Anulado', class:'op-est-anulado'},
     {codigo: OP_PRELIMINAR, nombre: 'Preliminar', class:'op-est-preliminar'},
-    {codigo: OP_FINALIZADO, nombre: 'Finalilzado', class:'op-est-finalizado'},
+    {codigo: OP_FINALIZADO, nombre: 'Finalizado', class:'op-est-finalizado'},
 ]
 export const ESTADOS_OPERACION_RES = [
     {codigo: OP_ACTIVO, nombre: 'Activo', class:'op-est-activo'},
     {codigo: OP_EN_CURSO, nombre: 'En curso', class:'op-est-en-curso'},
     {codigo: OP_ANULADO, nombre: 'Anulado', class:'op-est-anulado'},
     {codigo: OP_PRELIMINAR, nombre: 'Preliminar', class:'op-est-preliminar'},
-    {codigo: OP_FINALIZADO, nombre: 'Finalilzado', class:'op-est-finalizado'},
+    {codigo: OP_FINALIZADO, nombre: 'Finalizado', class:'op-est-finalizado'},
 ]
 export const TIPO_TRANSFERENCIAS = [
     {codigo: 1, nombre: 'Normal'},

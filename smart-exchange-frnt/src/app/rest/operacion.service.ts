@@ -40,6 +40,25 @@ export interface OperacionResponse{
   envioSunat: boolean;
 }
 
+export interface ReporteOperacion{
+  ticket: string,
+  fechaCreacion: string,
+  fechaFinalizacion: string,
+  estado: string,
+  montoOrigen: number,
+  monedaOrigen: string,
+  montoDestino: number,
+  monedaDestino: string,
+  tipoCambio: number,
+  codTransferenciaCliente: string,
+  codTransferenciaEmpresa: string,
+  cliente: string,
+  bancoOrigen: string,
+  bancoDestino: string,
+  bancoOrigenLcExchange: string,
+  operador: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,6 +75,18 @@ export class OperacionService {
         }
     });
     return this.http.get<any>(`${environment.baseUrl}${this.path}/${pagina}/${tamano}`,{ params: params }).pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  recuperaReporteOperacionesPaginado(pagina:number, tamano: number, criterios: any): Observable<ReporteOperacion[]>{
+    let params = new HttpParams();
+    Object.keys(criterios).forEach(key => {
+        if (criterios[key] !== null) {
+            params = params.set(key, criterios[key]);
+        }
+    });
+    return this.http.get<any>(`${environment.baseUrl}${this.path}/reporte/${pagina}/${tamano}`,{ params: params }).pipe(
       catchError(this.errorHandler)
     )
   }

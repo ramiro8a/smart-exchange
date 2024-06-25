@@ -28,23 +28,23 @@ public class JwtProvider {
     @Value("${jwt.confirm.expiration:60}")
     private int expirationConfirmMinute;
 
-    public String generateToken(Authentication authentication) {
-        SessionInfo usuarioPrincipal = (SessionInfo) authentication.getPrincipal();
+    public String generateToken(SessionInfo sessionInfo) {
+        //SessionInfo usuarioPrincipal = (SessionInfo) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject(usuarioPrincipal.getUsername())
-                .claim("roles", usuarioPrincipal.getAuthorities())
-                .claim("id", usuarioPrincipal.getUsusario().getId())
+                .setSubject(sessionInfo.getUsername())
+                .claim("roles", sessionInfo.getAuthorities())
+                .claim("id", sessionInfo.getUsusario().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expirationMinute * 60 *1000L))
                 .signWith(getSecret(secret))
                 .compact();
     }
-    public String generateRefreshToken(Authentication authentication) {
-        SessionInfo usuarioPrincipal = (SessionInfo) authentication.getPrincipal();
+    public String generateRefreshToken(SessionInfo sessionInfo) {
+        //SessionInfo usuarioPrincipal = (SessionInfo) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject(usuarioPrincipal.getUsername())
-                .claim("roles", usuarioPrincipal.getAuthorities())
-                .claim("id", usuarioPrincipal.getUsusario().getId())
+                .setSubject(sessionInfo.getUsername())
+                .claim("roles", sessionInfo.getAuthorities())
+                .claim("id", sessionInfo.getUsusario().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + refreshExpirationMinute * 60 *1000L))
                 .signWith(getSecret(secret))

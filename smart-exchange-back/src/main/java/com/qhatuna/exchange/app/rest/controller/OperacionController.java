@@ -5,6 +5,7 @@ import com.qhatuna.exchange.app.rest.request.OperacionCriteriaRequest;
 import com.qhatuna.exchange.app.rest.request.OperacionRequest;
 import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
+import com.qhatuna.exchange.app.rest.response.ReporteOperacion;
 import com.qhatuna.exchange.domain.service.OperacionService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/operacion")
@@ -91,6 +94,15 @@ public class OperacionController {
             @Valid @ParameterObject OperacionCriteriaRequest request
             ) {
         return new ResponseEntity<>(service.operacionPaginado(page, size,request),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/reporte/{page}/{size}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<ReporteOperacion>> reporteOperacionPaginado(
+            @PathVariable final Integer page,
+            @PathVariable final Integer size,
+            @Valid @ParameterObject OperacionCriteriaRequest request
+    ) {
+        return new ResponseEntity<>(service.recuperaReporteOperacion(page, size,request),HttpStatus.OK);
     }
 
     @GetMapping(path = "/comprobante/{operacionId}/{tipo}", produces = {MediaType.APPLICATION_JSON_VALUE })

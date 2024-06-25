@@ -29,33 +29,14 @@ public class AutenticacionService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final UsuarioRepository usuarioRepository;
+    private final SessionInfoService sessionInfoService;
 
-    public AutenticationResponse refreshToken(String bearerToken){
-        log.info("REFRESCANDO TOKEN");
-        String token = bearerToken.substring("Bearer".length()).trim();
-        if(jwtProvider.isTokenExpired(token)){
-            throw new ProviderException(
-                    ErrorMsj.UNAUTHORIZED.getMsj(),
-                    ErrorMsj.UNAUTHORIZED.getCod(),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
-        String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
-        Optional<Usuario> usuarioOptional = usuarioRepository.buscaPorUsuario(nombreUsuario);
-        if(usuarioOptional.isEmpty()){
-            throw new ProviderException(
-                    ErrorMsj.UNAUTHORIZED.getMsj(),
-                    ErrorMsj.UNAUTHORIZED.getCod(),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
-        Usuario usuario = usuarioOptional.get();
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getUsuario(), usuario.getPassword()));
+    public AutenticationResponse refreshToken(){
+        SessionInfo sessionInfo = sessionInfoService.getSession();
         return new AutenticationResponse(
                 "Bearer",
-                jwtProvider.generateToken(authentication),
-                jwtProvider.generateRefreshToken(authentication)
+                jwtProvider.generateToken(sessionInfo),
+                jwtProvider.generateRefreshToken(sessionInfo)
         );
     }
 
@@ -80,8 +61,8 @@ public class AutenticacionService {
             }
             return new AutenticationResponse(
                     "Bearer",
-                    jwtProvider.generateToken(authentication),
-                    jwtProvider.generateRefreshToken(authentication)
+                    jwtProvider.generateToken(user),
+                    jwtProvider.generateRefreshToken(user)
             );
         }catch (ProviderException ex){
             throw ex;

@@ -1,19 +1,19 @@
-server:
-  port: 443
-  ssl:
-    key-store-type: PKCS12
-    key-store: classpath:keystore.app.lc-exchange.com.p12
-    key-store-password: h4ckm3
-    ##################key-alias: artilugioproductions.com
 #server:
-#  port: 8050
+#  port: 443
+#  ssl:
+#    key-store-type: PKCS12
+#    key-store: classpath:keystore.app.lc-exchange.com.p12
+#    key-store-password: h4ckm3
+    ##################key-alias: artilugioproductions.com
+server:
+  port: 8050
 spring:
   application:
     name: smart-exchange
   datasource:
-    url: jdbc:postgresql://localhost:5432/smart_exchange
-    username: lcexchange #postgres
-    password: Lc-3xch4ng32024. #h4ckm3
+    url: jdbc:postgresql://localhost:5432/smart-exchange
+    username: postgres #lcexchange
+    password: h4ckm3 #Lc-3xch4ng32024.
   jpa:
     properties:
       hibernate:
@@ -28,7 +28,7 @@ jwt:
   confirm:
     expiration: 120 #min
   refresh:
-    expiration: 35 #min
+    expiration: 40 #min
 ---
 spring:
   mail:

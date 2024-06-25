@@ -19,11 +19,13 @@
     </span>
     <span class="toolbar-section center menu-desktop" *ngIf="esGerente()">
         <button routerLink="/reportes/operacion-empresa" mat-button color="primary" class="elemento menu-texto"><b>Operaciones empresa</b></button>
-        <button routerLink="/reportes/operacion-cliente" mat-button color="primary" class="elemento menu-texto"><b>Operaciones cliente</b></button>
         <button routerLink="/reportes/registro-cliente" mat-button color="primary" class="elemento menu-texto"><b>Clientes</b></button>
-        <button routerLink="/reportes/registro-operador" mat-button color="primary" class="elemento menu-texto"><b>Operadores</b></button>
+        <!-- <button routerLink="/reportes/operacion-cliente" mat-button color="primary" class="elemento menu-texto"><b>Operaciones cliente</b></button>
+        <button routerLink="/reportes/registro-operador" mat-button color="primary" class="elemento menu-texto"><b>Operadores</b></button> -->
     </span>
     <span class="toolbar-section right">
+      <button mat-mini-fab [color]="tokenExpirado()?'accent':'primary'"><mat-icon>cloud_download</mat-icon></button>
+      <button mat-mini-fab [color]="tokenExpiradoRefresh()?'accent':'primary'"><mat-icon>cloud_download</mat-icon></button>
         <small class="accent-color nombre-usuario"><b>{{recuperaUsuario()}}</b> </small>
         <button mat-mini-fab color="primary"  class="elemento" [matMenuTriggerFor]="menu">
             <span class="desktop-menu">
@@ -56,9 +58,9 @@
             </span>
             <span *ngIf="esGerente()">
                 <button routerLink="/reportes/operacion-empresa" mat-menu-item><span>Operaciones empresa</span></button>
-                <button routerLink="/reportes/operacion-cliente" mat-menu-item><span>Operaciones cliente</span></button>
                 <button routerLink="/reportes/registro-cliente" mat-menu-item><span>Clientes</span></button>
-                <button routerLink="/reportes/registro-operador" mat-menu-item><span>Operadores</span></button>
+<!--                 <button routerLink="/reportes/operacion-cliente" mat-menu-item><span>Operaciones cliente</span></button>
+                <button routerLink="/reportes/registro-operador" mat-menu-item><span>Operadores</span></button> -->
             </span>
             </span>
             <button (click)="datosPersonales()" mat-menu-item *ngIf="esCliente()">

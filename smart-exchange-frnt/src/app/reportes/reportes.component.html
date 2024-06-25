@@ -1,1 +1,116 @@
-REPORTES
+<br>
+<div class="contenido-operaciones">
+    <form [formGroup]="criterioForm" (ngSubmit)="buscar()" autocomplete="off">
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha inicio día/mes/año</mat-label>
+            <input formControlName="inicio"  matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha fin día/mes/año</mat-label>
+            <input formControlName="fin"  matInput [matDatepicker]="picker2">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="select-cuenta">
+            <mat-label>Selec. operador</mat-label>
+            <mat-select formControlName="operador">
+                <mat-option *ngFor="let item of operadoresSelect" [value]="item.id">
+                    {{item.usuario}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="select-cuenta">
+            <mat-label>Selec. estado</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option *ngFor="let item of estados" [value]="item.codigo">
+                    {{item.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="estaCargando">
+            Buscar
+        </button>&nbsp;
+        <button mat-raised-button type="button" color="accent" (click)="recuperaInicial()" [disabled]="estaCargando">
+            Limpiar filtros
+        </button>&nbsp;
+        <button (click)="descargarExcel()" mat-mini-fab color="primary" type="button" matTooltip="Descargar todos los registros en archivo excel">
+            <mat-icon>cloud_download</mat-icon>
+        </button>
+    </form>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="">
+            <ng-container matColumnDef="fechaCreacion">
+                <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
+                <td mat-cell *matCellDef="let item"> {{item.fechaCreacion | date: 'dd/MM/yyyy HH:mm'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let item"> 
+                    <div [class]="buscarClasePorCodigo(item.estado, item.envioSunat)">
+                        {{buscarNombreDeEstado(item.estado)}}
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="monto">
+              <th mat-header-cell *matHeaderCellDef> Monto </th>
+              <td mat-cell *matCellDef="let item">{{item.monto | number:'1.2-2'}} {{buscarNombreDeMoneda(item.cuentaOrigen.moneda)}}</td>
+            </ng-container>
+            <ng-container matColumnDef="montoFinal">
+              <th mat-header-cell *matHeaderCellDef> Monto final </th>
+              <td mat-cell *matCellDef="let item"> {{item.montoFinal | number:'1.2-2'}} {{buscarNombreDeMoneda(item.cuentaDestino.moneda)}}</td>
+            </ng-container>
+            <ng-container matColumnDef="codigoTransferencia">
+                <th mat-header-cell *matHeaderCellDef> Cód. transferencia </th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.codigoTransferencia}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="codigoTransferenciaEmpresa">
+                <th mat-header-cell *matHeaderCellDef> Cód. transferencia Emp.</th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.codigoTransferenciaEmpresa}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cliente.nombres}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="origen">
+                <th mat-header-cell *matHeaderCellDef> Cta. Origen </th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cuentaOrigen.bancoNombre}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="destino">
+                <th mat-header-cell *matHeaderCellDef> Cta. Destino </th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cuentaDestino.bancoNombre}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="transferencia">
+                <th mat-header-cell *matHeaderCellDef> Cta. Transferencia </th>
+                <td mat-cell *matCellDef="let item">
+                    {{item.cuentaTransferencia.bancoNombre}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="operador">
+                <th mat-header-cell *matHeaderCellDef> Asignado </th>
+                <td mat-cell *matCellDef="let item">{{item.operador.usuario}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+          </table>
+          <mat-paginator
+          [showFirstLastButtons]="showFirstLastButtons"
+          [length]="paginaActual.totalElements"
+          [pageSize]="paginaActual.size"
+          [pageSizeOptions]="[5, 10]"
+          [pageIndex]="paginaActual.number">
+          </mat-paginator>
+    </div>    
+    <mat-progress-bar *ngIf="estaCargando" mode="indeterminate"></mat-progress-bar>
+</div>

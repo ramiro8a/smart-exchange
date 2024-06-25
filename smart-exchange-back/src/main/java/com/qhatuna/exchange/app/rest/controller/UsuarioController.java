@@ -45,9 +45,8 @@ public class UsuarioController {
     }
 
     @PostMapping(path = "/refresh-token", produces = {MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<AutenticationResponse> refreshToken(
-            @RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(autenticacionService.refreshToken(token), HttpStatus.CREATED);
+    public ResponseEntity<AutenticationResponse> refreshToken() {
+        return new ResponseEntity<>(autenticacionService.refreshToken(), HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/edita/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })

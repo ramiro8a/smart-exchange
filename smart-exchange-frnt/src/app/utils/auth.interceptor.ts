@@ -33,16 +33,13 @@ export class AuthInterceptor implements HttpInterceptor {
           this.router.navigate(['/login']);
           return throwError(() => new HttpErrorResponse({ status: 401, error: 'Su sesión ha expirado' }));
         }else{
-          this.restUsuarios.refreshToken(this.tokenService.getRefreshToken()).subscribe({
-            next: (response:any) => {
-              this.tokenService.setToken(response)
-            },
-            error: (error:any) => {
-              this.dialog.closeAll();
-              this.router.navigate(['/login']);
-              return throwError(() => new HttpErrorResponse({ status: 401, error: 'Su sesión ha expirado' }));
-            }
-          });
+            const token = this.tokenService.getRefreshToken();
+              request = request.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+              this.restUsuarios.refreshToken(token);
         }
       } else {
         const token = this.tokenService.getToken();

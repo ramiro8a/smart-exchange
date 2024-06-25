@@ -6,6 +6,7 @@ import com.qhatuna.exchange.app.rest.request.OperacionRequest;
 import com.qhatuna.exchange.app.rest.response.AhorroResponse;
 import com.qhatuna.exchange.app.rest.response.ComprobanteResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
+import com.qhatuna.exchange.app.rest.response.ReporteOperacion;
 import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
 import com.qhatuna.exchange.commons.exception.ProviderException;
@@ -172,7 +173,17 @@ public class OperacionService {
                 );
     }
 
+    public List<ReporteOperacion> recuperaReporteOperacion(Integer page, Integer size, OperacionCriteriaRequest request){
+        Page<Operacion> operaciones = recuperaOperacionPaginado(page, size, request);
+        return operaciones.stream().toList().stream().map(Operacion::aReporteOperacion).toList();
+    }
+
     public Page<OperacionResponse> operacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){
+        Page<Operacion> operaciones = recuperaOperacionPaginado(page, size, request);
+        return operaciones.map(Operacion::aResponse);
+    }
+
+    public Page<Operacion> recuperaOperacionPaginado(Integer page, Integer size, OperacionCriteriaRequest request){
         if(request.inicio().isAfter(request.fin()))
             throw new ProviderException(ErrorMsj.INICIO_ANTES_FIN.getMsj(), ErrorMsj.INICIO_ANTES_FIN.getCod());
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
@@ -197,8 +208,7 @@ public class OperacionService {
             );
         }
         Specification<Operacion> especificacion = specificacionConCriterios(request);
-        Page<Operacion> operaciones = operacionRepository.findAll(especificacion, pageable);
-        return operaciones.map(Operacion::aResponse);
+        return operacionRepository.findAll(especificacion, pageable);
     }
 
     @Transactional

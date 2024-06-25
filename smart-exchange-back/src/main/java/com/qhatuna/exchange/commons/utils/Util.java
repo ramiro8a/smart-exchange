@@ -39,6 +39,7 @@ public class Util {
     private static final ObjectMapper objectMapper = createObjectMapper();
     private static final AtomicLong counter = new AtomicLong(0);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+    public static final DateTimeFormatter FECHA_COMPLETO = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private static final DateTimeFormatter carpeta = DateTimeFormatter.ofPattern("yyyyMM");
     private static final String CERT_SUNAT = "certificateSUNAT.pem";
 
@@ -165,6 +166,10 @@ public class Util {
         String timestamp = now.format(formatter);
         long count = counter.incrementAndGet();
         return timestamp + String.format("%04d", count);
+    }
+
+    public static String aFormato(LocalDateTime data, DateTimeFormatter formateador) {
+        return data.format(formateador);
     }
 
     public static String aHoraMinuto(LocalTime data) {

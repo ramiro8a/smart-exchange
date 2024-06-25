@@ -2,6 +2,7 @@ package com.qhatuna.exchange.domain.model;
 
 import com.qhatuna.exchange.app.rest.response.CuentaBancariaResponse;
 import com.qhatuna.exchange.app.rest.response.OperacionResponse;
+import com.qhatuna.exchange.app.rest.response.ReporteOperacion;
 import com.qhatuna.exchange.commons.constant.Const;
 import com.qhatuna.exchange.commons.utils.Util;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 @SuperBuilder
 @Getter
@@ -71,6 +73,17 @@ public class Operacion extends BaseModel{
             this.ticket = Util.generadorTicket();
     }*/
 
+    public String getEstadoDesc(){
+        return switch (getEstado()){
+            case 0 -> "ACTIVO";
+            case 3-> "EN CURSO";
+            case 5 -> "ANULADO";
+            case 6 -> "PRELIMINAR";
+            case 10 -> "FINALIZADO";
+            default -> "DESCONOCIDO";
+        };
+    }
+
     public static OperacionResponse aResponse(Operacion operacion){
         boolean envioSunat = false;
         if(operacion.getComprobanteVenta()!=null){
@@ -96,6 +109,27 @@ public class Operacion extends BaseModel{
                 operacion.getTicket(),
                 operacion.getFechaFinalizacion(),
                 envioSunat
+        );
+    }
+
+    public static ReporteOperacion aReporteOperacion(Operacion operacion){
+        return new ReporteOperacion(
+                operacion.getTicket(),
+                Util.aFormato(operacion.getFechaCreacion(), Util.FECHA_COMPLETO),
+                operacion.getFechaFinalizacion()==null?"":operacion.getFechaFinalizacion().format(Util.FECHA_COMPLETO),
+                operacion.getEstadoDesc(),
+                operacion.getMonto(),
+                operacion.getCuentaOrigen().getMomedaDesc(),
+                operacion.getMontoFinal(),
+                operacion.getCuentaDestino().getMomedaDesc(),
+                operacion.getCambio(),
+                operacion.getCodigoTransferencia(),
+                operacion.getCodigoTransferenciaEmpresa(),
+                operacion.getCliente().getNombreCompleto(),
+                operacion.getCuentaOrigen().getBanco().getNombre(),
+                operacion.getCuentaDestino().getBanco().getNombre(),
+                operacion.getCuentaTransferencia().getBanco().getNombre(),
+                operacion.getOperador().getUsuario()
         );
     }
 

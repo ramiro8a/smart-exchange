@@ -38,6 +38,14 @@ export class PrincipalComponent implements OnInit{
     }
   }
 
+  tokenExpirado():boolean{
+    return this.tokenService.expirado();
+  }
+
+  tokenExpiradoRefresh():boolean{
+    return this.tokenService.expiradoRefreshToken();
+  }
+
 
 /*   escuchaNotificaciones() {
     this.socket.getMessageSubject().subscribe((messages: any) => {

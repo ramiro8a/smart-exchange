@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit{
                 if (this.tokenService.esAdmin()) {
                   this.router.navigate(['/admin'])
                 } else if (this.tokenService.esGerente()) {
-                  this.router.navigate(['/reportes'])
+                  this.router.navigate(['/reportes/operacion-empresa'])
                 } else if (this.tokenService.esOperador()) {
                   this.router.navigate(['/operaciones/principal'])
                 } else if (this.tokenService.esCliente()) {
