@@ -42,7 +42,7 @@ public class OperacionController {
     public ResponseEntity<Void> confirmaOperacion(
             @PathVariable Long id,
             @PathVariable Integer op,
-            @Parameter(description = "Datos de cuenta bancaria a actualizar", required = true, content = @Content(schema = @Schema()))
+            @Parameter(description = "Datos de la operacion a actualizar", required = true, content = @Content(schema = @Schema()))
             @RequestBody OperacionRequest request
     ) {
         service.actualiza(id, op, request);

@@ -25,4 +25,8 @@ public class Empresa {
     @OrderBy("id ASC")
     @JsonManagedReference
     private List<Dia> dias;
+    @Column(name = "se_notifica")
+    private boolean notifica;
+    @Column(name = "emailNotifica")
+    private String emailNotificacion;
 }

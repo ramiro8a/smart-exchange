@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="v0.2.0-02-agrega-columnas-para-notificaciones" author="ramiro.ochoa">
+        <comment>
+			Create table T_EMPRESA
+		</comment>
+        <addColumn tableName="T_EMPRESA">
+            <column name="SE_NOTIFICA" type="boolean" defaultValueBoolean="false" remarks="Si cuando se crean nuevas operaciones se notifica"/>
+            <column name="EMAIL_NOTIFICACION" type="VARCHAR(200)" remarks="Email para enviar notificaciones sobre operaciones"/>
+        </addColumn>
+        <rollback>
+            <dropColumn tableName="T_EMPRESA" columnName="EMAIL_NOTIFICACION"/>
+            <dropColumn tableName="T_EMPRESA" columnName="SE_NOTIFICA"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="v0.2.0-03-actualiza-columnas-t-empresa" author="ramiro.ochoa">
+        <comment>
+            Agrega correos
+        </comment>
+        <update tableName="T_EMPRESA">
+            <column name="EMAIL_NOTIFICACION" value="ramiro.ochoa.apaza@gmail.com" />
+            <where>ID = 1</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

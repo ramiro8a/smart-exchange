@@ -6,5 +6,6 @@
 
     <includeAll path="changelogs/v0.0.0" errorIfMissingOrEmpty="true"/>
     <includeAll path="changelogs/v0.1.0" errorIfMissingOrEmpty="true"/>
+    <includeAll path="changelogs/v0.2.0" errorIfMissingOrEmpty="true"/>
 
 </databaseChangeLog>

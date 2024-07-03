@@ -368,6 +368,7 @@ public class OperacionService {
         operacion.setCodigoTransferencia(request.codigoTransferencia());
         operacion.setComprobante(direccionComprobante);
         operacion.setUsuarioActualizacion(usuario.getId());
+        //AKA
         operacionRepository.save(operacion);
     }
 

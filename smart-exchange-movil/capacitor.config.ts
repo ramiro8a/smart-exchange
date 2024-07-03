@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'smart-exchange-movil',
+  appId: 'com.lc.exchange.app',
+  appName: 'LcExchange',
   webDir: 'www',
   server: {
     androidScheme: 'https'
