@@ -19,6 +19,11 @@
                         <mat-label>RUC</mat-label>
                         <input matInput type="text" formControlName="ruc">
                     </mat-form-field>
+                    <mat-slide-toggle formControlName="notifica" color="primary"><small>Se notifica?</small></mat-slide-toggle>
+                    <mat-form-field appearance="outline" matTooltip="Para notificacion de nuevas operaciones">
+                        <mat-label>Email notificación</mat-label>
+                        <input matInput type="text" formControlName="emailNotificacion">
+                    </mat-form-field>
                 <button (click)="editarEmpresa()" *ngIf="empresaForm.disabled" type="button" mat-raised-button color="primary">
                     Editar
                 </button>&nbsp;

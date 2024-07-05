@@ -9,6 +9,7 @@ public record TipoCambioRequest (
         LocalDate fecha,
         Integer moneda,
         BigDecimal compra,
-        BigDecimal venta
-
+        BigDecimal venta,
+        String logo,
+        String nombre
 ){}

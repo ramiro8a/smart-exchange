@@ -19,11 +19,13 @@
             <column name="VERSION" type="INTEGER" defaultValue="0"/>
             <column name="EST_REG" type="INTEGER" defaultValue="0" remarks="0:Activo,1:Eliminado,2:deshabilitado"/>
             
-            <column name="TIPO" type="INTEGER" defaultValue="0" remarks="1:LcExchange,2:Sunat,3:bancos"/>
+            <column name="TIPO" type="INTEGER" defaultValue="0" remarks="1:LcExchange,2:Sunat,3:otros"/>
             <column name="MONEDA" type="INTEGER" defaultValue="0" remarks="840:dolares,604:soles,978:euros"/>
             <column name="COMPRA" type="DECIMAL(19,4)" defaultValue="0" remarks="Valor de la moneda para la compra respecto a soles"/>
             <column name="VENTA" type="DECIMAL(19,4)" defaultValue="0" remarks="Valor de la moneda para la venta respecto a soles"/>
             <column name="FECHA" type="DATE" remarks="Fecha del tipo de cambio"/>
+            <column name="LOGO" type="TEXT" remarks="Base 64 de logo en PNG"/>
+            <column name="NOMBRE" type="VARCHAR(150)" remarks="Nombre de la empresa a que pertenece el tipo de cambio"/>
         </createTable>
         <rollback>
             <dropTable tableName="T_TIPO_CAMBIO"/>

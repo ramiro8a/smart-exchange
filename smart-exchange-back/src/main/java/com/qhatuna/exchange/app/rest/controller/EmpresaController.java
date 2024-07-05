@@ -1,9 +1,7 @@
 package com.qhatuna.exchange.app.rest.controller;
 
-import com.qhatuna.exchange.app.rest.response.BancoResponse;
 import com.qhatuna.exchange.domain.model.Dia;
 import com.qhatuna.exchange.domain.model.Empresa;
-import com.qhatuna.exchange.domain.model.Horario;
 import com.qhatuna.exchange.domain.service.EmpresaService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

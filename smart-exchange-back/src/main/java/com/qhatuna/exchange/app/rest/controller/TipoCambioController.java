@@ -30,7 +30,7 @@ public class TipoCambioController {
     public ResponseEntity<TipoCambioResponse> creaTipoCambio(
             @Parameter(description = "Datos de tipo cambio a crear", required = true, content = @Content(schema = @Schema(implementation = TipoCambioRequest.class)))
             @Valid @NotNull @RequestBody TipoCambioRequest request) {
-        return new ResponseEntity<>(service.crea(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.creaTipoCambio(request), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{moneda}", produces = {MediaType.APPLICATION_JSON_VALUE })

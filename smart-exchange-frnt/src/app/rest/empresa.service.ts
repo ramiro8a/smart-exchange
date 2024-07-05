@@ -10,6 +10,8 @@ export interface Empresa {
   ruc: string;
   whatsapp: string;
   dias: Dia[];
+  notifica: boolean;
+  emailNotificacion: string;
 }
 
 export interface Dia {

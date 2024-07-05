@@ -26,6 +26,8 @@ public class TipoCambio extends BaseModel{
     private BigDecimal compra;
     private BigDecimal venta;
     private LocalDate fecha;
+    private String logo;
+    private String nombre;
 
     public static TipoCambioResponse aResponse(TipoCambio tipoCambio, TipoCambio tipoCambioOficial){
         return new TipoCambioResponse(
@@ -38,7 +40,9 @@ public class TipoCambio extends BaseModel{
                 tipoCambio.getFecha(),
                 tipoCambio.getFechaCreacion(),
                 tipoCambioOficial.getCompra(),
-                tipoCambioOficial.getVenta()
+                tipoCambioOficial.getVenta(),
+                tipoCambio.getLogo(),
+                tipoCambio.getNombre()
         );
     }
 
@@ -53,7 +57,9 @@ public class TipoCambio extends BaseModel{
                 tipoCambio.getFecha(),
                 tipoCambio.getFechaCreacion(),
                 BigDecimal.ZERO,
-                BigDecimal.ZERO
+                BigDecimal.ZERO,
+                tipoCambio.getLogo(),
+                tipoCambio.getNombre()
         );
     }
 }

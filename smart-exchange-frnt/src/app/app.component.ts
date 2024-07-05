@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Empresa } from './rest/empresa.service';
 import { UsuariosService } from './rest/usuarios.service';
+import { TokenService } from './servicios/token.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit{
   constructor(
     private router: Router,
     private ngxService: NgxUiLoaderService,
-    private restUsuario: UsuariosService
+    private restUsuario: UsuariosService,
+    private tokenService: TokenService
     ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart)
@@ -37,6 +39,10 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.recuperaEmpresa()
+  }
+
+  esCliente():boolean{
+    return this.tokenService.esCliente();
   }
 
   recuperaEmpresa():void{

@@ -14,5 +14,7 @@ public record TipoCambioResponse(
         LocalDate fecha,
         LocalDateTime fechaRegistro,
         BigDecimal compraOficial,
-        BigDecimal ventaOficial
+        BigDecimal ventaOficial,
+        String logo,
+        String nombre
 ) {}

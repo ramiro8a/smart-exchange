@@ -56,6 +56,7 @@ public class OperacionService {
     private final SunatProvider sunatProvider;
     private final CorreoService correoService;
     private final ComprobanteVentaService comprobanteVentaService;
+    private final EmpresaService empresaService;
 
     public List<AhorroResponse> recuperAhorroPublico(Integer opcion){
         LocalDate fecha = LocalDate.now();
@@ -368,7 +369,10 @@ public class OperacionService {
         operacion.setCodigoTransferencia(request.codigoTransferencia());
         operacion.setComprobante(direccionComprobante);
         operacion.setUsuarioActualizacion(usuario.getId());
-        //AKA
+        Empresa empresa = empresaService.recuperaEmpresa();
+        if(empresa.isNotifica()){
+            correoService.enviaNotificacionOperacionNueva(empresa.getEmailNotificacion(), operacion);
+        }
         operacionRepository.save(operacion);
     }
 

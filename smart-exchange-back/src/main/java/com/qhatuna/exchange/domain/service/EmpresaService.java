@@ -21,6 +21,8 @@ public class EmpresaService {
         Empresa empresa = recuperaEmpresaPorId(id);
         empresa.setRuc(request.getRuc());
         empresa.setRazonSocial(request.getRazonSocial());
+        empresa.setNotifica(request.isNotifica());
+        empresa.setEmailNotificacion(request.getEmailNotificacion());
         return empresaRepository.save(empresa);
     }
 

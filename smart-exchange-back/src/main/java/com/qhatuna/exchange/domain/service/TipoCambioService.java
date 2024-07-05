@@ -97,7 +97,9 @@ public class TipoCambioService {
                         LocalDate.now(),
                         ConstValues.USD_ISO,
                         tc.data().compra(),
-                        tc.data().venta()
+                        tc.data().venta(),
+                        ConstValues.SUNAT_LOGO,
+                        "Sunat"
                         );
                 List<TipoCambio> sunats = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
                         ConstValues.USD_ISO,
@@ -106,13 +108,13 @@ public class TipoCambioService {
                         PageRequest.of(0, 1)
                 );
                 if(sunats.isEmpty()){
-                    crea(tcr);
+                    creaTC(tcr);
                 }else {
                     TipoCambio sunatLocal = sunats.get(0);
                     if(!(tcr.compra().compareTo(sunatLocal.getCompra())==0 &&
                             tcr.venta().compareTo(sunatLocal.getVenta())==0)
                     ){
-                        crea(tcr);
+                        creaTC(tcr);
                     }
                 }
             }
@@ -122,7 +124,25 @@ public class TipoCambioService {
     }
 
     @Transactional
-    public TipoCambioResponse crea(TipoCambioRequest request){
+    public TipoCambioResponse creaTipoCambio(TipoCambioRequest request){
+        //String logo = request.tipo().equals(ConstValues.TC_LC_EXCHANGE)?ConstValues.LC_EXCHANGE_LOGO: request.logo();
+        String nombre = request.tipo().equals(ConstValues.TC_LC_EXCHANGE)?"Lc Exchange": request.nombre();
+        TipoCambio tipoCambio = TipoCambio.builder()
+                .tipo(request.tipo())
+                .venta(request.venta())
+                .compra(request.compra())
+                .fecha(request.fecha())
+                .moneda(request.moneda())
+                .estado(Const.EstadoRegistro.ACTIVO)
+                .logo(request.logo())
+                .nombre(nombre)
+                .build();
+        tipoCambio = tipoCambioRepository.save(tipoCambio);
+        return TipoCambio.aResponseList(tipoCambio);
+    }
+
+    @Transactional
+    public TipoCambioResponse creaTC(TipoCambioRequest request){
         if(request.porDefecto()){
             List<TipoCambio> ultimosTipoCambios;
             if(request.fecha().isAfter(LocalDate.now())){

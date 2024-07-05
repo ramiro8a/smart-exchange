@@ -27,6 +27,6 @@ public class Empresa {
     private List<Dia> dias;
     @Column(name = "se_notifica")
     private boolean notifica;
-    @Column(name = "emailNotifica")
+    @Column(name = "email_notificacion")
     private String emailNotificacion;
 }

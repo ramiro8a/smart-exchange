@@ -25,6 +25,8 @@ export class ConfigEmpresaComponent implements OnInit {
       this.empresaForm = this.formBuilder.group({
                 razonSocial: ['', [Validators.required]],
                 ruc: ['', [Validators.required]],
+                notifica: [false, [Validators.required]],
+                emailNotificacion: ['', [Validators.required]]
               });
   }
 
@@ -38,7 +40,8 @@ export class ConfigEmpresaComponent implements OnInit {
       next: (response:Empresa) => {
         this.actualizaDatosEmpresa(response)
         this.empresaForm.setValue({
-          razonSocial: this.empresa.razonSocial, ruc:this.empresa.ruc
+          razonSocial: this.empresa.razonSocial, ruc:this.empresa.ruc,
+          notifica: this.empresa.notifica, emailNotificacion: this.empresa.emailNotificacion
         })
         this.empresaForm.disable()
         this.estaCargandoEmpresa = false
@@ -57,7 +60,8 @@ export class ConfigEmpresaComponent implements OnInit {
         next: (response:Empresa) => {
           this.actualizaDatosEmpresa(response)
           this.empresaForm.setValue({
-            razonSocial: this.empresa.razonSocial, ruc:this.empresa.ruc
+            razonSocial: this.empresa.razonSocial, ruc:this.empresa.ruc,
+            notifica: this.empresa.notifica, emailNotificacion: this.empresa.emailNotificacion
           })
           this.empresaForm.disable()
           this.estaCargandoEmpresa = false

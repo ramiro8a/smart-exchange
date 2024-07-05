@@ -37,7 +37,7 @@ export class CuentasBancariasComponent implements OnInit{
       numeroCuenta: ['', Validators.required],
       nombre: ['', Validators.required],
       //ruc: [''],
-      deAcuerdo: [true, [Validators.required]]
+      deAcuerdo: [false, [Validators.required]]
     });
   }
 
