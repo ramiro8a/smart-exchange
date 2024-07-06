@@ -7,6 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Empresa } from './empresa.service';
 import { TokenService } from '../servicios/token.service';
 import { Router } from '@angular/router';
+import { TipoCambioResponse } from './tipo-cambio.service';
 
 export interface TCPublicoResponse{
   tipo: number,
@@ -63,6 +64,12 @@ export class UsuariosService {
     private router: Router
     ) { }
   
+    recuperaTCPublicoV2(): Observable<TipoCambioResponse[]>{
+      return this.http.get<any>(`${environment.baseUrl}${this.authPath}/v2/tipo-cambio-lista`).pipe(
+        catchError(this.errorHandler)
+      )
+    }
+
   recuperaTCPublico(): Observable<TCPublicoResponse[]>{
     return this.http.get<any>(`${environment.baseUrl}${this.authPath}/tipo-cambio`).pipe(
       catchError(this.errorHandler)

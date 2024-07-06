@@ -18,8 +18,10 @@ public interface TipoCambioRepository extends JpaRepository<TipoCambio, Long> {
     List<TipoCambio> buscaTipoDeCambioRecientePorMonedaYTipo(Integer moneda, Integer tipo, LocalDate fecha, Pageable pageable);
     @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.estado = 0 order by tc.fecha desc")
     List<TipoCambio> buscaTipoDeCambioRecientePorMonedaYTipo(Integer moneda, Integer tipo, Pageable pageable);
-
-
+    @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.estado = 0")
+    List<TipoCambio> buscaTipoDeCambioActivos(Integer moneda);
+    @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.estado not in (1)")
+    List<TipoCambio> buscaTipoDeCambioNoEliminado(Integer moneda);
     @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.estado = 0 and tc.fecha <= ?3")
     List<TipoCambio> buscaTipoDeCambioPorMoneda(Integer moneda, Integer tipo, LocalDate fecha);
     @Query("select tc from TipoCambio tc where tc.moneda = ?1 and tc.tipo=?2 and tc.estado = 0 and tc.fecha = ?3")

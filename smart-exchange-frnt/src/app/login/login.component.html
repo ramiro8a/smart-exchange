@@ -40,11 +40,20 @@
                 <img src='assets/img/logofooter-test.png' alt="">
             </div><br>
             <div class="tipos-de-cambios">
-                <table *ngIf="lcExchange && banco">
+                <!-- <table *ngIf="lcExchange && banco">
                     <tr class="lc"><td></td><td><small>COMPRA</small></td><td><small>VENTA</small></td></tr>
                     <tr *ngIf="lcExchange" class="lc"><td><img src="assets/img/logo3.png"></td><td><small>S/ </small>{{lcExchange.compra}}</td><td><small>S/ </small>{{lcExchange.venta}}</td></tr>
                     <tr *ngIf="sunat"><td><img src="assets/img/sunat.svg" alt=""></td><td><small>S/ </small>{{sunat.compra}}</td><td><small>S/ </small>{{sunat.venta}}</td></tr>
                     <tr *ngIf="banco"><td><mat-icon>account_balance</mat-icon> Bancos</td><td><small>S/ </small>{{banco.compra}}</td><td><small>S/ </small>{{banco.venta}}</td></tr>
+                </table> -->
+                <table *ngIf="tiposCambio.length>0">
+                    <tr class="lc"><td></td><td></td><td><small>COMPRA</small></td><td><small>VENTA</small></td></tr>
+                    <tr *ngFor="let item of tiposCambio">
+                        <td><img [src]="item.logo"></td>
+                        <td>{{item.nombre}}</td>
+                        <td><small>S/ </small>{{item.compra}}</td>
+                        <td><small>S/ </small>{{item.venta}}</td>
+                    </tr>
                 </table>
             </div>
             <br>

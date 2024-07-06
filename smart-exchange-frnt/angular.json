@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "C:/Users/Ramiro/Documents/DEVELOPER/smart-exchange/smart-exchange-back/src/main/resources/static/",
+            "outputPath": "C:/ROCHOA/PROYECTOS/smart-exchange/smart-exchange-back/src/main/resources/static/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [

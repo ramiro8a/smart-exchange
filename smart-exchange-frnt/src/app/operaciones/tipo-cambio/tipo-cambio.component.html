@@ -78,8 +78,9 @@
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef> Estado </th>
               <td mat-cell *matCellDef="let item">
-                <mat-slide-toggle (change)="cambioEstado(item)" color="primary"><small>Se trabaja</small></mat-slide-toggle>
-                 {{item.estado==0?'Activo':'Deshabilitado'}}
+                <mat-slide-toggle [(ngModel)]="item.activo" (ngModelChange)="cambioEstado(item)" color="primary">
+                  <small>{{ item.activo ? 'Activo' : 'Deshabilitado' }}</small>
+                </mat-slide-toggle>
                 </td>
             </ng-container>
             <!-- <ng-container matColumnDef="moneda">

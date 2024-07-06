@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
   styleUrls: ['./tipo-cambio.component.sass']
 })
 export class TipoCambioComponent implements OnInit{
+  estadoBoolean: boolean[];
   esLcExchange:boolean = false
   tipos:any[]=Const.TIPO_CAMBIOS
   tcForm: FormGroup;
@@ -35,6 +36,7 @@ export class TipoCambioComponent implements OnInit{
         logo: ['', Validators.required],
         nombre: ['', Validators.required]
       }); 
+      this.estadoBoolean = this.dataSource.map(item => item.estado === 0);
     }
     
   ngOnInit(): void {
@@ -56,6 +58,9 @@ export class TipoCambioComponent implements OnInit{
     this.restTC.recuperaTiposDeCambioCincoDias(Const.USD_ISO).subscribe({
       next: (response:any) => {
         this.dataSource = response as TipoCambioResponse[]
+        this.dataSource.forEach((item)=>{
+          item.activo = item.estado==0
+        })
       },
       error: (error:any) => {
       }
@@ -97,7 +102,22 @@ export class TipoCambioComponent implements OnInit{
   }
 
   cambioEstado(tipoDeCambio: TipoCambioResponse):void{
-    console.log(tipoDeCambio)
+    this.estaCargando = true;
+    this.restTC.cambiaEstadoTipoCambio(tipoDeCambio.id).subscribe({
+      next: (response:any) => {
+        if(tipoDeCambio.estado==1){
+          tipoDeCambio.estado = 2
+        }else{
+          tipoDeCambio.estado =1
+        }
+        this.estaCargando = false;
+        this.notif.notify('success', 'Cambio realizado con éxito');
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+        this.notif.notify('error', error);
+      }
+    });
   }
 
   archivoSeleccionado(event: any):void{

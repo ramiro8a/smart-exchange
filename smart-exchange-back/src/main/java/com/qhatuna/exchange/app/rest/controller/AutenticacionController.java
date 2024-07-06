@@ -3,10 +3,7 @@ package com.qhatuna.exchange.app.rest.controller;
 import com.qhatuna.exchange.app.rest.request.RegistroRequest;
 import com.qhatuna.exchange.app.rest.request.ResetPassRequest;
 import com.qhatuna.exchange.app.rest.request.UsuariosAuxRequest;
-import com.qhatuna.exchange.app.rest.response.AhorroResponse;
-import com.qhatuna.exchange.app.rest.response.AutenticationResponse;
-import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
-import com.qhatuna.exchange.app.rest.response.UsuarioResponse;
+import com.qhatuna.exchange.app.rest.response.*;
 import com.qhatuna.exchange.domain.model.Empresa;
 import com.qhatuna.exchange.domain.provider.sunat.SunatProvider;
 import com.qhatuna.exchange.domain.service.*;
@@ -84,6 +81,16 @@ public class AutenticacionController {
     @GetMapping(path = "/tipo-cambio", produces = {MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<TCPublicoResponse>> recupertaTCPublico() {
         return new ResponseEntity<>(tcService.recuperaTCPulico(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/v2/tipo-cambio", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<TipoCambioResponseV2> recupertaTCPublicoV2() {
+        return new ResponseEntity<>(tcService.recuperaTCPulicoV2(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/v2/tipo-cambio-lista", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<TipoCambioResponse>> recupertaTCPublicoV2Lista() {
+        return new ResponseEntity<>(tcService.recuperaTCTodos(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/ahorro/{opcion}", produces = {MediaType.APPLICATION_JSON_VALUE })

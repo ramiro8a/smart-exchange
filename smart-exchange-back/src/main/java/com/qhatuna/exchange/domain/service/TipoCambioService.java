@@ -3,6 +3,7 @@ package com.qhatuna.exchange.domain.service;
 import com.qhatuna.exchange.app.rest.request.TipoCambioRequest;
 import com.qhatuna.exchange.app.rest.response.TCPublicoResponse;
 import com.qhatuna.exchange.app.rest.response.TipoCambioResponse;
+import com.qhatuna.exchange.app.rest.response.TipoCambioResponseV2;
 import com.qhatuna.exchange.commons.constant.Const;
 import com.qhatuna.exchange.commons.constant.ConstValues;
 import com.qhatuna.exchange.commons.constant.ErrorMsj;
@@ -18,10 +19,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @AllArgsConstructor
@@ -29,6 +33,21 @@ import java.util.List;
 public class TipoCambioService {
     private final TipoCambioRepository tipoCambioRepository;
     private final ApiPeruProvider apiPeruProvider;
+
+    public List<TipoCambioResponse> recuperaTCTodos(){
+        List<TipoCambio> bancos = tipoCambioRepository.buscaTipoDeCambioActivos(ConstValues.USD_ISO);
+        return bancos.stream().map(TipoCambio::aResponseList).toList();
+    }
+
+    public void activaDesactivaTC(Long id){
+        TipoCambio tipoCambio = recuperaTipoCambioPorId(id);
+        if(tipoCambio.estaActivo()){
+            tipoCambio.setEstado(Const.EstadoRegistro.DESHABILITADO);
+        }else{
+            tipoCambio.setEstado(Const.EstadoRegistro.ACTIVO);
+        }
+        tipoCambioRepository.save(tipoCambio);
+    }
 
     public TipoCambio recuperaTCBancos(){
         List<TipoCambio> bancos = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(
@@ -40,6 +59,26 @@ public class TipoCambioService {
             throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
         }
         return bancos.get(0);
+    }
+
+    public TipoCambioResponseV2 recuperaTCPulicoV2(){
+        List<TipoCambio> bancos = tipoCambioRepository.buscaTipoDeCambioActivos(ConstValues.USD_ISO);
+        if (bancos.isEmpty()){
+            throw new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod());
+        }
+        TipoCambio lcExchange = bancos.stream()
+                .filter(tipoCambio -> tipoCambio.getTipo().equals(ConstValues.TC_LC_EXCHANGE))
+                .findFirst()
+                .orElseThrow(()->new ProviderException(ErrorMsj.TIPO_CAMBIO.getMsj(),ErrorMsj.TIPO_CAMBIO.getCod()));
+        BigDecimal menorCompra = bancos.stream()
+                .min(Comparator.comparing(TipoCambio::getCompra))
+                .orElseThrow(() -> new NoSuchElementException("La lista está vacía o no se pudo encontrar el mínimo de compra"))
+                .getCompra();
+        BigDecimal mayorVenta = bancos.stream()
+                .max(Comparator.comparing(TipoCambio::getVenta))
+                .orElseThrow(() -> new NoSuchElementException("La lista está vacía o no se pudo encontrar el máximo de venta"))
+                .getVenta();
+        return new TipoCambioResponseV2(lcExchange.getCompra(), lcExchange.getVenta(), menorCompra, mayorVenta);
     }
 
     public List<TCPublicoResponse> recuperaTCPulico(){
@@ -175,7 +214,14 @@ public class TipoCambioService {
         return TipoCambio.aResponseList(tipoCambio);
     }
 
-    public List<TipoCambioResponse> recuperaUltimoCincoDias(Integer moneda){
+    public List<TipoCambioResponse> recuperaUltimoCincoDiasV2(Integer moneda){
+        List<TipoCambio> tiposDeCambios = tipoCambioRepository.buscaTipoDeCambioNoEliminado(moneda);
+        return tiposDeCambios.stream()
+                .map(TipoCambio::aResponseList)
+                .toList();
+    }
+
+/*    public List<TipoCambioResponse> recuperaUltimoCincoDias(Integer moneda){
         LocalDateTime ahora = LocalDateTime.now();
         LocalDate hasta = ahora.toLocalDate().plusDays(5);
         LocalDate desde = hasta.minusDays(5);
@@ -187,7 +233,7 @@ public class TipoCambioService {
         return tiposDeCambios.stream()
                 .map(TipoCambio::aResponseList)
                 .toList();
-    }
+    }*/
 
     public TipoCambioResponse recuperaTipoCambioUSD(Integer moneda){
         List<TipoCambio> oficial = tipoCambioRepository.buscaTipoDeCambioRecientePorMonedaYTipo(

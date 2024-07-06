@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog"
 import { NotifierService } from 'angular-notifier';
 import { TokenService } from '../servicios/token.service';
 import { PromptComponent } from '../ui-utils/prompt/prompt.component';
+import { TipoCambioResponse } from '../rest/tipo-cambio.service';
 
 @Component({
   selector: 'app-login',
@@ -20,10 +21,8 @@ export class LoginComponent implements OnInit{
   resetForm: FormGroup;
   hide: boolean = true;
   estaCargando: boolean = false
-  tiposCambio: TCPublicoResponse[]=[]
-  lcExchange!: TCPublicoResponse
-  sunat!: TCPublicoResponse
-  banco!: TCPublicoResponse
+  tiposCambio: TipoCambioResponse[]=[]
+  lcExchange!: TipoCambioResponse
   panelOpen = false
   leyenda: string =''
   opcion:string=''
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit{
     this.recuperaTCPublico()
   }
 
-  recuperaTCPublico():void{
+/*   recuperaTCPublico():void{
     this.restUsuarios.recuperaTCPublico().subscribe({
       next: (tiposCambios:TCPublicoResponse[]) => {
         this.tiposCambio = tiposCambios
@@ -62,9 +61,23 @@ export class LoginComponent implements OnInit{
         this.notif.notify('error', error);
       }
     });
+  } */
+
+  recuperaTCPublico():void{
+    this.restUsuarios.recuperaTCPublicoV2().subscribe({
+      next: (tiposCambios:TipoCambioResponse[]) => {
+        this.tiposCambio = tiposCambios
+        console.log(this.tiposCambio)
+        //this.asignaTCFuente()
+      },
+      error: (error:any) => {
+        this.estaCargando = false;
+        this.notif.notify('error', error);
+      }
+    });
   }
 
-  asignaTCFuente():void{
+/*   asignaTCFuente():void{
     this.tiposCambio.forEach((item:TCPublicoResponse)=>{
       if(item.tipo===1){
         this.lcExchange = item
@@ -79,7 +92,7 @@ export class LoginComponent implements OnInit{
         this.banco = item
       }
     })
-  }
+  } */
 
   login():void {
     if(this.loginForm.valid){

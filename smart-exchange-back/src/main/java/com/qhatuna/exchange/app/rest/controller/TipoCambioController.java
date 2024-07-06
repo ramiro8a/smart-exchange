@@ -37,7 +37,7 @@ public class TipoCambioController {
     public ResponseEntity<List<TipoCambioResponse>> recuperaTodo(
             @PathVariable Integer moneda
     ) {
-        return new ResponseEntity<>(service.recuperaUltimoCincoDias(moneda), HttpStatus.OK);
+        return new ResponseEntity<>(service.recuperaUltimoCincoDiasV2(moneda), HttpStatus.OK);
     }
 
     @GetMapping(path = "/actual/{moneda}", produces = {MediaType.APPLICATION_JSON_VALUE })
@@ -45,5 +45,13 @@ public class TipoCambioController {
             @PathVariable Integer moneda
     ) {
         return new ResponseEntity<>(service.recuperaTipoCambioUSD(moneda), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> activarDeshabilitar(
+            @PathVariable Long id
+    ) {
+        service.activaDesactivaTC(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

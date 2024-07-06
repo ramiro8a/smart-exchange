@@ -15,6 +15,7 @@ export interface TipoCambioResponse{
   fechaRegistro: Date;
   nombre:string;
   logo:string;
+  activo:boolean
 }
 
 @Injectable({
@@ -23,6 +24,12 @@ export interface TipoCambioResponse{
 export class TipoCambioService {
   path:string = '/api/tipo-cambio'
   constructor(private http: HttpClient) { }
+
+  cambiaEstadoTipoCambio(id:number): Observable<any> {
+    return this.http.patch<any>(`${environment.baseUrl}${this.path}/${id}`, {}).pipe(
+      catchError(this.errorHandler)
+    )
+  }
 
   creaTipoCambio(data: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}${this.path}`, data).pipe(
